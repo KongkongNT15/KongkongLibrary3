@@ -1,0 +1,7 @@
+﻿# Visual Studio
+.vs
+*.vcxproj.user
+x64/
+Win32/
+Debug/
+Release/

@@ -1,0 +1,6 @@
+﻿#ifndef KLIB_KONGKONG_LAZYOBJECT_H
+#define KLIB_KONGKONG_LAZYOBJECT_H
+
+#include "base.h"
+
+#endif //!KLIB_KONGKONG_LAZYOBJECT_H
