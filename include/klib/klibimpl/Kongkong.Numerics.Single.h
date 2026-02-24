@@ -1,24 +1,27 @@
-﻿#ifndef KLIB_KONGKONG_NUMERICS_LONG_H
-#define KLIB_KONGKONG_NUMERICS_LONG_H
+﻿#ifndef KLIB_KONGKONG_NUMERICS_SINGLE_H
+#define KLIB_KONGKONG_NUMERICS_SINGLE_H
 
 #include "base.h"
 #include "Kongkong.Numerics.Number.h"
 
-#include <limits.h>
+#include <float.h>
 
 namespace klib::Kongkong::Numerics
 {
     template <>
-    struct Number<long> final {
+    struct Number<float> final {
     private:
     public:
 
-        using NumType = long;
+        using NumType = float;
 
         KLIB_STATIC_CLASS(Number);
 
         [[nodiscard]]
         static constexpr int Digits() noexcept;
+
+        [[nodiscard]]
+        static constexpr NumType Epsiron() noexcept;
 
         [[nodiscard]]
         static constexpr bool IsFloatingPoint() noexcept;
@@ -39,35 +42,40 @@ namespace klib::Kongkong::Numerics
 
 namespace klib::Kongkong::Numerics
 {
-    constexpr int Long::Digits() noexcept
+    constexpr int Single::Digits() noexcept
     {
-        return sizeof(NumType) * CHAR_BIT - 1;
+        return FLT_MANT_DIG;
     }
 
-    constexpr bool Long::IsFloatingPoint() noexcept
+    constexpr Single::NumType Single::Epsiron() noexcept
+    {
+        return FLT_EPSILON;
+    }
+
+    constexpr bool Single::IsFloatingPoint() noexcept
+    {
+        return true;
+    }
+
+    constexpr bool Single::IsInteger() noexcept
     {
         return false;
     }
 
-    constexpr bool Long::IsInteger() noexcept
+    constexpr bool Single::IsSigned() noexcept
     {
         return true;
     }
 
-    constexpr bool Long::IsSigned() noexcept
+    constexpr Single::NumType Single::MaxValue() noexcept
     {
-        return true;
+        return FLT_MAX;
     }
 
-    constexpr Long::NumType Long::MaxValue() noexcept
+    constexpr Single::NumType Single::MinValue() noexcept
     {
-        return LONG_MAX;
-    }
-
-    constexpr Long::NumType Long::MinValue() noexcept
-    {
-        return LONG_MIN;
+        return FLT_MIN;
     }
 }
 
-#endif //!KLIB_KONGKONG_NUMERICS_LONG_H
+#endif //!KLIB_KONGKONG_NUMERICS_SINGLE_H

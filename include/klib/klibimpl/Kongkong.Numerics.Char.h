@@ -1,19 +1,19 @@
-﻿#ifndef KLIB_KONGKONG_NUMERICS_LONG_H
-#define KLIB_KONGKONG_NUMERICS_LONG_H
+﻿#ifndef KLIB_KONGKONG_NUMERICS_CHAR_H
+#define KLIB_KONGKONG_NUMERICS_CHAR_H
 
 #include "base.h"
 #include "Kongkong.Numerics.Number.h"
 
-#include <limits.h>
+#include <inttypes.h>
 
 namespace klib::Kongkong::Numerics
 {
     template <>
-    struct Number<long> final {
+    struct Number<char16_t> final {
     private:
     public:
 
-        using NumType = long;
+        using NumType = char16_t;
 
         KLIB_STATIC_CLASS(Number);
 
@@ -39,35 +39,35 @@ namespace klib::Kongkong::Numerics
 
 namespace klib::Kongkong::Numerics
 {
-    constexpr int Long::Digits() noexcept
+    constexpr int Char::Digits() noexcept
     {
-        return sizeof(NumType) * CHAR_BIT - 1;
+        return sizeof(::int_least16_t) * CHAR_BIT;
     }
 
-    constexpr bool Long::IsFloatingPoint() noexcept
+    constexpr bool Char::IsFloatingPoint() noexcept
     {
         return false;
     }
 
-    constexpr bool Long::IsInteger() noexcept
+    constexpr bool Char::IsInteger() noexcept
     {
         return true;
     }
 
-    constexpr bool Long::IsSigned() noexcept
+    constexpr bool Char::IsSigned() noexcept
     {
-        return true;
+        return false;
     }
 
-    constexpr Long::NumType Long::MaxValue() noexcept
+    constexpr Char::NumType Char::MaxValue() noexcept
     {
-        return LONG_MAX;
+        return u'\uFFFF';
     }
 
-    constexpr Long::NumType Long::MinValue() noexcept
+    constexpr Char::NumType Char::MinValue() noexcept
     {
-        return LONG_MIN;
+        return u'\0';
     }
 }
 
-#endif //!KLIB_KONGKONG_NUMERICS_LONG_H
+#endif //!KLIB_KONGKONG_NUMERICS_CHAR_H

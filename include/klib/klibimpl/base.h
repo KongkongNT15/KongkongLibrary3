@@ -229,6 +229,8 @@ namespace klib::Kongkong
     struct ValueType;
     struct NonType;
 
+    struct ArgumentException;
+    struct ArgumentOutOfRangeException;
     struct Exception;
     struct MemoryAllocationException;
     struct MemoryException;
@@ -344,6 +346,12 @@ namespace klib::Kongkong::Text
     struct GenericStringView;
 }
 
+namespace klib::Kongkong::Text::Unicode
+{
+    struct SurrogatePair;
+    class UnicodeTraits;
+}
+
 namespace klib::Kongkong::Threading
 {
     class Thread;
@@ -363,15 +371,38 @@ namespace klib::Kongkong::Win32::UI
 
 namespace klib::Kongkong::Numerics
 {
+    using NativeChar = Number<char>;
     using Short = Number<short>;
     using Int = Number<int>;
     using Long = Number<long>;
     using LLong = Number<long long>;
+    using SNativeChar = Number<signed char>;
+    using UNativeChar = Number<unsigned char>;
+    using UShort = Number<unsigned short>;
+    using UInt = Number<unsigned>;
+    using ULong = Number<unsigned long>;
+    using ULLong = Number<unsigned long long>;
+    using WChar = Number<wchar_t>;
+    using Char8 = Number<char8_t>;
+    using Char = Number<char16_t>;
+    using Char32 = Number<char32_t>;
     using Int8 = Number<int8_t>;
     using Int16 = Number<int16_t>;
     using Int32 = Number<int32_t>;
     using Int64 = Number<int64_t>;
+    using UInt8 = Number<uint8_t>;
+    using UInt16 = Number<uint16_t>;
+    using UInt32 = Number<uint32_t>;
+    using UInt64 = Number<uint64_t>;
+    using Single = Number<float>;
+    using Double = Number<double>;
+    using LDouble = Number<long double>;
     using Int32ParseResult = NumberParseResult<int32_t>;
+}
+
+namespace klib::Kongkong::Text
+{
+    using Numerics::Char;
 }
 
 #endif //!KLIB_BASE_H
