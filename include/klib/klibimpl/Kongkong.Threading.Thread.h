@@ -18,6 +18,10 @@ namespace klib::Kongkong::Threading
         static void Sleep(
             uint32_t milliSeconds
         ) noexcept;
+
+        void Join();
+
+        void Start();
     };
 }
 

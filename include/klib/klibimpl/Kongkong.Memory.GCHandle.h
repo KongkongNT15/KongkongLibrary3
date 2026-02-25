@@ -26,6 +26,9 @@ namespace klib::Kongkong::Memory
             Args&&... args
         );
 
+        [[nodiscard]]
+        constexpr Type* operator->() const;
+
         template <class THandle>
             requires ::std::derived_from<THandle, GCHandleBase>
         THandle As() const noexcept;
@@ -33,6 +36,9 @@ namespace klib::Kongkong::Memory
         template <class THandle>
             requires ::std::derived_from<THandle, GCHandleBase>
         THandle Cast() const;
+
+        [[nodiscard]]
+        constexpr Type* GetRawPointerUnsafe() const noexcept;
     };
 
 }

@@ -189,6 +189,11 @@ namespace klib::Kongkong::Win32
         );
     }
 
+    constexpr ::HANDLE Win32Handle::RawHandle() const noexcept
+    {
+        return m_rawHandle;
+    }
+
     inline bool Win32Handle::Rettach(
         ::HANDLE rawHandle
     ) noexcept
@@ -206,6 +211,16 @@ namespace klib::Kongkong::Win32
         m_rawHandle = rawHandle;
 
         return true;
+    }
+
+    inline bool operator==(
+        Win32Handle const& left,
+        Win32Handle const& right
+    ) noexcept
+    {
+        return static_cast<bool>(
+            ::CompareObjectHandles(left.RawHandle(), right.RawHandle())
+        );
     }
 
     inline bool operator==(

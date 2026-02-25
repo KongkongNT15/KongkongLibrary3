@@ -255,10 +255,19 @@ namespace klib::Kongkong::Containers
 namespace klib::Kongkong::Functional
 {
     template <class TResult, class... TArgs>
+    struct FunctionBase;
+
+    template <class TResult, class... TArgs>
     struct FunctionPointer;
 
     template <class TPointerType, class TResult, class... TArgs>
     struct MemberFunction;
+
+    template <class TResult, class... TArgs>
+    struct RawFunction;
+
+    template <class TFunc, class TResult, class... TArgs> requires ::std::is_invocable_v<TFunc, TArgs&&...>
+    struct FunctionObject;
 
     template <class TResult, class... TArgs>
     class Function;

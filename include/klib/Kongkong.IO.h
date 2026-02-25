@@ -1,0 +1,6 @@
+﻿#ifndef KLIB_KONGKONG_IO_H
+#define KLIB_KONGKONG_IO_H
+
+
+
+#endif //!KLIB_KONGKONG_IO_H
