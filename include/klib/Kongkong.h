@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_H
 
 #include "klibimpl/Kongkong.ValueType.h"
+#include "klibimpl/Kongkong.Interface.h"
 #include "klibimpl/Kongkong.LazyObject.h"
 #include "klibimpl/Kongkong.MemoryAllocationException.h"
 #include "klibimpl/Kongkong.NonType.h"

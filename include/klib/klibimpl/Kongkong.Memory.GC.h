@@ -30,12 +30,27 @@ namespace klib::Kongkong::Memory
     public:
         KLIB_STATIC_CLASS(GC);
 
+        /// @brief 
+        /// @param size 
+        /// @return 失敗するとnullptr
+        static void* Alloc(
+            size_t size
+        ) noexcept;
+
         static void Collect() noexcept;
+
+        static ssize_t GetAllocationSize(
+            void* ptr
+        ) noexcept;
 
         static bool Initialize() noexcept;
 
         [[nodiscard]]
         static bool IsInitialized() noexcept;
+
+        static void Release(
+            void* ptr
+        ) noexcept;
     };
 }
 

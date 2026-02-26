@@ -232,6 +232,7 @@ namespace klib::Kongkong
     struct ArgumentException;
     struct ArgumentOutOfRangeException;
     struct Exception;
+    
     struct MemoryAllocationException;
     struct MemoryException;
     
@@ -239,6 +240,12 @@ namespace klib::Kongkong
 
     template <class T = void>
     struct Hash;
+
+    template <class TStruct, class... TOtherStructs>
+    struct InterfaceValue;
+
+    template <class... TStructs>
+    class Interface;
 
     template <class T>
     struct UnsafeLazyObject;
@@ -250,6 +257,12 @@ namespace klib::Kongkong
 namespace klib::Kongkong::Containers
 {
     class ContainerHelper;
+
+    template <class T>
+    class IReadOnlyContainer;
+
+    template <class T>
+    class IIterator;
 }
 
 namespace klib::Kongkong::Functional
@@ -310,6 +323,9 @@ namespace klib::Kongkong::Memory
 namespace klib::Kongkong::Std
 {
     template <class T>
+    struct Allocator;
+
+    template <class T>
     struct StdVector;
 }
 
@@ -364,6 +380,8 @@ namespace klib::Kongkong::Text::Unicode
 namespace klib::Kongkong::Threading
 {
     class Thread;
+    struct ThreadExitCode;
+    struct ThreadStateException;
 }
 
 namespace klib::Kongkong::Win32
