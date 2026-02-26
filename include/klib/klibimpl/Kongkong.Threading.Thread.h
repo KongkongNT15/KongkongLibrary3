@@ -11,6 +11,10 @@ namespace klib::Kongkong::Threading
         private:
 #if KLIB_ENV_WINDOWS
         Win32::Win32Handle m_thread;
+
+        constexpr Thread(
+            ::HANDLE rawHandle
+        ) noexcept;
 #elif KLIB_ENV_UNIX
 
 #endif
@@ -46,35 +50,35 @@ namespace klib::Kongkong::Threading
 
 namespace klib::Kongkong::Threading
 {
+#if KLIB_ENV_WINDOWS
+    
+    inline Thread Thread::Current() noexcept
+    {
+        return Thread(
+            ::GetCurrentThread()
+        );
+    }
+
     inline void Thread::Sleep(
         uint32_t milliSeconds
     ) noexcept
     {
-#if KLIB_ENV_WINDOWS
         ::Sleep(
             static_cast<::DWORD>(milliSeconds)
         );
-#elif KLIB_ENV_UNIX
-
-#endif
     }
 
-    inline ThreadExitCode Thread::ExitCode() noexcept
+    constexpr Thread::Thread(
+        ::HANDLE rawHandle
+    ) noexcept
+        : m_thread(rawHandle)
     {
-        ThreadExitCode exitCode;
-
-        exitCode.Success = GetExitCode(
-            exitCode.Code
-        );
-
-        return exitCode;
     }
 
     inline bool Thread::GetExitCode(
         int& result
     ) noexcept
     {
-#if KLIB_ENV_WINDOWS
         ::DWORD exitCode;
         ::BOOL r = ::GetExitCodeThread(
             m_thread.RawHandle(),
@@ -86,14 +90,10 @@ namespace klib::Kongkong::Threading
         result = static_cast<int>(exitCode);
 
         return true;
-#elif KLIB_ENV_UNIX
-
-#endif
     }
 
     inline int Thread::GetExitCodeUnsafe() noexcept
     {
-#if KLIB_ENV_WINDOWS
         ::DWORD exitCode;
         ::GetExitCodeThread(
             m_thread.RawHandle(),
@@ -101,10 +101,20 @@ namespace klib::Kongkong::Threading
         );
 
         return static_cast<int>(exitCode);
-#elif KLIB_ENV_UNIX
-
-#endif
     }
+#endif
+    inline ThreadExitCode Thread::ExitCode() noexcept
+    {
+        ThreadExitCode exitCode;
+
+        exitCode.Success = GetExitCode(
+            exitCode.Code
+        );
+
+        return exitCode;
+    }
+
+    
 
     inline void Thread::Join()
     {
