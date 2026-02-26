@@ -286,19 +286,6 @@ namespace klib::Kongkong::Functional
     class Function;
 }
 
-namespace klib::Kongkong::Numerics
-{
-    template <class T>
-    concept CNumber =
-        (::std::integral<T> && ::std::floating_point<T> && (::std::same_as<T, bool> == false));
-
-    template <class TNum = void>
-    struct Number;
-
-    template <class TNum> requires CNumber<TNum>
-    struct NumberParseResult;
-}
-
 namespace klib::Kongkong::Memory
 {
     class GC;
@@ -320,12 +307,33 @@ namespace klib::Kongkong::Memory
     class SharedPointerBase;
 }
 
+namespace klib::Kongkong::Numerics
+{
+    template <class T>
+    concept CNumber =
+        ((::std::integral<T> || ::std::floating_point<T>) && (::std::same_as<T, bool> == false));
+
+    template <class TNum = void>
+    struct Number;
+
+    template <class TNum> requires CNumber<TNum>
+    struct NumberParseResult;
+
+    template <CNumber TNum = float>
+    struct Vector2;
+
+    template <CNumber TNum = float>
+    struct Vector3;
+}
+
+
+
 namespace klib::Kongkong::Std
 {
     template <class T>
     struct Allocator;
 
-    template <class T>
+    template <class T, class TAllocator = Allocator<T>>
     struct StdVector;
 }
 

@@ -11,8 +11,12 @@ namespace Test1
 
 void f()
 {
-    using namespace Test;
-    using namespace Test1;
+    using namespace klib::Kongkong::Numerics;
 
-    MyClass s;
+    Vector2<> v1;
+    Vector2<double> v2;
+
+    auto ddd = v1 + v2;
+
+    v1 = v2;
 }

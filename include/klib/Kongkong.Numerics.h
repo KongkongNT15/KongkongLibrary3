@@ -6,6 +6,7 @@
 #include "klibimpl/Kongkong.Numerics.Number.h"
 #include "klibimpl/Kongkong.Numerics.NumberParseResult.h"
 #include "klibimpl/Kongkong.Numerics.Single.h"
+#include "klibimpl/Kongkong.Numerics.Vector2.h"
 
 
 #endif //!KLIB_KONGKONG_NUMERICS_H
