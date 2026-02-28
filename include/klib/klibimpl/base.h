@@ -306,6 +306,8 @@ namespace klib::Kongkong::Memory
     template <class T>
     struct GCPinGuard;
 
+    class MemoryResource;
+
     template <class T>
     class SharedPointer;
 

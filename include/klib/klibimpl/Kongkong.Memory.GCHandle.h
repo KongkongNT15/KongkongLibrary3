@@ -49,11 +49,18 @@ namespace klib::Kongkong::Memory
         ) const;
 
     };
-
+    
 }
 
 namespace klib::Kongkong::Memory
 {
+    template <class T>
+    constexpr GCHandle<T>::GCHandle(
+        ::std::nullptr_t
+    ) noexcept
+    {
+    }
+
     template <class T>
     GCPinGuard<T> GCHandle<T>::operator->() const
     {

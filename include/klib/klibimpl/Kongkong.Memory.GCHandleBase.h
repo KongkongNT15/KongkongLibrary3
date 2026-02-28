@@ -11,6 +11,8 @@ namespace klib::Kongkong::Memory
         template <class T>
         friend class GCHandle;
 
+        private:
+
         class s_pointer {
         private:
             GCObjectBase* m_pointer;
@@ -40,6 +42,24 @@ namespace klib::Kongkong::Memory
         };
 
         s_pointer m_pointer;
+
+        constexpr GCHandleBase() noexcept;
+
+        GCHandleBase(
+            GCHandleBase const&
+        ) = default;
+
+        GCHandleBase(
+            GCHandleBase&&
+        ) = default;
+
+        GCHandleBase& operator=(
+            GCHandleBase const&
+        ) = default;
+
+        GCHandleBase& operator=(
+            GCHandleBase&&
+        ) = default;
     public:
     };
 }
@@ -75,6 +95,11 @@ namespace klib::Kongkong::Memory
     GCHandleBase::s_pointer::Get() const noexcept
     {
         return m_pointer;
+    }
+
+    constexpr GCHandleBase::GCHandleBase() noexcept
+        : m_pointer(nullptr)
+    {
     }
 }
 

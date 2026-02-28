@@ -26,7 +26,7 @@ namespace klib::Kongkong::Win32
         Win32Handle(Win32Handle&& other) noexcept;
 
         ~Win32Handle();
-
+ 
         Win32Handle& operator=(::std::nullptr_t) noexcept;
         Win32Handle& operator=(Win32Handle const& other) noexcept;
         Win32Handle& operator=(Win32Handle&& other) noexcept;
