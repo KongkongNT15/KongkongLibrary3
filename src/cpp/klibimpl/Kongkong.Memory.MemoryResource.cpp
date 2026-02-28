@@ -18,6 +18,18 @@
         return static_cast<bool>(result);
     }
 
+    void* MemoryResource::do_reserve(
+        size_t minBytes
+    ) noexcept
+    {
+        return ::VirtualAlloc(
+            nullptr,
+            minBytes,
+            MEM_RESERVE,
+            PAGE_READWRITE
+        );
+    }
+
     bool MemoryResource::Commit(
         void* targetAddress,
         size_t bytes
@@ -57,32 +69,63 @@
         return static_cast<bool>(result);
     }
 
-    bool MemoryResource::ReserveUnsafe(
+#elif KLIB_ENV_UNIX
+    size_t MemoryResource::s_pageSize = ::sysconf(_SC_PAGESIZE);
+
+    bool MemoryResource::do_free() noexcept
+    {
+        return ::munmap(m_p, m_regionSize) != EOF;
+    }
+
+    void* MemoryResource::do_reserve(
         size_t minBytes
     ) noexcept
     {
-        void* p = ::VirtualAlloc(
+        return ::mmap(
             nullptr,
             minBytes,
-            MEM_RESERVE,
-            PAGE_READWRITE
+            PROT_NONE,
+            MAP_PRIVATE | MAP_ANONYMOUS,
+            -1,
+            0
         );
-
-        if (!p) return false;
-
-        m_p = p;
-
-        if (minBytes % s_pageSize == 0) {
-            m_regionSize = minBytes;
-        }
-        else {
-            m_regionSize = (minBytes / s_pageSize + 1) * s_pageSize;
-        }
     }
 
-    
+    bool MemoryResource::Commit(
+        void* targetAddress,
+        size_t bytes
+    ) noexcept
+    {
+        return ::mprotect(
+            targetAddress,
+            bytes,
+            PROT_READ | PROT_WRITE
+        ) != EOF;
+    }
 
-#elif KLIB_ENV_UNIX
+    bool MemoryResource::Decommit(
+        void* targetAddress,
+        size_t bytes
+    ) noexcept
+    {
+        // アクセスを禁止し（予約状態に戻す）、物理メモリのヒントも与えますｳﾋｮｯ
+        int result1 = ::mprotect(targetAddress, bytes, PROT_NONE);
+        int result2 = ::madvise(targetAddress, bytes, MADV_DONTNEED);
 
+        return result1 != EOF && result2 != EOF;
+    }
+
+    bool MemoryResource::DecommitAll(
+    ) noexcept
+    {
+        // 同じアドレスに対して PROT_NONE で上書きマッピングを行うｳﾋｮｯ
+        return mmap(
+            m_p,
+            m_regionSize,
+            PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED,
+            -1,
+            0
+        ) != nullptr;
+    }
 #endif
 }

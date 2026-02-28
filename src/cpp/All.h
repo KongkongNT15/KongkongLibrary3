@@ -1,6 +1,12 @@
 ﻿#ifndef KLIB_ALL_H
 #define KLIB_ALL_H
 
+#include <klib/klibimpl/base.h>
+
+#if KLIB_ENV_UNIX
+    #include <sys/mman.h>
+#endif
+
 #include <klib/Kongkong.h>
 #include <klib/Kongkong.Containers.h>
 #include <klib/Kongkong.Functional.h>

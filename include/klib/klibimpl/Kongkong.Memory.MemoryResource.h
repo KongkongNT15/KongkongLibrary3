@@ -19,6 +19,10 @@ namespace klib::Kongkong::Memory
         size_t m_regionSize;
 
         bool do_free() noexcept;
+
+        static void* do_reserve(
+            size_t minBytes
+        ) noexcept;
         public:
 
         [[nodiscard]]
@@ -193,6 +197,24 @@ namespace klib::Kongkong::Memory
         }
 
         return ReserveUnsafe(minBytes);
+    }
+
+    inline bool MemoryResource::ReserveUnsafe(
+        size_t minBytes
+    ) noexcept
+    {
+        void* p = do_reserve(minBytes);
+
+        if (!p) return false;
+
+        m_p = p;
+
+        if (minBytes % s_pageSize == 0) {
+            m_regionSize = minBytes;
+        }
+        else {
+            m_regionSize = (minBytes / s_pageSize + 1) * s_pageSize;
+        }
     }
 
     constexpr bool operator==(
