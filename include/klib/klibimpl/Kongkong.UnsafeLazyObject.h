@@ -102,7 +102,7 @@ namespace klib::Kongkong
 
     template <class T>
     typename UnsafeLazyObject<T>::Type const&
-        UnsafeLazyObject<T>::GetValueUnsafe() const noexcept
+    UnsafeLazyObject<T>::GetValueUnsafe() const noexcept
     {
         const void* tmp = m_placeHolder;
 

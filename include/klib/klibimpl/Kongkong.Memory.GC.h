@@ -22,6 +22,7 @@ namespace klib::Kongkong::Memory
             /// </summary>
             ::std::list<GCObjectBase*> m_garbages;
         
+            ssize_t m_memorySize;
         };
 
         static inline s_gc s_instance;

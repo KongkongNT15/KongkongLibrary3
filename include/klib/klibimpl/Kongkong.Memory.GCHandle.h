@@ -3,6 +3,9 @@
 
 #include "base.h"
 #include "Kongkong.Memory.GCHandleBase.h"
+#include "Kongkong.Memory.GCObject.h"
+#include "Kongkong.Memory.GCPinGuard.h"
+#include "Kongkong.NullPointerException.h"
 
 namespace klib::Kongkong::Memory
 {
@@ -27,7 +30,7 @@ namespace klib::Kongkong::Memory
         );
 
         [[nodiscard]]
-        constexpr Type* operator->() const;
+        GCPinGuard<T> operator->() const;
 
         template <class THandle>
             requires ::std::derived_from<THandle, GCHandleBase>
@@ -39,12 +42,30 @@ namespace klib::Kongkong::Memory
 
         [[nodiscard]]
         constexpr Type* GetRawPointerUnsafe() const noexcept;
+
+        template <class TPredicate>
+        void WithPinned(
+            TPredicate pred
+        ) const;
+
     };
 
 }
 
 namespace klib::Kongkong::Memory
 {
+    template <class T>
+    GCPinGuard<T> GCHandle<T>::operator->() const
+    {
+        auto p = static_cast<Type*>(
+            this->m_pointer.Get()
+        );
+
+        NullPointerException::CheckNull(p);
+
+        return { p };
+    }
+
     template <class T>
     template <class THandle>
         requires ::std::derived_from<THandle, GCHandleBase>
@@ -55,6 +76,19 @@ namespace klib::Kongkong::Memory
         if constexpr (::std::derived_from<typename Type, type>) {
 
         }
+    }
+
+    template <class T>
+    template <class TPredicate>
+    void GCHandle<T>::WithPinned(
+        TPredicate pred
+    ) const
+    {
+        GCPinGuard<T> guard = this->operator->();
+
+        auto objectPtr = guard.operator->();
+
+        pred(*objectPtr);
     }
 }
 

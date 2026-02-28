@@ -14,6 +14,9 @@ namespace klib::Kongkong::Numerics
 
         using ElementType = TNum;
 
+        [[nodiscard]]
+        constexpr ssize_t Dimension() noexcept;
+
         ElementType X;
         ElementType Y;
 
@@ -26,6 +29,18 @@ namespace klib::Kongkong::Numerics
 
         template <CNumber TNum1>
         [[nodiscard]] constexpr operator Vector2<TNum1>() const noexcept;
+
+        [[nodiscard]]
+        constexpr ElementType* begin() noexcept;
+
+        [[nodiscard]]
+        constexpr const ElementType* begin() const noexcept;
+
+        [[nodiscard]]
+        constexpr ElementType* end() noexcept;
+
+        [[nodiscard]]
+        constexpr const ElementType* end() const noexcept;
 
         template <CNumber TNum1>
         [[nodiscard]] constexpr Vector2<TNum1> Cast() const noexcept;
@@ -56,10 +71,38 @@ namespace klib::Kongkong::Numerics
         Vector2<TNum1> left,
         Vector2<TNum2> right
     ) noexcept;
+
+    template <CNumber TNum1, CNumber TNum2>
+    [[nodiscard]] constexpr Vector2<decltype(TNum1() * TNum2())>
+    operator*(
+        Vector2<TNum1> left,
+        TNum2 right
+    ) noexcept;
+
+    template <CNumber TNum1, CNumber TNum2>
+    [[nodiscard]] constexpr Vector2<decltype(TNum1() * TNum2())>
+    operator*(
+        TNum1 left,
+        Vector2<TNum2> right
+    ) noexcept;
+
+    template <CNumber TNum1, CNumber TNum2>
+    [[nodiscard]] constexpr Vector2<decltype(TNum1() * TNum2())>
+    operator/(
+        Vector2<TNum1> left,
+        TNum2 right
+    ) noexcept;
 }
 
 namespace klib::Kongkong::Numerics
 {
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr ssize_t
+    Vector2<KLIB_CLASS_TEMPLATE_PARAM>::Dimension() noexcept
+    {
+        return 2;
+    }
+
     KLIB_CLASS_TEMPLATE_DEF
     constexpr Vector2<KLIB_CLASS_TEMPLATE_PARAM>::Vector2(
     ) noexcept
@@ -84,6 +127,34 @@ namespace klib::Kongkong::Numerics
     const noexcept
     {
         return Cast<TNum1>();
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr typename Vector2<KLIB_CLASS_TEMPLATE_PARAM>::ElementType*
+    Vector2<KLIB_CLASS_TEMPLATE_PARAM>::begin() noexcept
+    {
+        return &X;
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr const typename Vector2<KLIB_CLASS_TEMPLATE_PARAM>::ElementType*
+    Vector2<KLIB_CLASS_TEMPLATE_PARAM>::begin() const noexcept
+    {
+        return &X;
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr typename Vector2<KLIB_CLASS_TEMPLATE_PARAM>::ElementType*
+    Vector2<KLIB_CLASS_TEMPLATE_PARAM>::end() noexcept
+    {
+        return begin() + Dimension();
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr const typename Vector2<KLIB_CLASS_TEMPLATE_PARAM>::ElementType*
+    Vector2<KLIB_CLASS_TEMPLATE_PARAM>::end() const noexcept
+    {
+        return begin() + Dimension();
     }
 
     KLIB_CLASS_TEMPLATE_DEF
@@ -133,6 +204,36 @@ namespace klib::Kongkong::Numerics
     ) noexcept
     {
         return { left.X - right.X, left.Y - right.Y };
+    }
+
+    template <CNumber TNum1, CNumber TNum2>
+    constexpr Vector2<decltype(TNum1() * TNum2())>
+    operator*(
+        Vector2<TNum1> left,
+        TNum2 right
+    ) noexcept
+    {
+        return { left.X * right, left.Y * right };
+    }
+
+    template <CNumber TNum1, CNumber TNum2>
+    constexpr Vector2<decltype(TNum1() * TNum2())>
+    operator*(
+        TNum1 left,
+        Vector2<TNum2> right
+    ) noexcept
+    {
+        return right * left;
+    }
+
+    template <CNumber TNum1, CNumber TNum2>
+    constexpr Vector2<decltype(TNum1() * TNum2())>
+    operator/(
+        Vector2<TNum1> left,
+        TNum2 right
+    ) noexcept
+    {
+        return { left.X / right, left.Y / right };
     }
 }
 

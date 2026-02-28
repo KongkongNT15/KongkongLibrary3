@@ -235,6 +235,8 @@ namespace klib::Kongkong
     
     struct MemoryAllocationException;
     struct MemoryException;
+
+    struct NullPointerException;
     
     struct OutOfMemoryException;
 
@@ -300,6 +302,9 @@ namespace klib::Kongkong::Memory
 
     struct GCObjectBase;
     struct GCObjectCounter;
+
+    template <class T>
+    struct GCPinGuard;
 
     template <class T>
     class SharedPointer;
