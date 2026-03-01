@@ -16,6 +16,18 @@
 #include <klib/Kongkong.Threading.h>
 #include <klib/Kongkong.Std.h>
 #include <klib/Kongkong.Text.Unicode.h>
+
+#if KLIB_ENV_WINDOWS
 #include <klib/Kongkong.Win32.h>
+#endif
+#if KLIB_ENV_APPLE
+#include <klib/Kongkong.AppleDevice.h>
+#endif
+
+#if KLIB_ENV_UNIX
+
+#endif
+
+
 
 #endif //!KLIB_ALL_H

@@ -253,6 +253,11 @@ namespace klib::Kongkong
     struct UnsafeLazyObject;
 }
 
+namespace klib::Kongkong::AppleDevice
+{
+    class ObjCHandle;
+}
+
 /// <summary>
 /// コンテナ型
 /// </summary>
