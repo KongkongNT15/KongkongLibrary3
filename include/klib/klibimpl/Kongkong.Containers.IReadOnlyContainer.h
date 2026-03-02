@@ -9,7 +9,7 @@ namespace klib::Kongkong::Containers
     template <class T>
     class IReadOnlyContainer : Interface<> {
         public:
-        using ElementType = ::std::remove_cv_t<T>;
+        using ElementType = ::std::remove_cvref_t<T>;
         protected:
 
         struct s_impl {

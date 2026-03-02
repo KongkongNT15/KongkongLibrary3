@@ -13,7 +13,7 @@ namespace klib::Kongkong::Std
         using is_always_equal = ::std::true_type;
         using propagate_on_container_move_assignment = ::std::true_type;
         using size_type = size_t;
-        using value_type = typename T;
+        using value_type = typename ::std::remove_cvref_t<T>;
 
         [[nodiscard]]
         value_type* allocate(

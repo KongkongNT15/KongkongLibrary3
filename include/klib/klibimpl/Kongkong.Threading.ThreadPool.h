@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_THRAEDING_THREADPOOL_H
 
 #include "base.h"
+#include "Kongkong.Threading.Async.AsyncAction.h"
 
 #if KLIB_ENV_WINDOWS
 
@@ -28,7 +29,7 @@ namespace klib::Kongkong::Threading
         KLIB_STATIC_CLASS(ThreadPool);
 
         template <class TPredicate>
-        static AsyncAction RunAsync(
+        static Async::AsyncAction RunAsync(
             TPredicate pred
         );
     };
@@ -37,7 +38,7 @@ namespace klib::Kongkong::Threading
 namespace klib::Kongkong::Threading
 {
     template <class TPredicate>
-    AsyncAction ThreadPool::RunAsync(
+    Async::AsyncAction ThreadPool::RunAsync(
         TPredicate pred
     )
     {

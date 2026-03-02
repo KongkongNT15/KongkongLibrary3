@@ -10,7 +10,7 @@ namespace klib::Kongkong
     template <class T>
     struct LazyObject final {
         public:
-        using ElementType = typename ::std::remove_cv_t<T>;
+        using ElementType = typename ::std::remove_cvref_t<T>;
         constexpr bool IsNothrowCopyConstructible = ::std::is_nothrow_copy_constructible_v<ElementType>;
         constexpr bool IsNothrowCopyAssignable = ::std::is_nothrow_copy_assignable_v<ElementType>;
         constexpr bool IsNothrowMoveConstructible = ::std::is_nothrow_move_constructible_v<ElementType>;

@@ -10,7 +10,7 @@ namespace klib::Kongkong::Threading::Async
     template <class T>
     struct AsyncOperation final : public AwaiterBase {
         public:
-        using ResultType = typename ::std::remove_cv_t<T>;
+        using ResultType = typename ::std::remove_cvref_t<T>;
 
         struct promise_type final : public AwaiterBase::promise_type_base {
 
