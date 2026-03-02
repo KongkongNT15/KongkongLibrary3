@@ -14,13 +14,14 @@
 #include <klib/Kongkong.Memory.h>
 #include <klib/Kongkong.Numerics.h>
 #include <klib/Kongkong.Threading.h>
+#include <klib/Kongkong.Threading.Async.h>
 #include <klib/Kongkong.Std.h>
 #include <klib/Kongkong.Text.Unicode.h>
 
 #if KLIB_ENV_WINDOWS
 #include <klib/Kongkong.Win32.h>
 #endif
-#if KLIB_ENV_APPLE
+#if KLIB_OBJECTIVE_C_ENABLED
 #include <klib/Kongkong.AppleDevice.h>
 #endif
 
@@ -29,5 +30,8 @@
 #endif
 
 
+// 標準ライブラリ
+#include <chrono>
+#include <thread>
 
 #endif //!KLIB_ALL_H

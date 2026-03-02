@@ -2,10 +2,6 @@
 
 namespace klib::Kongkong::AppleDevice
 {
-    
-
-    
-
     void ObjCHandle::do_release() noexcept
     {
         if (m_objectPtr == nullptr) return;

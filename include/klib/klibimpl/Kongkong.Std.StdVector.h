@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_STD_STDVECTOR_H
 
 #include "base.h"
+#include "Kongkong.Containers.ContainerHelper.h"
 #include <vector>
 
 #define KLIB_CLASS_TEMPLATE_DEF template <class T, class TAllocator>
@@ -216,7 +217,7 @@ namespace klib::Kongkong::Std
             ++itr;
         }
 
-        return -1;
+        return Containers::ContainerHelper::NotFound();
     }
 
     KLIB_CLASS_TEMPLATE_DEF

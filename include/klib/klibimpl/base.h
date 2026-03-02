@@ -58,6 +58,12 @@
     #else
         #define KLIB_ENV_X64 1
     #endif
+
+    #ifdef KLIB_OBJECTIVE_C_DISABLED
+        #define KLIB_OBJECTIVE_C_ENABLED 0
+    #else
+        #define KLIB_OBJECTIVE_C_ENABLED 1
+    #endif
 #endif
 
 #ifdef __linux__
@@ -130,6 +136,10 @@
 
 #ifndef KLIB_ENV_APPLE
     #define KLIB_ENV_APPLE 0
+#endif
+
+#ifndef KLIB_OBJECTIVE_C_ENABLED
+    #define KLIB_OBJECTIVE_C_ENABLED 0
 #endif
 
 #ifndef KLIB_ENV_LINUX
@@ -400,8 +410,26 @@ namespace klib::Kongkong::Text::Unicode
 namespace klib::Kongkong::Threading
 {
     class Thread;
+    class ThreadPool;
     struct ThreadExitCode;
     struct ThreadStateException;
+    
+}
+
+namespace klib::Kongkong::Threading::Async
+{
+    struct AwaiterBase;
+    struct AwaiterBasePromise;
+    enum struct TaskStatus;
+
+    template <class T>
+    struct AsyncOperation;
+
+    template <class T>
+    struct AsyncOperationPromise;
+
+    template <class TPromise>
+    struct AsyncOperationBase;
 }
 
 namespace klib::Kongkong::Win32
@@ -450,6 +478,12 @@ namespace klib::Kongkong::Numerics
 namespace klib::Kongkong::Text
 {
     using Numerics::Char;
+}
+
+namespace klib::Kongkong::Threading::Async
+{
+    using AsyncAction = AsyncOperation<void>;
+    using AsyncActionPromise = AsyncOperationPromise<void>;
 }
 
 #endif //!KLIB_BASE_H

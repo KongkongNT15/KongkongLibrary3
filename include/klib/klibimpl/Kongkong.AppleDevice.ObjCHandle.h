@@ -3,7 +3,7 @@
 
 #include "base.h"
 
-#if KLIB_ENV_APPLE
+#if KLIB_OBJECTIVE_C_ENABLED
 
 namespace klib::Kongkong::AppleDevice
 {
@@ -228,5 +228,5 @@ namespace klib::Kongkong::AppleDevice
     }
 }
 
-#endif //KLIB_ENV_APPLE
+#endif //KLIB_OBJECTIVE_C_ENABLED
 #endif //!KLIB_KONGKONG_APPLEDEVICE_OBJCHANDLE_H

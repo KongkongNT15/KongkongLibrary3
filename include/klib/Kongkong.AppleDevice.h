@@ -3,11 +3,11 @@
 
 #include "klibimpl/base.h"
 
-#if !KLIB_ENV_APPLE
+#if !KLIB_OBJECTIVE_C_ENABLED
 #warning このヘッダーはApple環境のみに対応しています。
 #else
 
 #include "klibimpl/Kongkong.AppleDevice.ObjCHandle.h"
 
-#endif //!KLIB_ENV_APPLE
+#endif //!KLIB_OBJECTIVE_C_ENABLED
 #endif //!KLIB_KONGKONG_APPLEDEVICE_H

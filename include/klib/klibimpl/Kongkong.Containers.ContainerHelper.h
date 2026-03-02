@@ -16,7 +16,8 @@ namespace klib::Kongkong::Containers
         /// <summary>
         /// IndexOf()で要素が見つからなかった時の戻り値
         /// </summary>
-        [[nodiscard]] static consteval ssize_t NotFound() noexcept;
+        [[nodiscard]]
+        static consteval ssize_t NotFound() noexcept;
 
         /// <summary>
         /// ふぁ！？っく
@@ -37,7 +38,8 @@ namespace klib::Kongkong::Containers
         /// <param name="value">要素</param>
         /// <returns>判定結果</returns>
         template <class T>
-        [[nodiscard]] static constexpr bool ContainsUnsafe(
+        [[nodiscard]]
+        static constexpr bool ContainsUnsafe(
             ssize_t length,
             const T* p,
             T const& value
@@ -62,7 +64,8 @@ namespace klib::Kongkong::Containers
         /// <param name="value">要素</param>
         /// <returns>判定結果</returns>
         template <class T>
-        [[nodiscard]] static constexpr bool EndsWithUnsafe(
+        [[nodiscard]]
+        static constexpr bool EndsWithUnsafe(
             ssize_t length,
             const T* p,
             T const& value
@@ -87,7 +90,8 @@ namespace klib::Kongkong::Containers
         /// <param name="value">要素</param>
         /// <returns>指定した要素がある要素番号 見つからない場合はNotFound()</returns>
         template <class T>
-        [[nodiscard]] static constexpr ssize_t IndexOfUnsafe(
+        [[nodiscard]]
+        static constexpr ssize_t IndexOfUnsafe(
             ssize_t length,
             const T* p,
             T const& value
