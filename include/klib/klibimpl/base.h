@@ -364,7 +364,7 @@ namespace klib::Kongkong::Std
     struct Allocator;
 
     template <class T, class TAllocator = Allocator<T>>
-    struct StdVector;
+    struct StlVector;
 }
 
 /// <summary>
