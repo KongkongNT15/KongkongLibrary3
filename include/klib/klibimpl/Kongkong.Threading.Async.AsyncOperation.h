@@ -3,6 +3,7 @@
 
 #include "base.h"
 #include "Kongkong.Threading.Async.AwaiterBase.h"
+#include "Kongkong.LazyObject.h"
 
 namespace klib::Kongkong::Threading::Async
 {
@@ -14,8 +15,14 @@ namespace klib::Kongkong::Threading::Async
         struct promise_type final : public AwaiterBase::promise_type_base {
 
             AsyncOperation get_return_object();
-            void return_value(ResultType const& value);
-            void return_value(T&& value) noexcept { if (this->__action != nullptr) static_cast<AsyncOperation*>(this->__action)->_obj.SetValue(::std::move(value)); }
+
+            void return_value(
+                ResultType const& value
+            );
+
+            void return_value(
+                ResultType&& value
+            ) noexcept;
         };
 
         private:
@@ -52,6 +59,19 @@ namespace klib::Kongkong::Threading::Async
             static_cast<AsyncOperation*>(
                 this->m_action
             )->m_obj.SetValue(value);
+        }
+    }
+
+    template <class T>
+    void
+    AsyncOperation<T>::promise_type::return_value(
+        ResultType&& value
+    )
+    {
+        if (this->m_action != nullptr) {
+            static_cast<AsyncOperation*>(
+                this->m_action
+            )->m_obj.SetValue(::std::move(value));
         }
     }
 }

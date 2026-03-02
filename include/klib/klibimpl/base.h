@@ -208,6 +208,8 @@
 #include <stdint.h>
 #include <compare>
 #include <concepts>
+#include <type_traits>
+#include <utility>
 
 // msvcではssize_tは定義されないので追加
 #if KLIB_COMPILER_MSVC
@@ -223,6 +225,9 @@
         using ssize_t = int32_t;
     #endif
 #endif
+
+using byte = unsigned char;
+using sbyte = signed char;
 
 /// <summary>
 /// 既定の名前空間
@@ -242,7 +247,7 @@ namespace klib::Kongkong
     struct ArgumentException;
     struct ArgumentOutOfRangeException;
     struct Exception;
-    
+    struct InvalidOperationException;
     struct MemoryAllocationException;
     struct MemoryException;
 
@@ -258,6 +263,9 @@ namespace klib::Kongkong
 
     template <class... TStructs>
     class Interface;
+
+    template <class T>
+    struct LazyObject;
 
     template <class T>
     struct UnsafeLazyObject;
