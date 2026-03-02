@@ -1,6 +1,8 @@
 ﻿#ifndef KLIB_KONGKONG_THRAEDING_H
 #define KLIB_KONGKONG_THRAEDING_H
 
+#include "klibimpl/Kongkong.Threading.Mutex.h"
+#include "klibimpl/Kongkong.Threading.ScopedLock.h"
 #include "klibimpl/Kongkong.Threading.Thread.h"
 #include "klibimpl/Kongkong.Threading.ThreadPool.h"
 #include "klibimpl/Kongkong.Threading.ThreadExitCode.h"

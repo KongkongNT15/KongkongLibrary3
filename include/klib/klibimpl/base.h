@@ -250,6 +250,7 @@ namespace klib::Kongkong
     struct InvalidOperationException;
     struct MemoryAllocationException;
     struct MemoryException;
+    struct NotSupportedException;
 
     struct NullPointerException;
     
@@ -311,9 +312,19 @@ namespace klib::Kongkong::Functional
     class Function;
 }
 
+namespace klib::Kongkong::IO
+{
+    class HandleStream;
+    struct IOException;
+    class MemoryStream;
+    class Stream;
+}
+
 namespace klib::Kongkong::Memory
 {
     class GC;
+
+    class GCArray;
 
     template <class T>
     class GCHandle;
@@ -385,7 +396,7 @@ namespace klib::Kongkong::Text
     struct GenericFastString;
 
     template <CChar TChar>
-    struct GenericFastStringBase;
+    class GenericFastStringBase;
 
     template <CChar TChar, ssize_t N>
     struct GenericStaticFastString;
@@ -417,6 +428,9 @@ namespace klib::Kongkong::Text::Unicode
 
 namespace klib::Kongkong::Threading
 {
+    class Mutex;
+    enum struct MutexType;
+    class ScopedLock;
     class Thread;
     class ThreadPool;
     struct ThreadExitCode;

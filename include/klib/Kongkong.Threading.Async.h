@@ -3,7 +3,6 @@
 
 #include "klibimpl/Kongkong.Threading.Async.AsyncAction.h"
 #include "klibimpl/Kongkong.Threading.Async.AsyncOperation.h"
-#include "klibimpl/Kongkong.Threading.Async.AsyncOperationPromise.h"
 #include "klibimpl/Kongkong.Threading.Async.AwaiterBase.h"
 #include "klibimpl/Kongkong.Threading.Async.AwaiterBasePromise.h"
 #include "klibimpl/Kongkong.Threading.Async.TaskStatus.h"

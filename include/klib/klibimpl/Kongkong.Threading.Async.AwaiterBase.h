@@ -36,9 +36,12 @@ namespace klib::Kongkong::Threading::Async
         template <class TPromise>
         static void do_move(
             TaskStatus status,
-            ::std::coroutine_handle<TPromise>& hThis,
-            ::std::coroutine_handle<TPromise>& hOther
+            ::std::coroutine_handle<TPromise>& hThis
         ) noexcept;
+
+        static void do_throw(
+            TaskStatus status
+        );
 
         public:
 
@@ -83,8 +86,7 @@ namespace klib::Kongkong::Threading::Async
     template <class TPromise>
     void AwaiterBase::do_move(
         TaskStatus status,
-        ::std::coroutine_handle<TPromise>& hThis,
-        ::std::coroutine_handle<TPromise>& hOther
+        ::std::coroutine_handle<TPromise>& hThis
     ) noexcept
     {
         switch (status) {
@@ -97,8 +99,6 @@ namespace klib::Kongkong::Threading::Async
                 hThis.promise().m_action = this;
                 break;
         }
-
-        hOther = nullptr;
     }
 
     constexpr bool
