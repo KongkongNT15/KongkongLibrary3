@@ -55,6 +55,10 @@ namespace klib::Kongkong::AppleDevice
 
         [[nodiscard]]
         constexpr void* GetRawPointer() const noexcept;
+
+        void SetRawPointer(
+            void* rawPointer
+        ) noexcept;
     };
 
     [[nodiscard]]
@@ -185,6 +189,14 @@ namespace klib::Kongkong::AppleDevice
     constexpr void* ObjCHandle::GetRawPointer() const noexcept
     {
         return m_objectPtr;
+    }
+
+    inline void ObjCHandle::SetRawPointer(
+        void* rawPointer
+    ) noexcept
+    {
+        do_release();
+        m_objectPtr = rawPointer;
     }
 
     constexpr bool operator==(

@@ -80,5 +80,66 @@
         );
     }
 
+#elif KLIB_ENV_UNIX
+    bool HandleStream::Close() noexcept
+    {
+        return ::close(m_fd) != EOF;
+    }
+
+    bool HandleStream::Flush() noexcept
+    {
+        return ::fsync(m_fd) != EOF;
+    }
+
+    bool HandleStream::IsOpen() const noexcept
+    {
+        return m_fd != EOF;
+    }
+
+    bool HandleStream::ReadByteUnsafe(
+        byte& result
+    ) noexcept
+    {
+        return ::read(
+            m_fd,
+            &result,
+            1
+        ) != EOF;
+    }
+
+    bool HandleStream::ReadUnsafe(
+        uint32_t length,
+        void* buffer
+    ) noexcept
+    {
+        return ::read(
+            m_fd,
+            buffer,
+            length
+        ) != EOF;
+    }
+
+    bool HandleStream::WriteUnsafe(
+        uint32_t length,
+        const void* buffer
+    ) noexcept
+    {
+        return ::write(
+            m_fd,
+            buffer,
+            length
+        ) != EOF;
+    }
+
+    bool HandleStream::WriteByteUnsafe(
+        byte value
+    ) noexcept
+    {
+        return ::write(
+            m_fd,
+            &value,
+            1
+        ) != EOF;
+    }
 #endif
 }

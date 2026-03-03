@@ -13,8 +13,11 @@ namespace klib::Kongkong::IO
     class HandleStream : public Stream {
         protected:
 
+#if KLIB_ENV_WINDOWS
         Win32::Win32Handle m_handle;
-
+#elif KLIB_ENV_UNIX
+        int m_fd;
+#endif
         public:
 
         bool Close() noexcept override;

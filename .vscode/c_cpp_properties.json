@@ -18,6 +18,23 @@
             "cStandard": "c17",
             "cppStandard": "c++20",
             "intelliSenseMode": "windows-msvc-x64"
+        },
+        {
+            "name": "macOS",
+            "includePath": [
+                "${workspaceFolder}/include/"
+            ],
+            "defines": [
+                
+            ],
+            "forcedInclude": [
+                "${workspaceFolder}/src/cpp/All.h"
+            ],
+            "windowsSdkVersion": "10.0.26100.0",
+            "compilerPath": "clang++",
+            "cStandard": "c17",
+            "cppStandard": "c++20",
+            "intelliSenseMode": "macos-clang-arm64"
         }
     ],
     "version": 4

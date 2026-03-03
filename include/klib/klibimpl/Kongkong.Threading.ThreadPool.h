@@ -7,7 +7,7 @@
 #if KLIB_ENV_WINDOWS
 
 #elif KLIB_OBJECTIVE_C_ENABLED
-
+    #include "Kongkong.AppleDevice.ObjCHandle.h"
 
 #elif KLIB_ENV_UNIX
 
@@ -21,7 +21,18 @@ namespace klib::Kongkong::Threading
         private:
 
 #if KLIB_OBJECTIVE_C_ENABLED
+        static AppleDevice::ObjCHandle s_nsOperationQueue;
 
+        static void do_addOperationWithBlock(
+            void(^block)(void)
+        );
+
+        static void do_addOperationWithBlockUnsafe(
+            void(^block)(void)
+        );
+
+        static void do_initialize();
+        
 #endif
 
         public:
@@ -80,9 +91,27 @@ namespace klib::Kongkong::Threading
             constexpr void await_resume() noexcept {}
         };
 
-        co_await awaiter{ nullptr, pred };
+        co_await awaiter{ nullptr, ::std::move(pred) };
 #elif KLIB_OBJECTIVE_C_ENABLED
+        struct awaiter {
+            TPredicate pred;
 
+            constexpr bool await_ready() noexcept { return false; } // すぐには完了しない
+
+            void await_suspend(::std::coroutine_handle<> h)
+            {
+                ThreadPool::do_addOperationWithBlock(
+                    ^() {
+                        pred();
+                        h.resume();
+                    }
+                );
+            }
+
+            constexpr void await_resume() noexcept {}
+        };
+
+        co_await awaiter{ ::std::move(pred) };
 #elif KLIB_ENV_UNIX
 
 #endif
