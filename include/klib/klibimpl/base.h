@@ -314,6 +314,8 @@ namespace klib::Kongkong::Functional
 
 namespace klib::Kongkong::IO
 {
+    enum struct FileCreateMode;
+    enum struct FileShareMode;
     class HandleStream;
     struct IOException;
     class MemoryStream;
