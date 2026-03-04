@@ -326,7 +326,8 @@ namespace klib::Kongkong::Memory
 {
     class GC;
 
-    class GCArray;
+    template <class T>
+    class GCArrayHandle;
 
     template <class T>
     class GCHandle;
@@ -334,10 +335,14 @@ namespace klib::Kongkong::Memory
     class GCHandleBase;
 
     template <class T>
+    struct GCArrayObject;
+
+    template <class T>
     struct GCObject;
 
     struct GCObjectBase;
     struct GCObjectCounter;
+    struct GCObjectInfo;
 
     template <class T>
     struct GCPinGuard;

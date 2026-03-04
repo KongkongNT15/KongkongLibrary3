@@ -3,6 +3,7 @@
 
 #include "base.h"
 #include "Kongkong.Memory.GCHandle.h"
+#include "Kongkong.Memory.MemoryResource.h"
 #include "Kongkong.Threading.Thread.h"
 
 #include <list>
@@ -23,6 +24,8 @@ namespace klib::Kongkong::Memory
             ::std::list<GCObjectBase*> m_garbages;
         
             ssize_t m_memorySize;
+
+            MemoryResource m_resource;
         };
 
         static inline s_gc s_instance;

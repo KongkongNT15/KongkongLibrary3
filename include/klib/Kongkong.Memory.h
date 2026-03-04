@@ -2,6 +2,8 @@
 #define KLIB_KONGKONG_MEMORY_H
 
 #include "klibimpl/Kongkong.Memory.GC.h"
+#include "klibimpl/Kongkong.Memory.GCArrayHandle.h"
+#include "klibimpl/Kongkong.Memory.GCArrayObject.h"
 #include "klibimpl/Kongkong.Memory.GCHandle.h"
 #include "klibimpl/Kongkong.Memory.GCHandleBase.h"
 #include "klibimpl/Kongkong.Memory.GCObject.h"

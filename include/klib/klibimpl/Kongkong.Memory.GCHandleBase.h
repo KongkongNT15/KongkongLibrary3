@@ -11,8 +11,6 @@ namespace klib::Kongkong::Memory
         template <class T>
         friend class GCHandle;
 
-        friend GCArray;
-
         private:
 
         class s_pointer {
