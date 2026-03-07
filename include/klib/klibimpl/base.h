@@ -226,14 +226,13 @@
     #endif
 #endif
 
-using byte = unsigned char;
-using sbyte = signed char;
-
 /// <summary>
 /// 既定の名前空間
 /// </summary>
 namespace klib
 {
+    using byte = unsigned char;
+    using sbyte = signed char;
 }
 
 /// <summary>
@@ -356,6 +355,12 @@ namespace klib::Kongkong::Memory
     class SharedPointer;
 
     class SharedPointerBase;
+}
+
+namespace klib::Kongkong::Memory::Primitives
+{
+    struct GCHandleEntry;
+    enum struct GCObjectFlag;
 }
 
 namespace klib::Kongkong::Numerics

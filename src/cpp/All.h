@@ -12,6 +12,7 @@
 #include <klib/Kongkong.Functional.h>
 #include <klib/Kongkong.IO.h>
 #include <klib/Kongkong.Memory.h>
+#include <klib/Kongkong.Memory.Primitives.h>
 #include <klib/Kongkong.Numerics.h>
 #include <klib/Kongkong.Threading.h>
 #include <klib/Kongkong.Threading.Async.h>
