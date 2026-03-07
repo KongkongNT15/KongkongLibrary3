@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_NUMERICS_VECTOR2_H
 
 #include "base.h"
+#include "Kongkong.Hash.h"
 
 #define KLIB_CLASS_TEMPLATE_DEF template <CNumber TNum>
 #define KLIB_CLASS_TEMPLATE_PARAM TNum
@@ -92,6 +93,7 @@ namespace klib::Kongkong::Numerics
         Vector2<TNum1> left,
         TNum2 right
     ) noexcept;
+    
 }
 
 namespace klib::Kongkong::Numerics

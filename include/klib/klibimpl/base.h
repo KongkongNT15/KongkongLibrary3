@@ -256,7 +256,6 @@ namespace klib::Kongkong
     
     struct OutOfMemoryException;
 
-    template <class T = void>
     struct Hash;
 
     template <class TStruct, class... TOtherStructs>
@@ -342,7 +341,11 @@ namespace klib::Kongkong::Memory
 
     struct GCObjectBase;
     struct GCObjectCounter;
+
+    template <class T>
     struct GCObjectInfo;
+
+    struct GCObjectInfoBase;
 
     template <class T>
     struct GCPinGuard;
@@ -358,8 +361,10 @@ namespace klib::Kongkong::Memory
 namespace klib::Kongkong::Numerics
 {
     template <class T>
-    concept CNumber =
-        ((::std::integral<T> || ::std::floating_point<T>) && (::std::same_as<T, bool> == false));
+    concept CNumber = (
+        (::std::integral<T> || ::std::floating_point<T>)
+        && (::std::same_as<T, bool> == false)
+    );
 
     template <class TNum = void>
     struct Number;

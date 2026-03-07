@@ -2,51 +2,69 @@
 #define KONGKONG_MEMORY_GCOBJECTINFO_H
 
 #include "base.h"
+#include "Kongkong.Memory.GCObjectInfoBase.h"
 
 namespace klib::Kongkong::Memory
 {
-    struct GCObjectInfo {
+    template <class T>
+    struct GCObjectInfo : public GCObjectInfoBase {
         public:
-        using DestructorType = void(*)(void*);
 
-        template <class T>
-        static constexpr void DefaultDestruct(
-            void* p
-        ) noexcept;
+        using ElementType = ::std::remove_cvref_t<T>;
 
-        void* Address;
-        ssize_t Alignment;
-        DestructorType Destructor;
-        ssize_t Size;
-
-        template <class T>
         constexpr GCObjectInfo(
-            T& value
+            ElementType& value
         ) noexcept;
+
+        void Destruct(
+        ) const noexcept override;
+
+        void MoveConstruct(
+            void* from
+        ) const noexcept override;
     };
 }
 
 namespace klib::Kongkong::Memory
 {
-    template <class T>
-    constexpr void GCObjectInfo::DefaultDestruct(
-        void* p
-    ) noexcept
-    {
-        T* pT = static_cast<T*>(p);
 
-        pT->~T();
+    template <class T>
+    constexpr GCObjectInfo<T>::GCObjectInfo(
+        ElementType& value
+    ) noexcept
+        : GCObjectInfoBase(
+            &value,
+            alignof(ElementType),
+            sizeof(ElementType)
+        )
+    {        
     }
 
     template <class T>
-    constexpr GCObjectInfo::GCObjectInfo(
-        T& value
-    ) noexcept
-        : Address(&value)
-        , Alignment(alignof(T))
-        , Destructor(DefaultDestruct<T>)
-        , Size(sizeof(T))
-    {        
+    void GCObjectInfo<T>::Destruct(
+    ) const noexcept
+    {
+        ElementType* ep = static_cast<ElementType*>(
+            this->Address
+        );
+
+        ep->~ElementType();
+    }
+
+    template <class T>
+    void GCObjectInfo<T>::MoveConstruct(
+        void* from
+    ) const noexcept
+    {
+        ElementType* ep = static_cast<ElementType*>(
+            this->Address
+        );
+
+        ElementType* eFrom = static_cast<ElementType*>(
+            from
+        );
+
+        new (ep) ElementType(::std::move(*eFrom));
     }
 }
 
