@@ -3,6 +3,7 @@
 
 #include "base.h"
 #include "Kongkong.Memory.GCObjectBase.h"
+#include "Kongkong.Memory.Primitives.GCHandleEntry.h"
 
 namespace klib::Kongkong::Memory
 {
@@ -15,7 +16,7 @@ namespace klib::Kongkong::Memory
 
         class s_pointer {
         private:
-            GCObjectBase* m_pointer;
+            Primitives::GCHandleEntry* m_pointer;
         public:
             
 

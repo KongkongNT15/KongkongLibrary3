@@ -340,15 +340,11 @@ namespace klib::Kongkong::Memory
 
     struct GCObjectBase;
     struct GCObjectCounter;
-
-    template <class T>
-    struct GCObjectInfo;
-
-    struct GCObjectInfoBase;
-
+    
     template <class T>
     struct GCPinGuard;
 
+    class MemoryBlock;
     class MemoryResource;
 
     template <class T>
@@ -360,7 +356,13 @@ namespace klib::Kongkong::Memory
 namespace klib::Kongkong::Memory::Primitives
 {
     struct GCHandleEntry;
+    struct GCHandleTable;
     enum struct GCObjectFlag;
+
+    template <class T>
+    struct GCObjectHeader;
+
+    struct GCObjectHeaderBase;
 }
 
 namespace klib::Kongkong::Numerics

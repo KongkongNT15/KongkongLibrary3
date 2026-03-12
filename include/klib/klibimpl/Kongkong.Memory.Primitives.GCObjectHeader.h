@@ -1,39 +1,38 @@
-﻿#ifndef KONGKONG_MEMORY_GCOBJECTINFO_H
-#define KONGKONG_MEMORY_GCOBJECTINFO_H
+﻿#ifndef KONGKONG_MEMORY_GCOBJECTHEADER_PRIMITIVES_H
+#define KONGKONG_MEMORY_GCOBJECTHEADER_PRIMITIVES_H
 
 #include "base.h"
-#include "Kongkong.Memory.GCObjectInfoBase.h"
+#include "Kongkong.Memory.Primitives.GCObjectHeaderBase.h"
 
-namespace klib::Kongkong::Memory
+namespace klib::Kongkong::Memory::Primitives
 {
     template <class T>
-    struct GCObjectInfo : public GCObjectInfoBase {
+    struct GCObjectHeader : public GCObjectHeaderBase {
         public:
 
         using ElementType = ::std::remove_cvref_t<T>;
 
-        constexpr GCObjectInfo(
-            ElementType& value
+        constexpr GCObjectHeader(
         ) noexcept;
 
         void Destruct(
+            void* dest
         ) const noexcept override;
 
         void MoveConstruct(
+            void* dest,
             void* from
         ) const noexcept override;
     };
 }
 
-namespace klib::Kongkong::Memory
+namespace klib::Kongkong::Memory::Primitives
 {
 
     template <class T>
-    constexpr GCObjectInfo<T>::GCObjectInfo(
-        ElementType& value
+    constexpr GCObjectHeader<T>::GCObjectHeader(
     ) noexcept
-        : GCObjectInfoBase(
-            &value,
+        : GCObjectHeaderBase(
             alignof(ElementType),
             sizeof(ElementType)
         )
@@ -41,23 +40,25 @@ namespace klib::Kongkong::Memory
     }
 
     template <class T>
-    void GCObjectInfo<T>::Destruct(
+    void GCObjectHeader<T>::Destruct(
+        void* dest
     ) const noexcept
     {
         ElementType* ep = static_cast<ElementType*>(
-            this->Address
+            dest
         );
 
         ep->~ElementType();
     }
 
     template <class T>
-    void GCObjectInfo<T>::MoveConstruct(
+    void GCObjectHeader<T>::MoveConstruct(
+        void* dest,
         void* from
     ) const noexcept
     {
         ElementType* ep = static_cast<ElementType*>(
-            this->Address
+            dest
         );
 
         ElementType* eFrom = static_cast<ElementType*>(
@@ -68,4 +69,4 @@ namespace klib::Kongkong::Memory
     }
 }
 
-#endif //!KONGKONG_MEMORY_GCOBJECTINFO_H
+#endif //!KONGKONG_MEMORY_GCOBJECTHEADER_PRIMITIVES_H

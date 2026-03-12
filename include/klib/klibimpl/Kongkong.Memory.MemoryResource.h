@@ -7,11 +7,6 @@ namespace klib::Kongkong::Memory
 {
     class MemoryResource final {
 
-        friend constexpr bool operator<(
-            MemoryResource const&,
-            MemoryResource const&
-        ) noexcept;
-
         private:
         static size_t s_pageSize;
 
@@ -53,6 +48,9 @@ namespace klib::Kongkong::Memory
             void* targetAddress,
             size_t bytes
         ) noexcept;
+
+        [[nodiscard]]
+        constexpr void* Data() const noexcept;
 
         bool Decommit(
             void* targetAddress,
@@ -166,6 +164,11 @@ namespace klib::Kongkong::Memory
         return *this;
     }
 
+    constexpr void* MemoryResource::Data() const noexcept
+    {
+        return m_p;
+    }
+
     inline bool MemoryResource::Free() noexcept
     {
         if (!do_free()) return false;
@@ -238,7 +241,7 @@ namespace klib::Kongkong::Memory
         MemoryResource const& right
     ) noexcept
     {
-        return left.m_p < right.m_p;
+        return left.Data() < right.Data();
     }
 
     constexpr bool operator<=(
