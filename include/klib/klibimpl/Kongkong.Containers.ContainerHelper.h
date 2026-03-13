@@ -9,6 +9,9 @@ namespace klib::Kongkong::Containers
     /// 配列操作
     /// </summary>
     class ContainerHelper final {
+    private:
+        [[noreturn]]
+        static void do_throwLengthZero();
     public:
 
         KLIB_STATIC_CLASS(ContainerHelper);
@@ -18,6 +21,12 @@ namespace klib::Kongkong::Containers
         /// </summary>
         [[nodiscard]]
         static consteval ssize_t NotFound() noexcept;
+
+        /// @brief 長さがゼロの時に例外をスロー
+        /// @param length 
+        static void CheckLengthZero(
+            ssize_t length
+        );
 
         /// <summary>
         /// ふぁ！？っく
@@ -124,7 +133,8 @@ namespace klib::Kongkong::Containers
         /// <param name="value">要素</param>
         /// <returns>判定結果</returns>
         template <class T>
-        [[nodiscard]] constexpr bool StartsWithUnsafe(
+        [[nodiscard]]
+        constexpr bool StartsWithUnsafe(
             const T* p,
             T const& value
         ) noexcept;
@@ -138,7 +148,8 @@ namespace klib::Kongkong::Containers
         /// <param name="value">要素</param>
         /// <returns>判定結果</returns>
         template <class T>
-        [[nodiscard]] constexpr bool StartsWithUnsafe(
+        [[nodiscard]]
+        constexpr bool StartsWithUnsafe(
             ssize_t length,
             const T* p,
             T const& value
@@ -151,6 +162,13 @@ namespace klib::Kongkong::Containers
     consteval ssize_t ContainerHelper::NotFound() noexcept
     {
         return -1;
+    }
+
+    inline void ContainerHelper::CheckLengthZero(
+        ssize_t length
+    )
+    {
+        if (length == 0) [[unlikely]] do_throwLengthZero();
     }
 
     template <class T>

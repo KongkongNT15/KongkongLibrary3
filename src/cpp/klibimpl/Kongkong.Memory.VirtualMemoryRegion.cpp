@@ -1,6 +1,6 @@
 ﻿namespace klib::Kongkong::Memory
 {
-    bool MemoryBlock::ResizeUnsafe(
+    bool VirtualMemoryRegion::ResizeUnsafe(
         ssize_t length
     ) noexcept
     {

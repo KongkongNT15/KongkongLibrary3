@@ -1,10 +1,11 @@
 ﻿#include "All.h"
 
+#include "klibimpl/Kongkong.Containers.ContainerHelper.cpp"
 #include "klibimpl/Kongkong.IO.HandleStream.cpp"
 #include "klibimpl/Kongkong.IO.Stream.cpp"
 #include "klibimpl/Kongkong.Memory.GCHandleBase.cpp"
-#include "klibimpl/Kongkong.Memory.MemoryBlock.cpp"
 #include "klibimpl/Kongkong.Memory.SharedPointerBase.cpp"
+#include "klibimpl/Kongkong.Memory.VirtualMemoryRegion.cpp"
 #include "klibimpl/Kongkong.Text.Unicode.SurrogatePair.cpp"
 #include "klibimpl/Kongkong.Threading.Thread.cpp"
 #include "klibimpl/Kongkong.Threading.Async.AsyncAction.cpp"

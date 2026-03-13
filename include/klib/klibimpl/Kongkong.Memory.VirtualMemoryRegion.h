@@ -1,12 +1,12 @@
-﻿#ifndef KLIB_KONGKONG_MEMORY_MEMORYBLOCK_H
-#define KLIB_KONGKONG_MEMORY_MEMORYBLOCK_H
+﻿#ifndef KLIB_KONGKONG_MEMORY_VIRTUALMEMORYREGION_H
+#define KLIB_KONGKONG_MEMORY_VIRTUALMEMORYREGION_H
 
 #include "base.h"
 #include "Kongkong.Memory.MemoryResource.h"
 
 namespace klib::Kongkong::Memory
 {
-    class MemoryBlock final {
+    class VirtualMemoryRegion final {
         private:
 
         MemoryResource m_resource;
@@ -14,7 +14,7 @@ namespace klib::Kongkong::Memory
 
         public:
 
-        MemoryBlock() = default;
+        VirtualMemoryRegion() = default;
 
         [[nodiscard]]
         constexpr byte& operator[](
@@ -60,20 +60,20 @@ namespace klib::Kongkong::Memory
 
     [[nodiscard]]
     constexpr bool operator==(
-        MemoryBlock const& left,
-        MemoryBlock const& right
+        VirtualMemoryRegion const& left,
+        VirtualMemoryRegion const& right
     ) noexcept;
 
     [[nodiscard]]
     constexpr bool operator!=(
-        MemoryBlock const& left,
-        MemoryBlock const& right
+        VirtualMemoryRegion const& left,
+        VirtualMemoryRegion const& right
     ) noexcept;
 }
 
 namespace klib::Kongkong::Memory
 {
-    constexpr byte& MemoryBlock::operator[](
+    constexpr byte& VirtualMemoryRegion::operator[](
         ssize_t index
     ) noexcept
     {
@@ -82,7 +82,7 @@ namespace klib::Kongkong::Memory
         )[index];
     }
 
-    constexpr byte const& MemoryBlock::operator[](
+    constexpr byte const& VirtualMemoryRegion::operator[](
         ssize_t index
     ) const noexcept
     {
@@ -91,29 +91,29 @@ namespace klib::Kongkong::Memory
         )[index];
     }
 
-    constexpr void* MemoryBlock::Data() noexcept
+    constexpr void* VirtualMemoryRegion::Data() noexcept
     {
         return m_resource.Data();
     }
 
-    constexpr const void* MemoryBlock::Data() const noexcept
+    constexpr const void* VirtualMemoryRegion::Data() const noexcept
     {
         return m_resource.Data();
     }
 
-    constexpr ssize_t MemoryBlock::Length() const noexcept
+    constexpr ssize_t VirtualMemoryRegion::Length() const noexcept
     {
         return m_length;
     }
 
-    constexpr ssize_t MemoryBlock::RegionSize() const noexcept
+    constexpr ssize_t VirtualMemoryRegion::RegionSize() const noexcept
     {
         return static_cast<ssize_t>(
             m_resource.RegionSize()
         );
     }
 
-    inline bool MemoryBlock::Reserve(
+    inline bool VirtualMemoryRegion::Reserve(
         ssize_t maxLength
     ) noexcept
     {
@@ -122,7 +122,7 @@ namespace klib::Kongkong::Memory
         );
     }
 
-    inline bool MemoryBlock::ReserveUnsafe(
+    inline bool VirtualMemoryRegion::ReserveUnsafe(
         ssize_t maxLength
     ) noexcept
     {
@@ -131,7 +131,7 @@ namespace klib::Kongkong::Memory
         );
     }
 
-    inline bool MemoryBlock::Resize(
+    inline bool VirtualMemoryRegion::Resize(
         ssize_t length
     ) noexcept
     {
@@ -140,10 +140,10 @@ namespace klib::Kongkong::Memory
     }
 
     constexpr MemoryResource const&
-    MemoryBlock::Resource() const noexcept
+    VirtualMemoryRegion::Resource() const noexcept
     {
         return m_resource;
     }
 }
 
-#endif //!KLIB_KONGKONG_MEMORY_MEMORYBLOCK_H
+#endif //!KLIB_KONGKONG_MEMORY_VIRTUALMEMORYREGION_H

@@ -287,6 +287,17 @@ namespace klib::Kongkong::Containers
 
     template <class T>
     class IIterator;
+
+    template <class T>
+    class PagedList;
+}
+
+namespace klib::Kongkong::Containers::Primitives
+{
+    template <class T>
+    struct ArrayBase;
+    
+    struct ContainerBase;
 }
 
 namespace klib::Kongkong::Functional
@@ -344,8 +355,9 @@ namespace klib::Kongkong::Memory
     template <class T>
     struct GCPinGuard;
 
-    class MemoryBlock;
     class MemoryResource;
+    class VirtualMemoryRegion;
+    
 
     template <class T>
     class SharedPointer;

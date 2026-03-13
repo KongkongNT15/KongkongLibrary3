@@ -9,7 +9,7 @@
 #include "klibimpl/Kongkong.Memory.GCObject.h"
 #include "klibimpl/Kongkong.Memory.GCObjectBase.h"
 #include "klibimpl/Kongkong.Memory.GCObjectCounter.h"
-#include "klibimpl/Kongkong.Memory.MemoryBlock.h"
+#include "klibimpl/Kongkong.Memory.VirtualMemoryRegion.h"
 #include "klibimpl/Kongkong.Memory.MemoryResource.h"
 #include "klibimpl/Kongkong.Memory.SharedPointer.h"
 #include "klibimpl/Kongkong.Memory.SharedPointerBase.h"
