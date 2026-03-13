@@ -10,6 +10,13 @@ namespace klib::Kongkong::Containers
     /// </summary>
     class ContainerHelper final {
     private:
+
+        [[noreturn]]
+        static void do_throwIndexError();
+
+        [[noreturn]]
+        static void do_throwIndexMinus();
+
         [[noreturn]]
         static void do_throwLengthZero();
     public:
@@ -21,6 +28,11 @@ namespace klib::Kongkong::Containers
         /// </summary>
         [[nodiscard]]
         static consteval ssize_t NotFound() noexcept;
+
+        static void CheckIndex(
+            ssize_t index,
+            ssize_t length
+        );
 
         /// @brief 長さがゼロの時に例外をスロー
         /// @param length 
@@ -162,6 +174,15 @@ namespace klib::Kongkong::Containers
     consteval ssize_t ContainerHelper::NotFound() noexcept
     {
         return -1;
+    }
+
+    inline void ContainerHelper::CheckIndex(
+        ssize_t index,
+        ssize_t length
+    )
+    {
+        if (index < 0) [[unlikely]] do_throwIndexMinus();
+        if (index >= length) [[unlikely]] do_throwIndexError();
     }
 
     inline void ContainerHelper::CheckLengthZero(

@@ -63,7 +63,7 @@ namespace klib::Kongkong::Containers::Primitives
 
         [[nodiscard]]
         constexpr ConstIteratorType end() const noexcept;
-
+        
         [[nodiscard]]
         constexpr bool Contains(
             ElementType const& value
@@ -74,6 +74,50 @@ namespace klib::Kongkong::Containers::Primitives
 
         [[nodiscard]]
         constexpr const ElementType* Data() const noexcept;
+
+        template <class TPredicate>
+        constexpr void ForEach(
+            TPredicate pred
+        );
+
+        [[nodiscard]]
+        ElementType& Front();
+
+        [[nodiscard]]
+        ElementType const& Front() const;
+
+        [[nodiscard]]
+        ElementType& GetAt(
+            ssize_t index
+        );
+
+        [[nodiscard]]
+        ElementType const& GetAt(
+            ssize_t index
+        ) const;
+
+        [[nodiscard]]
+        constexpr ElementType& GetAtUnsafe(
+            ssize_t index
+        ) noexcept;
+
+        [[nodiscard]]
+        constexpr ElementType const& GetAtUnsafe(
+            ssize_t index
+        ) const noexcept;
+
+        [[nodiscard]]
+        constexpr ElementType& GetFrontUnsafe(
+        ) noexcept;
+
+        [[nodiscard]]
+        constexpr ElementType const& GetFrontUnsafe(
+        ) const noexcept;
+
+        [[nodiscard]]
+        constexpr ssize_t IndexOf(
+            ElementType const& value
+        ) const noexcept;
     };
 }
 
@@ -166,6 +210,109 @@ namespace klib::Kongkong::Containers::Primitives
     ArrayBase<T>::Data() const noexcept
     {
         return m_p;
+    }
+
+    template <class T>
+    template <class TPredicate>
+    constexpr void ArrayBase<T>::ForEach(
+        TPredicate pred
+    )
+    {
+        auto itr = begin();
+        auto end = end();
+
+        while (itr != end) {
+            pred(*itr);
+            ++itr;
+        }
+    }
+
+    template <class T>
+    typename ArrayBase<T>::ElementType&
+    ArrayBase<T>::Front()
+    {
+        ContainerHelper::CheckLengthZero(this->m_length);
+        return m_p[0];
+    }
+
+    template <class T>
+    typename ArrayBase<T>::ElementType const&
+    ArrayBase<T>::Front() const
+    {
+        ContainerHelper::CheckLengthZero(this->m_length);
+        return m_p[0];
+    }
+
+    template <class T>
+    typename ArrayBase<T>::ElementType&
+    ArrayBase<T>::GetAt(
+        ssize_t index
+    )
+    {
+        ContainerHelper::CheckIndex(
+            index,
+            this->m_length
+        );
+        return m_p[index];
+    }
+
+    template <class T>
+    typename ArrayBase<T>::ElementType const&
+    ArrayBase<T>::GetAt(
+        ssize_t index
+    ) const
+    {
+        ContainerHelper::CheckIndex(
+            index,
+            this->m_length
+        );
+        return m_p[index];
+    }
+
+    template <class T>
+    constexpr typename ArrayBase<T>::ElementType&
+    ArrayBase<T>::GetAtUnsafe(
+        ssize_t index
+    ) noexcept
+    {
+        return m_p[index];
+    }
+
+    template <class T>
+    constexpr typename ArrayBase<T>::ElementType const&
+    ArrayBase<T>::GetAtUnsafe(
+        ssize_t index
+    ) const noexcept
+    {
+        return m_p[index];
+    }
+
+    template <class T>
+    constexpr typename ArrayBase<T>::ElementType&
+    ArrayBase<T>::GetFrontUnsafe(
+    ) noexcept
+    {
+        return m_p[0];
+    }
+
+    template <class T>
+    constexpr typename ArrayBase<T>::ElementType const&
+    ArrayBase<T>::GetFrontUnsafe(
+    ) const noexcept
+    {
+        return m_p[0];
+    }
+
+    template <class T>
+    constexpr ssize_t ArrayBase<T>::IndexOf(
+        ElementType const& value
+    ) const noexcept
+    {
+        return ContainerHelper::IndexOfUnsafe(
+            this->m_length,
+            m_p,
+            value
+        );
     }
 }
 

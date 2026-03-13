@@ -46,6 +46,16 @@ namespace klib::Kongkong::Std
         ) noexcept(::std::is_nothrow_move_assignable_v<Base>);
 
         [[nodiscard]]
+        constexpr ElementType& operator[](
+            ssize_t index
+        ) noexcept;
+
+        [[nodiscard]]
+        constexpr ElementType const& operator[](
+            ssize_t index
+        ) const noexcept;
+
+        [[nodiscard]]
         constexpr IteratorType begin() noexcept;
 
         [[nodiscard]]
@@ -88,6 +98,11 @@ namespace klib::Kongkong::Std
             TArgs&&... args
         );
 
+        template <class TPredicate>
+        constexpr void ForEach(
+            TPredicate pred
+        );
+
         [[nodiscard]]
         constexpr ssize_t IndexOf(
             ElementType const& value
@@ -112,6 +127,9 @@ namespace klib::Kongkong::Std
             ssize_t position,
             ElementType&& value
         );
+
+        [[nodiscard]]
+        constexpr bool IsEmpty() const noexcept;
 
         [[nodiscard]]
         constexpr ssize_t Length() const noexcept;
@@ -212,6 +230,24 @@ namespace klib::Kongkong::Std
     }
 
     KLIB_CLASS_TEMPLATE_DEF
+    constexpr typename StlVector<KLIB_CLASS_TEMPLATE_PARAM>::ElementType&
+    StlVector<KLIB_CLASS_TEMPLATE_PARAM>::operator[](
+        ssize_t index
+    ) noexcept
+    {
+        return m_vector.operator[](index);
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr typename StlVector<KLIB_CLASS_TEMPLATE_PARAM>::ElementType const&
+    StlVector<KLIB_CLASS_TEMPLATE_PARAM>::operator[](
+        ssize_t index
+    ) const noexcept
+    {
+        return m_vector.operator[](index);
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
     constexpr typename StlVector<KLIB_CLASS_TEMPLATE_PARAM>::IteratorType
     StlVector<KLIB_CLASS_TEMPLATE_PARAM>::begin() noexcept
     {
@@ -300,6 +336,22 @@ namespace klib::Kongkong::Std
     }
 
     KLIB_CLASS_TEMPLATE_DEF
+    template <class TPredicate>
+    constexpr void
+    StlVector<KLIB_CLASS_TEMPLATE_PARAM>::ForEach(
+        TPredicate pred
+    )
+    {
+        auto itr = m_vector.begin();
+        auto end = m_vector.end();
+
+        while (itr != end) {
+            pred(*itr);
+            ++itr;
+        }
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
     constexpr ssize_t StlVector<KLIB_CLASS_TEMPLATE_PARAM>::IndexOf(
         ElementType const& value
     ) const noexcept
@@ -365,6 +417,13 @@ namespace klib::Kongkong::Std
             m_vector.begin() + position,
             ::std::move(value)
         );
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr bool
+    StlVector<KLIB_CLASS_TEMPLATE_PARAM>::IsEmpty() const noexcept
+    {
+        return m_vector.empty();
     }
 
     KLIB_CLASS_TEMPLATE_DEF
