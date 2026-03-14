@@ -12,6 +12,13 @@ namespace klib::Kongkong::Memory
         MemoryResource m_resource;
         ssize_t m_length;
 
+        /// @brief ここでlength == 0 は考慮しない
+        /// @param length 
+        /// @return 
+        bool do_resizeUnsafe(
+            ssize_t length
+        ) noexcept;
+
         public:
 
         VirtualMemoryRegion() = default;
@@ -25,6 +32,8 @@ namespace klib::Kongkong::Memory
         constexpr byte const& operator[](
             ssize_t index
         ) const noexcept;
+
+        bool Clear() noexcept;
 
         [[nodiscard]]
         constexpr void* Data() noexcept;
@@ -91,6 +100,15 @@ namespace klib::Kongkong::Memory
         )[index];
     }
 
+    inline bool VirtualMemoryRegion::Clear() noexcept
+    {
+        if (!m_resource.DecommitAll()) [[unlikely]] return false;
+
+        m_length = 0;
+
+        return true;
+    }
+
     constexpr void* VirtualMemoryRegion::Data() noexcept
     {
         return m_resource.Data();
@@ -137,6 +155,23 @@ namespace klib::Kongkong::Memory
     {
         if (length < 0) [[unlikely]] return false;
         return ResizeUnsafe(length);
+    }
+
+    inline bool VirtualMemoryRegion::ResizeUnsafe(
+        ssize_t length
+    ) noexcept
+    {
+#if KLIB_HASCPP23
+        [[assume(length >= 0)]];
+#endif
+        if (length == 0) [[unlikely]] return Clear();
+        
+        if (do_resizeUnsafe(length)) [[likely]] {
+            m_length = length;
+            return true;
+        }
+
+        return false;
     }
 
     constexpr MemoryResource const&

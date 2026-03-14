@@ -1,22 +1,28 @@
 ﻿namespace klib::Kongkong::Memory
 {
-    bool VirtualMemoryRegion::ResizeUnsafe(
+    bool VirtualMemoryRegion::do_resizeUnsafe(
         ssize_t length
     ) noexcept
     {
-        if (length == 0) {
-            return m_resource.DecommitAll();
-        }
+#if KLIB_HAS_CPP23
+        [[assume(length >= 1)]];
+#endif
 
         ssize_t pageSize = static_cast<ssize_t>(MemoryResource::PageSize());
-        ssize_t currentPageCount = (m_length - 1) / pageSize + 1;
         ssize_t newPageCount = (length - 1) / pageSize + 1;
+        ssize_t currentPageCount;
 
-        if (newPageCount == currentPageCount) {
-            m_length = length;
-            return true;
+        if (m_length == 0) {
+            currentPageCount = 0;
+        }
+        else {
+            currentPageCount = (m_length - 1) / pageSize + 1;
         }
 
+        if (newPageCount == currentPageCount) {
+            return true;
+        }
+        
         // サイズが小さくなるぅ
         if (newPageCount < currentPageCount) {
             byte* begin = static_cast<byte*>(Data());

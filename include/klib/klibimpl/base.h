@@ -296,8 +296,10 @@ namespace klib::Kongkong::Containers::Primitives
 {
     template <class T>
     struct ArrayBase;
-    
+
     struct ContainerBase;
+
+    class PagedListHelper;
 }
 
 namespace klib::Kongkong::Functional
