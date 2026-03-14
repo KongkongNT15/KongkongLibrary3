@@ -3,6 +3,7 @@
 
 #include "base.h"
 #include "Kongkong.Containers.ContainerHelper.h"
+#include "Kongkong.Containers.ArrayView.h"
 #include <vector>
 
 #define KLIB_CLASS_TEMPLATE_DEF template <class T, class TAllocator>
@@ -102,6 +103,9 @@ namespace klib::Kongkong::Std
         constexpr void ForEach(
             TPredicate pred
         );
+
+        [[nodiscard]]
+        constexpr Containers::ArrayView<T> GetView() const noexcept;
 
         [[nodiscard]]
         constexpr ssize_t IndexOf(
@@ -349,6 +353,16 @@ namespace klib::Kongkong::Std
             pred(*itr);
             ++itr;
         }
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr Containers::ArrayView<T>
+    StlVector<KLIB_CLASS_TEMPLATE_PARAM>::GetView() const noexcept
+    {
+        return Containers::ArrayView<T>(
+            m_vector.size(),
+            m_vector.data()
+        );
     }
 
     KLIB_CLASS_TEMPLATE_DEF

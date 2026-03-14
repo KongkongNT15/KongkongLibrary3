@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_CONTAINERS_PRIMITIVES_ARRAYBASE_H
 
 #include "base.h"
+#include "Kongkong.Containers.ArrayView.h"
 #include "Kongkong.Containers.ContainerHelper.h"
 #include "Kongkong.Containers.Primitives.ContainerBase.h"
 
@@ -113,6 +114,9 @@ namespace klib::Kongkong::Containers::Primitives
         [[nodiscard]]
         constexpr ElementType const& GetFrontUnsafe(
         ) const noexcept;
+
+        [[nodiscard]]
+        constexpr ArrayView<T> GetView() const noexcept;
 
         [[nodiscard]]
         constexpr ssize_t IndexOf(
@@ -301,6 +305,15 @@ namespace klib::Kongkong::Containers::Primitives
     ) const noexcept
     {
         return m_p[0];
+    }
+
+    template <class T>
+    constexpr ArrayView<T> ArrayBase<T>::GetView() const noexcept
+    {
+        return ArrayView<T>(
+            this->m_length,
+            m_p
+        );
     }
 
     template <class T>
