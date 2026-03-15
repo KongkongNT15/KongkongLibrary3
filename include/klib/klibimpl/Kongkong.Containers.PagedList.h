@@ -21,13 +21,7 @@ namespace klib::Kongkong::Containers
 
         public:
 
-        PagedList() = default;
-
-        PagedList(
-            PagedList const& other
-        );
-
-        constexpr PagedList(
+        PagedList& operator=(
             PagedList&& other
         ) noexcept;
 
@@ -56,6 +50,26 @@ namespace klib::Kongkong::Containers
 namespace klib::Kongkong::Containers
 {
     template <class T>
+    PagedList<T>& PagedList<T>::operator=(
+        PagedList<T>&& other
+    ) noexcept
+    {
+        if (&other != this) [[likely]] {
+            ContainerHelper::DestructUnsafe(
+                this->begin(),
+                this->end()
+            );
+
+            this->m_p = other.m_region.Data();
+            this->m_length = other.m_length;
+            m_region = ::std::move(other.m_region);
+
+        }
+
+        return *this;
+    }
+
+    template <class T>
     void PagedList<T>::Append(
         ElementType const& value
     ) requires ::std::is_copy_constructible_v<ElementType>
@@ -80,9 +94,10 @@ namespace klib::Kongkong::Containers
     template <class T>
     constexpr void PagedList<T>::Clear() noexcept
     {
-        for (ElementType& e : *this) {
-            e.~ElementType();
-        }
+        ContainerHelper::DestructUnsafe(
+            this->begin(),
+            this->end()
+        );
 
         m_region.Clear();
         this->m_length = 0;

@@ -66,6 +66,12 @@ namespace klib::Kongkong::Containers
             T const& value
         ) noexcept;
 
+        template <class TIterator>
+        static constexpr void DestructUnsafe(
+            TIterator begin,
+            TIterator end
+        ) noexcept;
+
         /// <summary>
         /// ふぁ！？っく
         /// </summary>
@@ -207,6 +213,19 @@ namespace klib::Kongkong::Containers
         }
 
         return false;
+    }
+
+    template <class TIterator>
+    constexpr void ContainerHelper::DestructUnsafe(
+        TIterator begin,
+        TIterator end
+    ) noexcept
+    {
+        using elementType = decltype(*begin);
+        while (begin != end) {
+            begin->~elementType();
+            ++begin;
+        }
     }
 
     template <class T>
