@@ -16,6 +16,7 @@
 #include <klib/Kongkong.Numerics.h>
 #include <klib/Kongkong.Threading.h>
 #include <klib/Kongkong.Threading.Async.h>
+#include <klib/Kongkong.Ranges..h>
 #include <klib/Kongkong.Std.h>
 #include <klib/Kongkong.Text.Unicode.h>
 

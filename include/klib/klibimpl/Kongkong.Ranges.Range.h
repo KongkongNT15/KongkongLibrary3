@@ -1,0 +1,13 @@
+﻿#ifndef KLIB_KONGKONG_RANGES_RANGE_H
+#define KLIB_KONGKONG_RANGES_RANGE_H
+
+#include "base.h"
+
+namespace klib::Kongkong::Ranges
+{
+    struct Range {
+        
+    };
+}
+
+#endif //!KLIB_KONGKONG_RANGES_RANGE_H

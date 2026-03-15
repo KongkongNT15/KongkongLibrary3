@@ -400,7 +400,12 @@ namespace klib::Kongkong::Numerics
     struct Vector3;
 }
 
-
+namespace klib::Kongkong::Ranges
+{
+    struct Index;
+    struct IndexFromEnd;
+    struct Range;
+}
 
 namespace klib::Kongkong::Std
 {
@@ -539,6 +544,20 @@ namespace klib::Kongkong::Threading::Async
 {
     using AsyncAction = AsyncOperation<void>;
     using AsyncActionPromise = AsyncOperationPromise<void>;
+}
+
+
+// ユーザー定義リテラル
+namespace klib
+{
+    inline namespace Literals
+    {
+        [[nodiscard]]
+        consteval Kongkong::Ranges::IndexFromEnd
+        operator""_end(
+            unsigned long long n
+        );
+    }
 }
 
 #endif //!KLIB_BASE_H

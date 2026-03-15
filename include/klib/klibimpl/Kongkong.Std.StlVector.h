@@ -56,6 +56,14 @@ namespace klib::Kongkong::Std
             ssize_t index
         ) const noexcept;
 
+        constexpr StlVector& operator+=(
+            ElementType const& value
+        );
+
+        constexpr StlVector& operator+=(
+            ElementType&& value
+        );
+
         [[nodiscard]]
         constexpr IteratorType begin() noexcept;
 
@@ -249,6 +257,26 @@ namespace klib::Kongkong::Std
     ) const noexcept
     {
         return m_vector.operator[](index);
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr StlVector<KLIB_CLASS_TEMPLATE_PARAM>&
+    StlVector<KLIB_CLASS_TEMPLATE_PARAM>::operator+=(
+        ElementType const& value
+    )
+    {
+        Append(value);
+        return *this;
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr StlVector<KLIB_CLASS_TEMPLATE_PARAM>&
+    StlVector<KLIB_CLASS_TEMPLATE_PARAM>::operator+=(
+        ElementType&& value
+    )
+    {
+        Append(::std::move(value));
+        return *this;
     }
 
     KLIB_CLASS_TEMPLATE_DEF
