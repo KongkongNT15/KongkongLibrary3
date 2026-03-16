@@ -4,6 +4,7 @@
 #include "base.h"
 #include "Kongkong.Containers.ContainerHelper.h"
 #include "Kongkong.Containers.Primitives.ContainerBase.h"
+#include "Kongkong.Ranges.IndexFromEnd.h"
 
 namespace klib::Kongkong::Containers
 {
@@ -32,6 +33,11 @@ namespace klib::Kongkong::Containers
         ) const noexcept;
 
         [[nodiscard]]
+        constexpr ElementType const& operator[](
+            Ranges::IndexFromEnd indexFromEnd
+        ) const noexcept;
+
+        [[nodiscard]]
         constexpr ConstIteratorType begin() const noexcept;
 
         [[nodiscard]]
@@ -52,6 +58,16 @@ namespace klib::Kongkong::Containers
         ElementType const& GetAt(
             ssize_t index
         ) const;
+
+        [[nodiscard]]
+        ElementType const& GetAtFromEnd(
+            ssize_t indexFromEnd
+        ) const;
+
+        [[nodiscard]]
+        constexpr ElementType const& GetAtFromEndUnsafe(
+            ssize_t index
+        ) const noexcept;
 
         [[nodiscard]]
         constexpr ElementType const& GetAtUnsafe(
@@ -98,6 +114,15 @@ namespace klib::Kongkong::Containers
     ) const noexcept
     {
         return m_p[index];
+    }
+
+    template <class T>
+    constexpr typename ArrayView<T>::ElementType const&
+    ArrayView<T>::operator[](
+        Ranges::IndexFromEnd indexFromEnd
+    ) const noexcept
+    {
+        return GetAtFromEndUnsafe(indexFromEnd.Value);
     }
 
     template <class T>
@@ -152,6 +177,28 @@ namespace klib::Kongkong::Containers
             this->m_length
         );
         return m_p[index];
+    }
+
+    template <class T>
+    typename ArrayView<T>::ElementType const&
+    ArrayView<T>::GetAtFromEnd(
+        ssize_t indexFromEnd
+    ) const
+    {
+        ssize_t index = ContainerHelper::CheckIndexFromEnd(
+            indexFromEnd,
+            this->m_length
+        );
+        return m_p[index];
+    }
+
+    template <class T>
+    constexpr typename ArrayView<T>::ElementType const&
+    ArrayView<T>::GetAtFromEndUnsafe(
+        ssize_t index
+    ) const noexcept
+    {
+        return m_p[this->m_length - index];
     }
 
     template <class T>

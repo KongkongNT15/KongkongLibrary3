@@ -34,6 +34,11 @@ namespace klib::Kongkong::Containers
             ssize_t length
         );
 
+        static ssize_t CheckIndexFromEnd(
+            ssize_t indexFromEnd,
+            ssize_t length
+        );
+
         /// @brief 長さがゼロの時に例外をスロー
         /// @param length 
         static void CheckLengthZero(
@@ -189,6 +194,17 @@ namespace klib::Kongkong::Containers
     {
         if (index < 0) [[unlikely]] do_throwIndexMinus();
         if (index >= length) [[unlikely]] do_throwIndexError();
+    }
+
+    inline ssize_t ContainerHelper::CheckIndexFromEnd(
+        ssize_t indexFromEnd,
+        ssize_t length
+    )
+    {
+        ssize_t index = length - indexFromEnd;
+        if (indexFromEnd <= 0 || index < 0) [[unlikely]] do_throwIndexError();
+
+        return index;
     }
 
     inline void ContainerHelper::CheckLengthZero(
