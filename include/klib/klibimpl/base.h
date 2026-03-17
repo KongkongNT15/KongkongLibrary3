@@ -205,6 +205,44 @@
 #define KLIB_KONGKONG_OBJECT_GETINSTANCE \
     (Object::GetPointerChecked<ImplType>())
 
+#define KLIB_CREATE_ENUM_CREATE_OPERATOR_OR(enumClass) \
+    [[nodiscard]] constexpr enumClass operator|(enumClass left, enumClass right) noexcept { return enumClass((::std::underlying_type_t<enumClass>)left | (::std::underlying_type_t<enumClass>)right); }
+
+#define KLIB_CREATE_ENUM_CREATE_OPERATOR_AND(enumClass) \
+    [[nodiscard]] constexpr bool operator&(enumClass left, enumClass right) noexcept { return (bool)((::std::underlying_type_t<enumClass>)left & (::std::underlying_type_t<enumClass>)right); }
+
+#define KLIB_CREATE_ENUM_CREATE_OPERATOR_PP(enumClass) \
+    [[nodiscard]] constexpr enumClass& operator++(enumClass& value) noexcept \
+    { \
+        return value = (enumClass)((::std::underlying_type_v<enumClass>)value + 1); \
+    } \
+    [[nodiscard]] constexpr enumClass operator++(enumClass& value, int) noexcept \
+    { \
+        enumClass ret = value; \
+        value = (enumClass)((::std::underlying_type_t<enumClass>)value + 1); \
+        return ret; \
+    }
+
+#define KLIB_CREATE_ENUM_CREATE_OPERATOR_MM(enumClass) \
+    [[nodiscard]] constexpr enumClass& operator--(enumClass& value) noexcept \
+    { \
+        return value = (enumClass)((::std::underlying_type_t<enumClass>)value - 1); \
+    } \
+    [[nodiscard]] constexpr enumClass operator--(enumClass& value, int) noexcept \
+    { \
+        enumClass ret = value; \
+        value = (enumClass)((::std::underlying_type_t<enumClass>)value - 1); \
+        return ret; \
+    }
+
+#define KLIB_CREATE_ENUM_CREATE_OPERATOR_AND_OR(enumClass) \
+    KLIB_CREATE_ENUM_CREATE_OPERATOR_OR(enumClass) \
+    KLIB_CREATE_ENUM_CREATE_OPERATOR_AND(enumClass)
+
+#define KLIB_CREATE_ENUM_CREATE_OPERATOR_PP_MM(enumClass, base) \
+    KLIB_CREATE_ENUM_CREATE_OPERATOR_PP(enumClass, base) \
+    KLIB_CREATE_ENUM_CREATE_OPERATOR_MM(enumClass, base)
+
 #include <stdint.h>
 #include <compare>
 #include <concepts>

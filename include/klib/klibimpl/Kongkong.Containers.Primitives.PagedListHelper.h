@@ -14,6 +14,9 @@ namespace klib::Kongkong::Containers::Primitives
         [[noreturn]]
         static void do_throwMemoryCommitError();
 
+        [[noreturn]]
+        static void do_throwReserveError();
+
         public:
 
         KLIB_STATIC_CLASS(PagedListHelper);

@@ -21,7 +21,14 @@ namespace klib::Kongkong::Memory
         public:
 
         [[nodiscard]]
+        static size_t GetPageLength(
+            size_t bytes
+        ) noexcept;
+
+        [[nodiscard]]
         static size_t PageSize() noexcept;
+
+        
 
         constexpr MemoryResource(
         ) noexcept;
@@ -121,6 +128,15 @@ namespace klib::Kongkong::Memory
 
 namespace klib::Kongkong::Memory
 {
+    inline size_t MemoryResource::GetPageLength(
+        size_t bytes
+    ) noexcept
+    {
+        if (bytes == 0) return 0;
+
+        return (bytes - 1) / s_pageSize + 1;
+    }
+
     inline size_t MemoryResource::PageSize() noexcept
     {
         return s_pageSize;

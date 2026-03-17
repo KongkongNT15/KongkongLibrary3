@@ -28,13 +28,9 @@ namespace klib::Kongkong::Containers
         static constexpr ssize_t s_elementSize = sizeof(ElementType);
         Memory::VirtualMemoryRegion m_region;
 
-        template <class TIterator, bool IsMove>
-        void do_appendRange(
-            TIterator begin,
-            TIterator end
-        );
-
         public:
+
+        ~PagedList();
 
         PagedList& operator=(
             PagedList&& other
@@ -56,6 +52,11 @@ namespace klib::Kongkong::Containers
             ElementType&& value
         ) requires IsMoveConstructible;
 
+        void Append(
+            ssize_t count,
+            ElementType const& v
+        ) requires IsCopyConstructible;
+
         template <class TIterable>
         void AppendRange(
             TIterable&& range
@@ -71,85 +72,24 @@ namespace klib::Kongkong::Containers
             TArgs&&... args
         );
 
-
+        void ReserveUnsafe(
+            ssize_t minCount
+        );
     };
 }
 
 namespace klib::Kongkong::Containers
 {
+
     template <class T>
-    template <class TIterator, bool IsMove>
-    void PagedList<T>::do_appendRange(
-        TIterator begin,
-        TIterator end
-    )
+    PagedList<T>::~PagedList()
     {
-        ssize_t appendLength = Ranges::IteratorHelper::GetLengthUnsafe(
-            begin,
-            end
+        if (m_region.Data() == nullptr) return;
+
+        ContainerHelper::DestructUnsafe(
+            this->begin(),
+            this->end()
         );
-
-        ssize_t newLength = this->m_length + appendLength;
-
-        if (!m_region.ResizeUnsafe(newLength * s_elementSize)) [[unlikely]] {
-            Primitives::PagedListHelper::do_throwMemoryCommitError();
-        }
-
-        constexpr bool isNothrowCopyConstructible = noexcept(ElementType(*begin));
-        constexpr bool isNothrowMoveConstructible = noexcept(ElementType(::std::move(*begin)));
-
-        // コンストラクタで例外を投げない
-        if constexpr (
-            (!IsMove && isNothrowCopyConstructible)
-            || (IsMove && isNothrowMoveConstructible)
-        ) {
-            auto itr = this->end();
-
-            while (begin != end) {
-
-                if constexpr (IsMove) {
-                    new(itr) ElementType(*begin);
-                }
-                else {
-                    new(itr) ElementType(::std::move(*begin));
-                }
-
-                ++itr;
-                ++begin;
-            }
-        }
-        else {
-            ssize_t appendedLength = 0;
-            try {
-                
-                auto itr = this->end();
-
-                while (begin != end) {
-
-                    if constexpr (IsMove) {
-                        new(itr) ElementType(*begin);
-                    }
-                    else {
-                        new(itr) ElementType(::std::move(*begin));
-                    }
-                    ++appendedLength;
-                    ++itr;
-                    ++begin;
-                }
-            }
-            catch (...) {
-                ContainerHelper::DestructUnsafe(
-                    this->end(),
-                    this->end() + appendedLength
-                );
-
-                ::std::rethrow_exception(
-                    ::std::current_exception()
-                );
-            }
-        }
-
-        this->m_length = newLength;
     }
 
     template <class T>
@@ -205,20 +145,120 @@ namespace klib::Kongkong::Containers
     }
 
     template <class T>
+    void PagedList<T>::Append(
+        ssize_t count,
+        ElementType const& value
+    ) requires IsCopyConstructible
+    {
+        if (count <= 0) [[unlikely]] return;
+
+        ssize_t newLength = this->m_length + count;
+
+        if (!m_region.ResizeUnsafe(newLength * s_elementSize)) [[unlikely]] {
+            Primitives::PagedListHelper::do_throwMemoryCommitError();
+        }
+
+        // 末尾に書き込み
+        ElementType* itr = this->end();
+        ElementType* end = itr + count;
+
+        try {
+            while (itr != end) {
+                new(itr) ElementType(value);
+                ++itr;
+            }
+        }
+        catch (...) {
+            ContainerHelper::DestructUnsafe(
+                this->end(),
+                itr
+            );
+
+            ::std::rethrow_exception(
+                ::std::current_exception()
+            );
+        }
+        
+        this->m_length = newLength;
+    }
+
+    template <class T>
     template <class TIterable>
     void PagedList<T>::AppendRange(
         TIterable&& range
     )
     {
+        constexpr bool isMove = ::std::is_rvalue_reference_v<TIterable&&>;
+
         auto begin = ::std::ranges::begin(range);
         auto end = ::std::ranges::end(range);
-        do_appendRange<
-            decltype(begin),
-            ::std::is_rvalue_reference_v<decltype(range)>
-        >(
+        
+        ssize_t appendLength = Ranges::IteratorHelper::GetLengthUnsafe(
             begin,
             end
         );
+
+        ssize_t newLength = this->m_length + appendLength;
+
+        if (!m_region.ResizeUnsafe(newLength * s_elementSize)) [[unlikely]] {
+            Primitives::PagedListHelper::do_throwMemoryCommitError();
+        }
+
+        constexpr bool isNothrowCopyConstructible = noexcept(ElementType(*begin));
+        constexpr bool isNothrowMoveConstructible = noexcept(ElementType(::std::move(*begin)));
+
+        // コンストラクタで例外を投げない
+        if constexpr (
+            (!isMove && isNothrowCopyConstructible)
+            || (isMove && isNothrowMoveConstructible)
+        ) {
+            auto itr = this->end();
+
+            while (begin != end) {
+
+                if constexpr (isMove) {
+                    new(itr) ElementType(*begin);
+                }
+                else {
+                    new(itr) ElementType(::std::move(*begin));
+                }
+
+                ++itr;
+                ++begin;
+            }
+        }
+        else {
+            ssize_t appendedLength = 0;
+            try {
+                
+                auto itr = this->end();
+
+                while (begin != end) {
+
+                    if constexpr (isMove) {
+                        new(itr) ElementType(*begin);
+                    }
+                    else {
+                        new(itr) ElementType(::std::move(*begin));
+                    }
+                    ++appendedLength;
+                    ++itr;
+                    ++begin;
+                }
+            }
+            catch (...) {
+                ContainerHelper::DestructUnsafe(
+                    this->end(),
+                    this->end() + appendedLength
+                );
+
+                ::std::rethrow_exception(
+                    ::std::current_exception()
+                );
+            }
+        }
+
+        this->m_length = newLength;
     }
 
     template <class T>
@@ -259,7 +299,20 @@ namespace klib::Kongkong::Containers
         this->m_length = newLength;
     }
 
-    
+    template <class T>
+    void PagedList<T>::ReserveUnsafe(
+        ssize_t minCount
+    )
+    {
+        if (!m_region.ReserveUnsafe(
+            minCount * s_elementSize
+        )) [[unlikely]] {
+            Primitives::PagedListHelper::do_throwReserveError();
+        }
+
+        this->m_p = static_cast<ElementType*>(m_region.Data());
+        this->m_length = 0;
+    }
 }
 
 #endif //!KLIB_KONGKONG_CONTAINERS_PAGEDLIST_H
