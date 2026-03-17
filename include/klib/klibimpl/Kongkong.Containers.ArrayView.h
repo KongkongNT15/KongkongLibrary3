@@ -60,6 +60,11 @@ namespace klib::Kongkong::Containers
         ) const;
 
         [[nodiscard]]
+        ElementType const& GetAt(
+            Ranges::IndexFromEnd indexFromEnd
+        ) const;
+
+        [[nodiscard]]
         ElementType const& GetAtFromEnd(
             ssize_t indexFromEnd
         ) const;
@@ -72,6 +77,11 @@ namespace klib::Kongkong::Containers
         [[nodiscard]]
         constexpr ElementType const& GetAtUnsafe(
             ssize_t index
+        ) const noexcept;
+
+        [[nodiscard]]
+        constexpr ElementType const& GetAtUnsafe(
+            Ranges::IndexFromEnd indexFromEnd
         ) const noexcept;
 
         [[nodiscard]]
@@ -181,6 +191,15 @@ namespace klib::Kongkong::Containers
 
     template <class T>
     typename ArrayView<T>::ElementType const&
+    ArrayView<T>::GetAt(
+        Ranges::IndexFromEnd indexFromEnd
+    ) const
+    {
+        return GetAtFromEnd(indexFromEnd.Value);
+    }
+
+    template <class T>
+    typename ArrayView<T>::ElementType const&
     ArrayView<T>::GetAtFromEnd(
         ssize_t indexFromEnd
     ) const
@@ -208,6 +227,15 @@ namespace klib::Kongkong::Containers
     ) const noexcept
     {
         return m_p[index];
+    }
+
+    template <class T>
+    constexpr typename ArrayView<T>::ElementType const&
+    ArrayView<T>::GetAtUnsafe(
+        Ranges::IndexFromEnd indexFromEnd
+    ) const noexcept
+    {
+        return GetAtFromEndUnsafe(indexFromEnd.Value);
     }
 
     template <class T>

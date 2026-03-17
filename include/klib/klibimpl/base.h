@@ -404,7 +404,10 @@ namespace klib::Kongkong::Ranges
 {
     struct Index;
     struct IndexFromEnd;
+    class IteratorHelper;
     struct Range;
+
+    
 }
 
 namespace klib::Kongkong::Std

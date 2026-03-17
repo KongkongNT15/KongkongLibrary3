@@ -104,10 +104,20 @@ namespace klib::Kongkong::Containers::Primitives
         );
 
         [[nodiscard]]
+        ElementType& GetAt(
+            Ranges::IndexFromEnd indexFromEnd
+        );
+
+        [[nodiscard]]
         ElementType const& GetAt(
             ssize_t index
         ) const;
 
+        [[nodiscard]]
+        ElementType const& GetAt(
+            Ranges::IndexFromEnd indexFromEnd
+        ) const;
+        
         [[nodiscard]]
         ElementType& GetAtFromEnd(
             ssize_t indexFromEnd
@@ -134,8 +144,18 @@ namespace klib::Kongkong::Containers::Primitives
         ) noexcept;
 
         [[nodiscard]]
+        constexpr ElementType& GetAtUnsafe(
+            Ranges::IndexFromEnd indexFromEnd
+        ) noexcept;
+
+        [[nodiscard]]
         constexpr ElementType const& GetAtUnsafe(
             ssize_t index
+        ) const noexcept;
+
+        [[nodiscard]]
+        constexpr ElementType const& GetAtUnsafe(
+            Ranges::IndexFromEnd indexFromEnd
         ) const noexcept;
 
         [[nodiscard]]
@@ -148,6 +168,17 @@ namespace klib::Kongkong::Containers::Primitives
 
         [[nodiscard]]
         constexpr ArrayView<T> GetView() const noexcept;
+
+        [[nodiscard]]
+        constexpr ArrayView<T> GetViewUnsafe(
+            ssize_t offset
+        ) const noexcept;
+
+        [[nodiscard]]
+        constexpr ArrayView<T> GetViewUnsafe(
+            ssize_t offset,
+            ssize_t end
+        ) const noexcept;
 
         [[nodiscard]]
         constexpr ssize_t IndexOf(
@@ -310,6 +341,15 @@ namespace klib::Kongkong::Containers::Primitives
     }
 
     template <class T>
+    typename ArrayBase<T>::ElementType&
+    ArrayBase<T>::GetAt(
+        Ranges::IndexFromEnd indexFromEnd
+    )
+    {
+        return GetAtFromEnd(indexFromEnd.Value);
+    }
+
+    template <class T>
     typename ArrayBase<T>::ElementType const&
     ArrayBase<T>::GetAt(
         ssize_t index
@@ -320,6 +360,15 @@ namespace klib::Kongkong::Containers::Primitives
             this->m_length
         );
         return m_p[index];
+    }
+
+    template <class T>
+    typename ArrayBase<T>::ElementType const&
+    ArrayBase<T>::GetAt(
+        Ranges::IndexFromEnd indexFromEnd
+    ) const
+    {
+        return GetAtFromEnd(indexFromEnd.Value);
     }
 
     template <class T>
@@ -369,6 +418,15 @@ namespace klib::Kongkong::Containers::Primitives
     template <class T>
     constexpr typename ArrayBase<T>::ElementType&
     ArrayBase<T>::GetAtUnsafe(
+        Ranges::IndexFromEnd indexFromEnd
+    ) noexcept
+    {
+        return GetAtFromEndUnsafe(indexFromEnd.Value);
+    }
+
+    template <class T>
+    constexpr typename ArrayBase<T>::ElementType&
+    ArrayBase<T>::GetAtUnsafe(
         ssize_t index
     ) noexcept
     {
@@ -382,6 +440,15 @@ namespace klib::Kongkong::Containers::Primitives
     ) const noexcept
     {
         return m_p[index];
+    }
+
+    template <class T>
+    constexpr typename ArrayBase<T>::ElementType const&
+    ArrayBase<T>::GetAtUnsafe(
+        Ranges::IndexFromEnd indexFromEnd
+    ) const noexcept
+    {
+        return GetAtFromEndUnsafe(indexFromEnd.Value);
     }
 
     template <class T>
@@ -406,6 +473,29 @@ namespace klib::Kongkong::Containers::Primitives
         return ArrayView<T>(
             this->m_length,
             m_p
+        );
+    }
+
+    template <class T>
+    constexpr ArrayView<T> ArrayBase<T>::GetViewUnsafe(
+        ssize_t offset
+    ) const noexcept
+    {
+        return GetViewUnsafe(
+            offset,
+            this->m_length
+        );
+    }
+
+    template <class T>
+    constexpr ArrayView<T> ArrayBase<T>::GetViewUnsafe(
+        ssize_t offset,
+        ssize_t end
+    ) const noexcept
+    {
+        return ArrayView<T>(
+            end,
+            m_p + offset
         );
     }
 
