@@ -278,6 +278,7 @@ namespace klib
 /// </summary>
 namespace klib::Kongkong
 {
+    struct KLibType;
     struct ValueType;
     struct NonType;
 
