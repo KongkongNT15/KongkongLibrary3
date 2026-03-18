@@ -284,6 +284,7 @@ namespace klib::Kongkong
     struct ArgumentException;
     struct ArgumentOutOfRangeException;
     struct Exception;
+    class Initializer;
     struct InvalidOperationException;
     struct MemoryAllocationException;
     struct MemoryException;
