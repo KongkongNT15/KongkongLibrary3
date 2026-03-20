@@ -315,6 +315,17 @@ namespace klib::Kongkong::AppleDevice
     class ObjCHandle;
 }
 
+namespace klib::Kongkong::Bits
+{
+    template <ssize_t N> requires (N >= 1)
+    struct Bitset;
+
+    class BitsetElement;
+    class BitsetHelper;
+    class BitsetConstIterator;
+    class BitsetIterator;
+}
+
 /// <summary>
 /// コンテナ型
 /// </summary>

@@ -18,6 +18,9 @@ namespace klib::Kongkong::Numerics
         KLIB_STATIC_CLASS(Number);
 
         [[nodiscard]]
+        static constexpr int Bits() noexcept;
+
+        [[nodiscard]]
         static constexpr int Digits() noexcept;
 
         [[nodiscard]]
@@ -39,6 +42,11 @@ namespace klib::Kongkong::Numerics
 
 namespace klib::Kongkong::Numerics
 {
+    constexpr int Int::Bits() noexcept
+    {
+        return sizeof(int) * CHAR_BIT;
+    }
+
     constexpr int Int::Digits() noexcept
     {
         return sizeof(NumType) * CHAR_BIT - 1;

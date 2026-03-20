@@ -8,6 +8,7 @@
 #endif
 
 #include <klib/Kongkong.h>
+#include <klib/Kongkong.Bits.h>
 #include <klib/Kongkong.Containers.h>
 #include <klib/Kongkong.Functional.h>
 #include <klib/Kongkong.IO.h>
