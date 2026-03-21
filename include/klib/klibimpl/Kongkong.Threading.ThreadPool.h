@@ -5,14 +5,16 @@
 #include "Kongkong.Threading.Async.AsyncAction.h"
 
 #if KLIB_ENV_WINDOWS
-
+    #include <malloc.h>
 #elif KLIB_COMPILER_APPLE_CLANG
     #include <dispatch/dispatch.h>
+    #include <alloca.h>
 #elif KLIB_ENV_UNIX
-
+    #include <alloca.h>
 #endif
 
 #include <coroutine>
+#include <thread>
 
 namespace klib::Kongkong::Threading
 {
@@ -27,6 +29,20 @@ namespace klib::Kongkong::Threading
 
         KLIB_STATIC_CLASS(ThreadPool);
 
+        template <class TIterator, class TPredicate>
+        static void ParallelFor(
+            TIterator begin,
+            TIterator end,
+            TPredicate pred
+        );
+
+        template <class TIterator, class TPredicate>
+        static Async::AsyncAction ParallelForAsync(
+            TIterator begin,
+            TIterator end,
+            TPredicate pred
+        );
+
         template <class TPredicate>
         static Async::AsyncAction RunAsync(
             TPredicate pred
@@ -36,6 +52,36 @@ namespace klib::Kongkong::Threading
 
 namespace klib::Kongkong::Threading
 {
+    template <class TIterator, class TPredicate>
+    void ThreadPool::ParallelFor(
+        TIterator begin,
+        TIterator end,
+        TPredicate pred
+    )
+    {
+        uint32_t threadCount = ::std::thread::hardware_concurrency();
+
+        
+    }
+
+    template <class TIterator, class TPredicate>
+    Async::AsyncAction ThreadPool::ParallelForAsync(
+        TIterator begin,
+        TIterator end,
+        TPredicate pred
+    )
+    {
+        return RunAsync(
+            [=]() {
+                ParallelFor(
+                    begin,
+                    end,
+                    pred
+                )
+            }
+        );
+    }
+
     template <class TPredicate>
     Async::AsyncAction ThreadPool::RunAsync(
         TPredicate pred

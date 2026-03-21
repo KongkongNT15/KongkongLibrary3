@@ -9,6 +9,8 @@ namespace klib::Kongkong::Threading
 {
     class Thread final {
         private:
+        static uint32_t s_threadCount;
+
 #if KLIB_ENV_WINDOWS
         Win32::Win32Handle m_thread;
 

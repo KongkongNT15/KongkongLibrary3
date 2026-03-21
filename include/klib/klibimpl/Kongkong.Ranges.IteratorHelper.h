@@ -7,17 +7,43 @@
 namespace klib::Kongkong::Ranges
 {
     class IteratorHelper {
+
+        template <class TIterator>
+        static constexpr TIterator Add(
+            TIterator itr,
+            size_t addCount
+        ) noexcept(noexcept(::std::declval<TIterator>().operator++()));
         
         template <class TIterator>
         static constexpr ssize_t GetLengthUnsafe(
             TIterator begin,
             TIterator end
         ) noexcept;
+
+        
     };
 }
 
 namespace klib::Kongkong::Ranges
 {
+    template <class TIterator>
+    TIterator constexpr IteratorHelper::Add(
+        TIterator itr,
+        size_t addCount
+    ) noexcept(noexcept(::std::declval<TIterator>().operator++()))
+    {
+        if constexpr (::std::random_access_iterator<TIterator>) {
+            return itr + addCount;
+        }
+        else {
+            for (size_t count = 0; count < addCount; count++) {
+                ++itr;
+            }
+
+            return itr;
+        }
+    }
+
     template <class TIterator>
     constexpr ssize_t IteratorHelper::GetLengthUnsafe(
         TIterator begin,
