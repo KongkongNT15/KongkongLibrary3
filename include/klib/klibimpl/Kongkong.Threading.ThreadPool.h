@@ -6,9 +6,8 @@
 
 #if KLIB_ENV_WINDOWS
 
-#elif KLIB_OBJECTIVE_C_ENABLED
-    #include "Kongkong.AppleDevice.ObjCHandle.h"
-
+#elif KLIB_COMPILER_APPLE_CLANG
+    #include <dispatch/dispatch.h>
 #elif KLIB_ENV_UNIX
 
 #endif
@@ -20,19 +19,8 @@ namespace klib::Kongkong::Threading
     class ThreadPool final {
         private:
 
-#if KLIB_OBJECTIVE_C_ENABLED
-        static AppleDevice::ObjCHandle s_nsOperationQueue;
-
-        static void do_addOperationWithBlock(
-            void(^block)(void)
-        );
-
-        static void do_addOperationWithBlockUnsafe(
-            void(^block)(void)
-        );
-
-        static void do_initialize();
-        
+#if KLIB_COMPILER_APPLE_CLANG
+        static ::dispatch_queue_t s_queue;
 #endif
 
         public:
@@ -92,7 +80,7 @@ namespace klib::Kongkong::Threading
         };
 
         co_await awaiter{ nullptr, ::std::move(pred) };
-#elif KLIB_OBJECTIVE_C_ENABLED
+#elif KLIB_COMPILER_APPLE_CLANG
         struct awaiter {
             TPredicate pred;
 
@@ -100,7 +88,8 @@ namespace klib::Kongkong::Threading
 
             void await_suspend(::std::coroutine_handle<> h)
             {
-                ThreadPool::do_addOperationWithBlock(
+                ::dispatch_async(
+                    ThreadPool::s_queue,
                     ^() {
                         pred();
                         h.resume();

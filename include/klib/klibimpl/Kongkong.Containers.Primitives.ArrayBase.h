@@ -127,7 +127,7 @@ namespace klib::Kongkong::Containers::Primitives
         [[nodiscard]]
         ElementType& GetAtFromEnd(
             ssize_t indexFromEnd
-        ) noexcept;
+        );
 
         [[nodiscard]]
         ElementType const& GetAtFromEnd(

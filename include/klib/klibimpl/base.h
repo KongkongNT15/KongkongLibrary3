@@ -53,6 +53,11 @@
 #ifdef __APPLE__
     #define KLIB_ENV_APPLE 1
 
+    #ifdef TARGET_OS_MAC
+        #define KLIB_COMPILER_APPLE_CLANG 1
+        #define KLIB_COMPILER_CLANG 1
+    #endif
+
     #if defined(__aarch64__) || defined(__arm64__)
         #define KLIB_ENV_ARM64 1
     #else
@@ -132,6 +137,14 @@
 
 #ifndef KLIB_COMPILER_MINGW
     #define KLIB_COMPILER_MINGW 0
+#endif
+
+#ifndef KLIB_COMPILER_APPLE_CLANG
+    #define KLIB_COMPILER_APPLE_CLANG 0
+#endif
+
+#ifndef KLIB_COMPILER_CLANG
+    #define KLIB_COMPILER_CLANG 0
 #endif
 
 #ifndef KLIB_ENV_APPLE
