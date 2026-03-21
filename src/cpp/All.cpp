@@ -10,4 +10,5 @@
 #include "klibimpl/Kongkong.Threading.Thread.cpp"
 #include "klibimpl/Kongkong.Threading.Async.AsyncAction.cpp"
 #include "klibimpl/Kongkong.Threading.Async.AwaiterBase.cpp"
+#include "klibimpl/Kongkong.Threading.ThreadPool.cpp"
 #include "klibimpl/Kongkong.Win32.Win32Handle.cpp"
