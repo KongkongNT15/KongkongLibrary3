@@ -6,6 +6,7 @@
 #include "Kongkong.Bits.BitsetHelper.h"
 #include "Kongkong.Bits.BitsetIterator.h"
 #include "Kongkong.Numerics.Int.h"
+#include "Kongkong.Ranges.IndexFromEnd.h"
 
 #define KLIB_CLASS_TEMPLATE_DEF template <ssize_t N> requires (N >= 1)
 
@@ -29,6 +30,16 @@ namespace klib::Kongkong::Bits
         ) const noexcept;
 
         [[nodiscard]]
+        constexpr BitsetElement operator[](
+            Ranges::IndexFromEnd indexFromEnd
+        ) noexcept;
+
+        [[nodiscard]]
+        constexpr bool operator[](
+            Ranges::IndexFromEnd indexFromEnd
+        ) const noexcept;
+
+        [[nodiscard]]
         constexpr BitsetIterator begin() noexcept;
 
         [[nodiscard]]
@@ -40,7 +51,25 @@ namespace klib::Kongkong::Bits
         [[nodiscard]]
         constexpr BitsetConstIterator end() const noexcept;
 
-        
+        [[nodiscard]]
+        constexpr BitsetElement GetAtFromEndUnsafe(
+            ssize_t indexFromEnd
+        ) noexcept;
+
+        [[nodiscard]]
+        constexpr bool GetAtFromEndUnsafe(
+            ssize_t indexFromEnd
+        ) const noexcept;
+
+        [[nodiscard]]
+        constexpr BitsetElement GetAtUnsafe(
+            ssize_t index
+        ) noexcept;
+
+        [[nodiscard]]
+        constexpr bool GetAtUnsafe(
+            ssize_t index
+        ) const noexcept;
     };
 }
 
@@ -51,10 +80,7 @@ namespace klib::Kongkong::Bits
         ssize_t index
     ) noexcept
     {
-        return BitsetElement(
-            m_placeHolder[index / Numrics::Int::Bits()],
-            static_cast<int>(index % Numrics::Int::Bits())
-        );
+        return GetAtUnsafe(index);
     }
 
     KLIB_CLASS_TEMPLATE_DEF
@@ -62,10 +88,23 @@ namespace klib::Kongkong::Bits
         ssize_t index
     ) const noexcept
     {
-        return BitsetHelper::ReadUnsafe(
-            m_placeHolder[index / Numrics::Int::Bits()],
-            static_cast<int>(index % Numrics::Int::Bits())
-        );
+        return GetAtUnsafe(index);
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr BitsetElement Bitset<N>::operator[](
+        Ranges::IndexFromEnd indexFromEnd
+    ) noexcept
+    {
+        return GetAtFromEndUnsafe(indexFromEnd.Value);
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr bool Bitset<N>::operator[](
+        Ranges::IndexFromEnd indexFromEnd
+    ) const noexcept
+    {
+        return GetAtFromEndUnsafe(indexFromEnd.Value);
     }
 
     KLIB_CLASS_TEMPLATE_DEF
@@ -97,6 +136,44 @@ namespace klib::Kongkong::Bits
         return BitsetConstIterator(
             m_placeHolder + N / Numrics::Int::Bits(),
             N % Numrics::Int::Bits()
+        );
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr BitsetElement Bitset<N>::GetAtFromEndUnsafe(
+        ssize_t indexFromEnd
+    ) noexcept
+    {
+        return GetAtUnsafe(N - indexFromEnd);
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr bool Bitset<N>::GetAtFromEndUnsafe(
+        ssize_t indexFromEnd
+    ) const noexcept
+    {
+        return GetAtUnsafe(N - indexFromEnd);
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr BitsetElement Bitset<N>::GetAtUnsafe(
+        ssize_t index
+    ) noexcept
+    {
+        return BitsetElement(
+            m_placeHolder[index / Numrics::Int::Bits()],
+            static_cast<int>(index % Numrics::Int::Bits())
+        );
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr bool Bitset<N>::GetAtUnsafe(
+        ssize_t index
+    ) const noexcept
+    {
+        return BitsetHelper::ReadUnsafe(
+            m_placeHolder[index / Numrics::Int::Bits()],
+            static_cast<int>(index % Numrics::Int::Bits())
         );
     }
 }

@@ -331,6 +331,9 @@ namespace klib::Kongkong::Bits
 /// </summary>
 namespace klib::Kongkong::Containers
 {
+    template <class T, ssize_t N> requires (N >= 1)
+    struct BuiltInArray;
+
     class ContainerHelper;
 
     template <class T>
@@ -367,7 +370,8 @@ namespace klib::Kongkong::Functional
     template <class TResult, class... TArgs>
     struct RawFunction;
 
-    template <class TFunc, class TResult, class... TArgs> requires ::std::is_invocable_v<TFunc, TArgs&&...>
+    template <class TFunc, class TResult, class... TArgs>
+    requires ::std::is_invocable_v<TFunc, TArgs&&...>
     struct FunctionObject;
 
     template <class TResult, class... TArgs>

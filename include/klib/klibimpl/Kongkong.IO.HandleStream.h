@@ -26,21 +26,21 @@ namespace klib::Kongkong::IO
 
         bool IsOpen() const noexcept override;
 
-        bool ReadByteUnsafe(
+        bool TryReadByte(
             byte& result
         ) noexcept override;
 
-        bool ReadUnsafe(
+        bool TryRead(
             uint32_t length,
             void* buffer
         ) noexcept override;
         
-        bool WriteUnsafe(
+        bool TryWrite(
             uint32_t length,
             const void* buffer
         ) noexcept override;
 
-        bool WriteByteUnsafe(
+        bool TryWriteByte(
             byte value
         ) noexcept override;
     };

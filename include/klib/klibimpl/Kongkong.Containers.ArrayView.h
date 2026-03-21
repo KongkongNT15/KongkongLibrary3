@@ -42,6 +42,9 @@ namespace klib::Kongkong::Containers
 
         [[nodiscard]]
         constexpr ConstIteratorType end() const noexcept;
+
+        [[nodiscard]]
+        ElementType const& Back() const;
         
         [[nodiscard]]
         constexpr bool Contains(
@@ -85,11 +88,26 @@ namespace klib::Kongkong::Containers
         ) const noexcept;
 
         [[nodiscard]]
+        constexpr ElementType const& GetBackUnsafe(
+        ) const noexcept;
+
+        [[nodiscard]]
         constexpr ElementType const& GetFrontUnsafe(
         ) const noexcept;
 
         [[nodiscard]]
         constexpr ArrayView GetView() const noexcept;
+
+        [[nodiscard]]
+        constexpr ArrayView GetViewUnsafe(
+            ssize_t offset
+        ) const noexcept;
+
+        [[nodiscard]]
+        constexpr ArrayView GetViewUnsafe(
+            ssize_t offset,
+            ssize_t end
+        ) const noexcept;
 
         [[nodiscard]]
         constexpr ssize_t IndexOf(
@@ -147,6 +165,14 @@ namespace klib::Kongkong::Containers
     ArrayView<T>::end() const noexcept
     {
         return m_p + this->m_length;
+    }
+
+    template <class T>
+    typename ArrayView<T>::ElementType const&
+    ArrayView<T>::Back() const
+    {
+        ContainerHelper::CheckLengthZero(m_length);
+        return m_p[m_length - 1];
     }
 
     template <class T>
@@ -240,6 +266,14 @@ namespace klib::Kongkong::Containers
 
     template <class T>
     constexpr typename ArrayView<T>::ElementType const&
+    ArrayView<T>::GetBackUnsafe(
+    ) const noexcept
+    {
+        return m_p[m_length - 1];
+    }
+
+    template <class T>
+    constexpr typename ArrayView<T>::ElementType const&
     ArrayView<T>::GetFrontUnsafe(
     ) const noexcept
     {
@@ -251,6 +285,29 @@ namespace klib::Kongkong::Containers
     ArrayView<T>::GetView() const noexcept
     {
         return *this;
+    }
+
+    template <class T>
+    constexpr ArrayView<T> ArrayView<T>::GetViewUnsafe(
+        ssize_t offset
+    ) const noexcept
+    {
+        return GetViewUnsafe(
+            offset,
+            this->m_length
+        );
+    }
+
+    template <class T>
+    constexpr ArrayView<T> ArrayView<T>::GetViewUnsafe(
+        ssize_t offset,
+        ssize_t end
+    ) const noexcept
+    {
+        return ArrayView<T>(
+            end,
+            m_p + offset
+        );
     }
 
     template <class T>

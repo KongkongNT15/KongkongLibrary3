@@ -22,13 +22,13 @@
         void* buffer
     )
     {
-        if (!ReadUnsafe(length, buffer)) [[unliekly]] {
+        if (!TryRead(length, buffer)) [[unliekly]] {
             CheckCanRead();
             ThrowReadError();
         }
     }
 
-    bool Stream::ReadUnsafe(
+    bool Stream::TryRead(
         uint32_t length,
         void* buffer
     ) noexcept
@@ -37,7 +37,7 @@
         byte* end = itr + length;
 
         while (itr != end) {
-            if (!ReadByteUnsafe(*itr)) [[unlikely]] return false;
+            if (!TryReadByte(*itr)) [[unlikely]] return false;
             ++itr;
         }
 
@@ -48,7 +48,7 @@
     {
         byte result;
 
-        if (!ReadByteUnsafe(result)) [[unlikely]] {
+        if (!TryReadByte(result)) [[unlikely]] {
             CheckCanRead();
             ThrowReadError();
         }
@@ -70,7 +70,7 @@
         byte value
     )
     {
-        if (!WriteByteUnsafe(value)) [[unlikely]] {
+        if (!TryWriteByte(value)) [[unlikely]] {
             CheckCanWrite();
             ThrowWriteError();
         }
@@ -81,13 +81,13 @@
         const void* buffer
     )
     {
-        if (!WriteUnsafe(length, buffer)) [[unlikely]] {
+        if (!TryWrite(length, buffer)) [[unlikely]] {
             CheckCanWrite();
             ThrowWriteError();
         }
     }
 
-    bool Stream::WriteUnsafe(
+    bool Stream::TryWrite(
         uint32_t length,
         const void* buffer
     ) noexcept
@@ -96,7 +96,7 @@
         auto end = itr + length;
 
         while (itr != end) {
-            if (!WriteByteUnsafe(*itr)) [[unlikely]] return false;
+            if (!TryWriteByte(*itr)) [[unlikely]] return false;
             ++itr;
         }
         

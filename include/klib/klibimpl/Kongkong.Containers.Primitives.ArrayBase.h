@@ -75,6 +75,12 @@ namespace klib::Kongkong::Containers::Primitives
 
         [[nodiscard]]
         constexpr ConstIteratorType end() const noexcept;
+
+        [[nodiscard]]
+        ElementType& Back();
+
+        [[nodiscard]]
+        ElementType const& Back() const;
         
         [[nodiscard]]
         constexpr bool Contains(
@@ -156,6 +162,13 @@ namespace klib::Kongkong::Containers::Primitives
         [[nodiscard]]
         constexpr ElementType const& GetAtUnsafe(
             Ranges::IndexFromEnd indexFromEnd
+        ) const noexcept;
+
+        [[nodiscard]]
+        constexpr ElementType& GetBackUnsafe() noexcept;
+
+        [[nodiscard]]
+        constexpr ElementType const& GetBackUnsafe(
         ) const noexcept;
 
         [[nodiscard]]
@@ -268,6 +281,22 @@ namespace klib::Kongkong::Containers::Primitives
     ArrayBase<T>::end() const noexcept
     {
         return m_p + this->m_length;
+    }
+
+    template <class T>
+    typename ArrayBase<T>::ElementType&
+    ArrayBase<T>::Back()
+    {
+        ContainerHelper::CheckLengthZero(this->m_length);
+        return m_p[this->m_length - 1];
+    }
+
+    template <class T>
+    typename ArrayBase<T>::ElementType const&
+    ArrayBase<T>::Back() const
+    {
+        ContainerHelper::CheckLengthZero(this->m_length);
+        return m_p[this->m_length - 1];
     }
 
     template <class T>
@@ -449,6 +478,22 @@ namespace klib::Kongkong::Containers::Primitives
     ) const noexcept
     {
         return GetAtFromEndUnsafe(indexFromEnd.Value);
+    }
+
+    template <class T>
+    constexpr typename ArrayBase<T>::ElementType&
+    ArrayBase<T>::GetBackUnsafe(
+    ) noexcept
+    {
+        return m_p[this->m_length - 1];
+    }
+
+    template <class T>
+    constexpr typename ArrayBase<T>::ElementType const&
+    ArrayBase<T>::GetBackUnsafe(
+    ) const noexcept
+    {
+        return m_p[this->m_length - 1];
     }
 
     template <class T>

@@ -60,7 +60,7 @@ namespace klib::Kongkong::IO
             void* buffer
         );
 
-        virtual bool ReadUnsafe(
+        virtual bool TryRead(
             uint32_t length,
             void* buffer
         ) noexcept;
@@ -68,7 +68,7 @@ namespace klib::Kongkong::IO
         [[nodiscard]]
         byte ReadByte();
 
-        virtual bool ReadByteUnsafe(
+        virtual bool TryReadByte(
             byte& result
         ) noexcept = 0;
         
@@ -77,7 +77,7 @@ namespace klib::Kongkong::IO
             const void* buffer
         );
 
-        virtual bool WriteUnsafe(
+        virtual bool TryWrite(
             uint32_t length,
             const void* buffer
         ) noexcept;
@@ -86,7 +86,7 @@ namespace klib::Kongkong::IO
             byte value
         );
 
-        virtual bool WriteByteUnsafe(
+        virtual bool TryWriteByte(
             byte value
         ) noexcept = 0;
     };

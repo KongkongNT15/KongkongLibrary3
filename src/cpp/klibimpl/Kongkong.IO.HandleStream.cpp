@@ -18,7 +18,7 @@
         return m_handle != nullptr;
     }
 
-    bool HandleStream::ReadByteUnsafe(
+    bool HandleStream::TryReadByte(
         byte& result
     ) noexcept
     {
@@ -33,7 +33,7 @@
         );
     }
 
-    bool HandleStream::ReadUnsafe(
+    bool HandleStream::TryRead(
         uint32_t length,
         void* buffer
     ) noexcept
@@ -49,7 +49,7 @@
         );
     }
 
-    bool HandleStream::WriteUnsafe(
+    bool HandleStream::TryWrite(
         uint32_t length,
         const void* buffer
     ) noexcept
@@ -65,7 +65,7 @@
         );
     }
 
-    bool HandleStream::WriteByteUnsafe(
+    bool HandleStream::TryWriteByte(
         byte value
     ) noexcept
     {
@@ -96,7 +96,7 @@
         return m_fd != EOF;
     }
 
-    bool HandleStream::ReadByteUnsafe(
+    bool HandleStream::TryReadByte(
         byte& result
     ) noexcept
     {
@@ -107,7 +107,7 @@
         ) != EOF;
     }
 
-    bool HandleStream::ReadUnsafe(
+    bool HandleStream::TryRead(
         uint32_t length,
         void* buffer
     ) noexcept
@@ -119,7 +119,7 @@
         ) != EOF;
     }
 
-    bool HandleStream::WriteUnsafe(
+    bool HandleStream::TryWrite(
         uint32_t length,
         const void* buffer
     ) noexcept
@@ -131,7 +131,7 @@
         ) != EOF;
     }
 
-    bool HandleStream::WriteByteUnsafe(
+    bool HandleStream::TryWriteByte(
         byte value
     ) noexcept
     {
