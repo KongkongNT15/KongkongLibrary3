@@ -60,18 +60,7 @@ namespace klib::Kongkong::Threading
         TPredicate&& pred
     )
     {
-        uint32_t threadCount = ::std::thread::hardware_concurrency();
-
-
-    }
-
-    template <class TIterator, class TPredicate>
-    Async::AsyncAction ThreadPool::ParallelForAsync(
-        TIterator begin,
-        TIterator end,
-        TPredicate&& pred
-    )
-    {
+        #if KLIB_ENV_WINDOWS
         struct fArgs {
             TIterator begin;
             TIterator end;
@@ -98,7 +87,9 @@ namespace klib::Kongkong::Threading
                 ++begin;
             }
         };
-
+#elif KLIB_COMPILER_APPLE_CLANG
+        ::dispatch_group_t group = ::dispatch_group_create();
+#endif
         uint32_t threadCount = ::std::thread::hardware_concurrency();
 
         ssize_t containerLength =
@@ -109,14 +100,16 @@ namespace klib::Kongkong::Threading
         if (threadCount > containerLength) listLength = containerLength;
         else listLength = threadCount;
 
+        ssize_t c = containerLength % listLength;
+        ssize_t d = containerLength / listLength;
+
+#if KLIB_ENV_WINDOWS
+
         fArgs* stackAllocArray = static_cast<fArgs*>(
             ::alloca(sizeof(fArgs) * listLength)
         );
 
-        ssize_t c = containerLength % listLength;
-        ssize_t d = containerLength / listLength;
-
-        auto addTask = [](fArgs* target, TIterator b, TIterator e) {
+        auto addTask = [&](fArgs* target, TIterator b, TIterator e) {
             new (target) fArgs{
                 b,
                 e,
@@ -125,7 +118,27 @@ namespace klib::Kongkong::Threading
             };
         };
 
+#elif KLIB_COMPILER_APPLE_CLANG
+        auto addTask = [&](TIterator b, TIterator e) {
+            ::dispatch_group_async(
+                group,
+                s_queue,
+                ^() {
+                    TIterator itr = b;
+                    TIterator end = e;
+
+                    while (itr != end) {
+                        pred(*itr);
+                        ++itr;
+                    }
+                }
+            );
+        };
+#endif
+
+#if KLIB_ENV_WINDOWS
         ssize_t stackArrayIndex = 0;
+#endif
         TIterator itr = begin;
 
         // 全スレッドで同じ数だけ実行
@@ -134,6 +147,8 @@ namespace klib::Kongkong::Threading
             while (itr != end) {
                 TIterator next = Ranges::IteratorHelper::Add(itr, d);
 
+#if KLIB_ENV_WINDOWS
+
                 addTask(
                     stackAllocArray + stackArrayIndex,
                     itr,
@@ -141,6 +156,12 @@ namespace klib::Kongkong::Threading
                 );
 
                 ++stackArrayIndex;
+#elif KLIB_COMPILER_APPLE_CLANG
+                addTask(
+                    itr,
+                    next
+                );
+#endif
                 itr = std::move(next);
             }
         }
@@ -152,36 +173,54 @@ namespace klib::Kongkong::Threading
             for (
                 TIterator e1 = Ranges::IteratorHelper::Add(begin, n);
                 itr != e1;
-                ++stackArrayIndex
+                
             ) {
                 TIterator next = Ranges::IteratorHelper::Add(itr, d);
-
+#if KLIB_ENV_WINDOWS
                 addTask(
                     stackAllocArray + stackArrayIndex,
                     itr,
                     next
                 );
 
+                ++stackArrayIndex;
+#elif KLIB_COMPILER_APPLE_CLANG
+                addTask(
+                    itr,
+                    next
+                );
+#endif
                 itr = ::std::move(next);
             }
 
             // これ以降は多めに実行
             d++;
 
-            for (; itr != end; ++stackArrayIndex) {
+            for (; itr != end;) {
                 TIterator next = Ranges::IteratorHelper::Add(itr, d);
-
+#if KLIB_ENV_WINDOWS
                 addTask(
                     stackAllocArray + stackArrayIndex,
                     itr,
                     next
                 );
 
+                ++stackArrayIndex;
+#elif KLIB_COMPILER_APPLE_CLANG
+                addTask(
+                    itr,
+                    next
+                );
+#endif
+
                 itr = ::std::move(next);
             }
         }
 
+        // 待機
+        // オブジェクトの破棄
         {
+#if KLIB_ENV_WINDOWS
             fArgs* itr1 = stackAllocArray;
             fArgs* end1 = itr1 + listLength;
 
@@ -191,7 +230,29 @@ namespace klib::Kongkong::Threading
 
                 itr1->~fArgs();
             }
+#elif KLIB_COMPILER_APPLE_CLANG
+            ::dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+            ::dispatch_release(group);
+#endif
         }
+    }
+
+    template <class TIterator, class TPredicate>
+    Async::AsyncAction ThreadPool::ParallelForAsync(
+        TIterator begin,
+        TIterator end,
+        TPredicate&& pred
+    )
+    {
+        return RunAsync(
+            []() {
+                ParallelFor(
+                    begin,
+                    end,
+                    ::std::forward(pred)
+                )
+            }
+        );
     }
 
     template <class TPredicate>
@@ -263,6 +324,10 @@ namespace klib::Kongkong::Threading
 
 #endif
     }
+}
+
+int f()
+{
 }
 
 #endif //!KLIB_KONGKONG_THRAEDING_THREADPOOL_H
