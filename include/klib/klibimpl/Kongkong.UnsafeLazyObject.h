@@ -12,7 +12,7 @@ namespace klib::Kongkong
         
     private:
         static constexpr ssize_t s_size = sizeof(Type);
-        uint8_t m_placeHolder[s_size];
+        byte m_placeHolder[s_size];
 
         UnsafeLazyObject(
             UnsafeLazyObject&&

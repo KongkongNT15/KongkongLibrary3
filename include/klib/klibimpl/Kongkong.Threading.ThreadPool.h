@@ -22,7 +22,9 @@ namespace klib::Kongkong::Threading
     class ThreadPool final {
         private:
 
-#if KLIB_COMPILER_APPLE_CLANG
+#if KLIB_ENV_WINDOWS
+
+#elif KLIB_COMPILER_APPLE_CLANG
         static ::dispatch_queue_t s_queue;
 #endif
 

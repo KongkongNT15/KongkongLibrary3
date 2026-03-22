@@ -17,10 +17,14 @@ namespace klib::Kongkong::Threading
 #if KLIB_ENV_WINDOWS
         Win32::Win32Handle m_mutex;
 #elif KLIB_ENV_UNIX
-
+        ::pthread_mutex_t m_mutex;
 #endif
 
         public:
+
+#if KLIB_ENV_UNIX
+        ~Mutex();
+#endif
 
         Mutex() noexcept;
 
@@ -54,7 +58,13 @@ namespace klib::Kongkong::Threading
     }
 
 #elif KLIB_ENV_UNIX
-
+    inline Mutex::Mutex() noexcept
+    {
+        ::pthread_mutex_init(
+            &m_mutex,
+            nullptr
+        );
+    }
 #endif
 }
 
