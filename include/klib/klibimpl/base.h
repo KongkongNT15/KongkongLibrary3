@@ -631,4 +631,48 @@ namespace klib
     }
 }
 
+// 
+namespace klib::Kongkong
+{
+    struct KLibType {
+
+    };
+
+    class Hash final {
+        public:
+
+        KLIB_STATIC_CLASS(Hash);
+
+        using ResultType = ssize_t;
+
+        template <class T>
+        static constexpr ResultType Get(
+            T const& value
+        ) noexcept;
+    };
+
+    template <class T>
+    concept CHashable = requires (T v) {
+        { v.GetHashCode() } -> ::std::convertible_to<Hash::ResultType>;
+    };
+}
+
+namespace klib::Kongkong
+{
+    template <class T>
+    constexpr Hash::ResultType Hash::Get(
+        T const& value
+    ) noexcept
+    {
+        if constexpr (CHashable<T>) {
+            return value.GetHashCode();
+        }
+        else {
+            return static_cast<ResultType>(
+                ::std::hash<T>().operator()(value)
+            );
+        }
+    }
+}
+
 #endif //!KLIB_BASE_H

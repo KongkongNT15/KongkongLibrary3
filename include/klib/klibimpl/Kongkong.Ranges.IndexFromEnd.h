@@ -12,6 +12,9 @@ namespace klib::Kongkong::Ranges
         constexpr IndexFromEnd(
             ssize_t value
         ) noexcept;
+
+        [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode() const noexcept;
     };
 
     
@@ -24,6 +27,12 @@ namespace klib::Kongkong::Ranges
     ) noexcept
         : Value(value)
     {
+    }
+
+    constexpr Hash::ResultType
+    IndexFromEnd::GetHashCode() const noexcept
+    {
+        return ~::std::hash<ssize_t>{}.operator()(Value);
     }
 }
 

@@ -2,7 +2,6 @@
 #define KLIB_KONGKONG_NUMERICS_VECTOR2_H
 
 #include "base.h"
-#include "Kongkong.Hash.h"
 
 #define KLIB_CLASS_TEMPLATE_DEF template <CNumber TNum>
 #define KLIB_CLASS_TEMPLATE_PARAM TNum
@@ -45,6 +44,9 @@ namespace klib::Kongkong::Numerics
 
         template <CNumber TNum1>
         [[nodiscard]] constexpr Vector2<TNum1> Cast() const noexcept;
+
+        [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode() const noexcept;
     };
 
     template <CNumber TNum1, CNumber TNum2>
@@ -168,6 +170,15 @@ namespace klib::Kongkong::Numerics
             static_cast<TNum1>(X),
             static_cast<TNum1>(Y)
         );
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr Hash::ResultType
+    Vector2<KLIB_CLASS_TEMPLATE_PARAM>::GetHashCode() const noexcept
+    {
+        auto h = ::std::hash<TNum>();
+
+        return (h(X) << 1) + h(Y);
     }
 
     template <CNumber TNum1, CNumber TNum2>
