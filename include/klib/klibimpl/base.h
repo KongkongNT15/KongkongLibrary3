@@ -219,7 +219,8 @@
     (Object::GetPointerChecked<ImplType>())
 
 #define KLIB_CREATE_ENUM_CREATE_OPERATOR_OR(enumClass) \
-    [[nodiscard]] constexpr enumClass operator|(enumClass left, enumClass right) noexcept { return enumClass((::std::underlying_type_t<enumClass>)left | (::std::underlying_type_t<enumClass>)right); }
+    [[nodiscard]] constexpr enumClass operator|(enumClass left, enumClass right) noexcept { return enumClass((::std::underlying_type_t<enumClass>)left | (::std::underlying_type_t<enumClass>)right); } \
+    constexpr enumClass& operator|=(enumClass& left, enumClass right) noexcept { return left = enumClass((::std::underlying_type_t<enumClass>)left | (::std::underlying_type_t<enumClass>)right); }
 
 #define KLIB_CREATE_ENUM_CREATE_OPERATOR_AND(enumClass) \
     [[nodiscard]] constexpr bool operator&(enumClass left, enumClass right) noexcept { return (bool)((::std::underlying_type_t<enumClass>)left & (::std::underlying_type_t<enumClass>)right); }
@@ -415,12 +416,6 @@ namespace klib::Kongkong::Memory
 
     template <class T>
     struct GCArrayObject;
-
-    template <class T>
-    struct GCObject;
-
-    struct GCObjectBase;
-    struct GCObjectCounter;
     
     template <class T>
     struct GCPinGuard;
@@ -441,10 +436,8 @@ namespace klib::Kongkong::Memory::Primitives
     struct GCHandleTable;
     enum struct GCObjectFlag;
 
-    template <class T>
+    template <class T = void>
     struct GCObjectHeader;
-
-    struct GCObjectHeaderBase;
 }
 
 namespace klib::Kongkong::Numerics

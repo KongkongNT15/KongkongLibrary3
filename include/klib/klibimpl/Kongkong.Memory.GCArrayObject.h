@@ -2,12 +2,11 @@
 #define KLIB_KONGKONG_MEMORY_GCARRAYOBJECT_H
 
 #include "base.h"
-#include "Kongkong.Memory.GCObjectBase.h"
 
 namespace klib::Kongkong::Memory
 {
     template <class T>
-    struct GCArrayObject final : public GCObjectBase {
+    struct GCArrayObject final {
         public:
 
         using ElementType = ::std::remove_cvref_t<T>;

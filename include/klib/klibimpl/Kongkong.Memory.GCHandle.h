@@ -2,8 +2,7 @@
 #define KLIB_KONGKONG_MEMORY_GCHANDLE_H
 
 #include "base.h"
-#include "Kongkong.Memory.GCHandleBase.h"
-#include "Kongkong.Memory.GCObject.h"
+#include "Kongkong.Memory.Primitives.GCHandleBase.h"
 #include "Kongkong.Memory.GCPinGuard.h"
 #include "Kongkong.NullPointerException.h"
 

@@ -2,23 +2,24 @@
 #define KLIB_KONGKONG_MEMORY_GCPINGUARD_H
 
 #include "base.h"
-#include "Kongkong.Memory.GCObject.h"
+#include "Kongkong.Memory.Primitives.GCHandleEntry.h"
+
+#include <atomic>
 
 namespace klib::Kongkong::Memory
 {
     template <class T>
     struct GCPinGuard final {
-        private:
-        GCObject<T>* m_objectPtr;
-
         public:
+        private:
+        ::std::atomic<Primitives::GCHandleEntry>* m_handleEntry;
 
         GCPinGuard(
             ::std::nullptr_t
         ) = delete;
 
         GCPinGuard(
-            GCObject<T>* objectPtr
+            ::std::atomic<Primitives::GCHandleEntry>* objectPtr
         ) noexcept;
 
         ~GCPinGuard();
@@ -32,7 +33,7 @@ namespace klib::Kongkong::Memory
 {
     template <class T>
     GCPinGuard<T>::GCPinGuard(
-        GCObject<T>* objectPtr
+        ::std::atomic<Primitives::GCHandleEntry>* objectPtr
     ) noexcept
         : m_objectPtr(objectPtr)
     {

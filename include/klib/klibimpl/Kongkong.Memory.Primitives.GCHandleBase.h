@@ -1,11 +1,10 @@
-﻿#ifndef KLIB_KONGKONG_MEMORY_GCHANDLEBASE_H
-#define KLIB_KONGKONG_MEMORY_GCHANDLEBASE_H
+﻿#ifndef KLIB_KONGKONG_MEMORY_PRIMITIVES_GCHANDLEBASE_H
+#define KLIB_KONGKONG_MEMORY_PRIMITIVES_GCHANDLEBASE_H
 
 #include "base.h"
-#include "Kongkong.Memory.GCObjectBase.h"
 #include "Kongkong.Memory.Primitives.GCHandleEntry.h"
 
-namespace klib::Kongkong::Memory
+namespace klib::Kongkong::Memory::Primitives
 {
     class GCHandleBase {
         friend GC;
@@ -35,10 +34,10 @@ namespace klib::Kongkong::Memory
             ~s_pointer();
 
             [[nodiscard]]
-            GCObjectBase* Get() const noexcept;
+            void* Get() const noexcept;
 
             void Set(
-                GCObjectBase* objectPtr
+                void* objectPtr
             );
         };
 
@@ -65,7 +64,7 @@ namespace klib::Kongkong::Memory
     };
 }
 
-namespace klib::Kongkong::Memory
+namespace klib::Kongkong::Memory::Primitives
 {
     constexpr GCHandleBase::s_pointer::s_pointer(
         ::std::nullptr_t
@@ -92,7 +91,7 @@ namespace klib::Kongkong::Memory
         other.m_pointer = nullptr;
     }
 
-    GCObjectBase*
+    constexpr void*
     GCHandleBase::s_pointer::Get() const noexcept
     {
         return m_pointer;
@@ -104,4 +103,4 @@ namespace klib::Kongkong::Memory
     }
 }
 
-#endif //!KLIB_KONGKONG_MEMORY_GCHANDLEBASE_H
+#endif //!KLIB_KONGKONG_MEMORY_PRIMITIVES_GCHANDLEBASE_H

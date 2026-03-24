@@ -6,8 +6,9 @@
 namespace klib::Kongkong::Memory::Primitives
 {
     enum struct GCObjectFlag {
-        Normal = 0x0,
-        Pinned = 0x1,
+        Normal    = 0x0, // フラグなし
+        Pinned    = 0x1, // こいつは回収するとまずい！！！
+        Marked    = 0x2, // 回収フラグ
     };
 
     KLIB_CREATE_ENUM_CREATE_OPERATOR_AND_OR(GCObjectFlag)
