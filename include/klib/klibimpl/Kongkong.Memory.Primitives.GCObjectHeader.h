@@ -29,22 +29,6 @@ namespace klib::Kongkong::Memory::Primitives
             ssize_t size
         ) noexcept;
 
-        GCObjectHeader(
-            GCObjectHeader const&
-        ) = default;
-
-        GCObjectHeader(
-            GCObjectHeader&&
-        ) = default;
-
-        GCObjectHeader& operator=(
-            GCObjectHeader const&
-        ) = default;
-
-        GCObjectHeader& operator=(
-            GCObjectHeader&&
-        ) = default;
-
         public:
         [[nodiscard]]
         constexpr ssize_t Alignment() const noexcept;

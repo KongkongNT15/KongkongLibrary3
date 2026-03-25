@@ -4,6 +4,7 @@
 #include "klibimpl/Kongkong.Memory.Primitives.GCHandleBase.h"
 #include "klibimpl/Kongkong.Memory.Primitives.GCHandleEntry.h"
 #include "klibimpl/Kongkong.Memory.Primitives.GCHandleTable.h"
+#include "klibimpl/Kongkong.Memory.Primitives.GCObject.h"
 #include "klibimpl/Kongkong.Memory.Primitives.GCObjectFlag.h"
 #include "klibimpl/Kongkong.Memory.Primitives.GCObjectHeader.h"
 

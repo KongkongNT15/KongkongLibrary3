@@ -420,6 +420,8 @@ namespace klib::Kongkong::Memory
     template <class T>
     struct GCPinGuard;
 
+    class MemoryAddress;
+
     class MemoryResource;
     class VirtualMemoryRegion;
     
@@ -438,6 +440,11 @@ namespace klib::Kongkong::Memory::Primitives
 
     template <class T = void>
     struct GCObjectHeader;
+
+    template <class T = void>
+    struct GCObject;
+
+    class GCObjectList;
 }
 
 namespace klib::Kongkong::Numerics
