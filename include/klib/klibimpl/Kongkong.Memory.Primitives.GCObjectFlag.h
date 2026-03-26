@@ -5,7 +5,7 @@
 
 namespace klib::Kongkong::Memory::Primitives
 {
-    enum struct GCObjectFlag {
+    enum struct GCObjectFlag : int16_t {
         Normal    = 0x0, // フラグなし
         Pinned    = 0x1, // こいつは回収するとまずい！！！
         Marked    = 0x2, // 回収フラグ

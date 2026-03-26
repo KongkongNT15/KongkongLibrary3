@@ -139,7 +139,12 @@ namespace klib::Kongkong::Memory::Primitives
         for (size_t i = 0; i < count; ++i) {
             // 解放前にエントリをクリアしておくのが安全ですｳﾋｮｯ
             m_entries[indices[i]].store(
-                {nullptr, 0, GCObjectFlag::Normal},
+                {
+                    nullptr,
+                    0,
+                    0,
+                    GCObjectFlag::Normal
+                },
                 std::memory_order_relaxed
             );
 

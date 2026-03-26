@@ -436,7 +436,7 @@ namespace klib::Kongkong::Memory::Primitives
 {
     struct GCHandleEntry;
     struct GCHandleTable;
-    enum struct GCObjectFlag;
+    enum struct GCObjectFlag : int16_t;
 
     template <class T = void>
     struct GCObjectHeader;

@@ -11,6 +11,13 @@ namespace klib::Kongkong::Memory
         KLIB_STATIC_CLASS(MemoryAddress);
 
         [[nodiscard]]
+        static constexpr intptr_t AlignDownUnsafe(
+            intptr_t currentAddress,
+            ssize_t currentObjectAlignment,
+            ssize_t beforeObjectAlignment
+        ) noexcept;
+
+        [[nodiscard]]
         static constexpr intptr_t AlignUpUnsafe(
             intptr_t address,
             ssize_t alignment
@@ -26,6 +33,17 @@ namespace klib::Kongkong::Memory
 
 namespace klib::Kongkong::Memory
 {
+    constexpr intptr_t MemoryAddress::AlignDownUnsafe(
+        intptr_t currentAddress,
+        ssize_t currentObjectAlignment,
+        ssize_t beforeObjectAlignment
+    ) noexcept
+    {
+        if (beforeObjectAlignment >= currentAddress) return currentAddress - beforeObjectAlignment;
+
+        
+    }
+
     constexpr intptr_t MemoryAddress::AlignUpUnsafe(
         intptr_t address,
         ssize_t alignment
