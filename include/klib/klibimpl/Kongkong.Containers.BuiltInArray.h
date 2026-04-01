@@ -315,9 +315,9 @@ namespace klib::Kongkong::Containers
     )
     {
         auto itr = begin();
-        auto end = end();
+        auto e = end();
 
-        while (itr != end) {
+        while (itr != e) {
             pred(*itr);
             ++itr;
         }

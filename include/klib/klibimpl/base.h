@@ -299,6 +299,7 @@ namespace klib::Kongkong
     struct ArgumentException;
     struct ArgumentOutOfRangeException;
     struct Exception;
+    enum struct ErrorCode;
     class Initializer;
     struct InvalidOperationException;
     struct MemoryAllocationException;
