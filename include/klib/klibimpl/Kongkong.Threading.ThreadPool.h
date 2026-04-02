@@ -328,8 +328,4 @@ namespace klib::Kongkong::Threading
     }
 }
 
-int f()
-{
-}
-
 #endif //!KLIB_KONGKONG_THRAEDING_THREADPOOL_H

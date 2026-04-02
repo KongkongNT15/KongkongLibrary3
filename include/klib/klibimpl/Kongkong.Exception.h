@@ -114,6 +114,14 @@ namespace klib::Kongkong
     {
         return m_message;
     }
+
+    constexpr bool operator!=(
+        Exception const& left,
+        Exception const& right
+    ) noexcept
+    {
+        return !(left == right);
+    }
 }
 
 #endif //!KLIB_KONGKONG_EXCEPTION_H
