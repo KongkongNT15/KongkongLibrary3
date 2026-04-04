@@ -2,7 +2,15 @@
 #define KLIB_KONGKONG_THRAEDING_THREAD_H
 
 #include "base.h"
-#include "Kongkong.Win32.Win32Handle.h"
+
+#if KLIB_ENV_WINDOWS
+    #include "Kongkong.Win32.Win32Handle.h"
+#elif KLIB_OBJECTIVE_C_ENABLED
+    #include "Kongkong.AppleDevice.ObjCHandle.h"
+#elif KLIB_ENV_UNIX
+
+#endif
+
 #include "Kongkong.Threading.ThreadExitCode.h"
 
 namespace klib::Kongkong::Threading
@@ -17,8 +25,15 @@ namespace klib::Kongkong::Threading
         constexpr Thread(
             ::HANDLE rawHandle
         ) noexcept;
-#elif KLIB_ENV_UNIX
 
+#elif KLIB_OBJECTIVE_C_ENABLED
+        AppleDevice::ObjCHandle m_thread;
+
+        constexpr Thread(
+            AppleDevice::ObjCHandle&& thread
+        ) noexcept;
+#elif KLIB_ENV_UNIX
+        ::pthread_t m_thread;
 #endif
         public:
 
@@ -104,6 +119,15 @@ namespace klib::Kongkong::Threading
 
         return static_cast<int>(exitCode);
     }
+
+#elif KLIB_OBJECTIVE_C_ENABLED
+    constexpr Thread::Thread(
+        AppleDevice::ObjCHandle&& thread
+    ) noexcept
+        : m_thread(::std::move(thread))
+    {
+    }
+
 #endif
     inline ThreadExitCode Thread::ExitCode() noexcept
     {

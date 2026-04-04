@@ -349,6 +349,9 @@ namespace klib::Kongkong::Containers
     template <class T, ssize_t N> requires (N >= 1)
     struct BuiltInArray;
 
+    template <class T>
+    class ChainedList;
+
     class ContainerHelper;
 
     template <class T>
@@ -365,6 +368,9 @@ namespace klib::Kongkong::Containers::Primitives
 {
     template <class T>
     struct ArrayBase;
+
+    template <class T>
+    struct ChainLink;
 
     struct ContainerBase;
 
@@ -423,6 +429,8 @@ namespace klib::Kongkong::Memory
 
     class MemoryAddress;
 
+    class MemoryPage;
+    class MemoryPageHelper;
     class MemoryResource;
     class VirtualMemoryRegion;
     

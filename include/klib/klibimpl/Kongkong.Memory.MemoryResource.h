@@ -2,13 +2,13 @@
 #define KLIB_KONGKONG_MEMORY_MEMORYRESOURCE_H
 
 #include "base.h"
+#include "Kongkong.Memory.MemoryPageHelper.h"
 
 namespace klib::Kongkong::Memory
 {
     class MemoryResource final {
 
         private:
-        static size_t s_pageSize;
 
         void* m_p;
         size_t m_regionSize;
@@ -27,9 +27,7 @@ namespace klib::Kongkong::Memory
 
         [[nodiscard]]
         static size_t PageSize() noexcept;
-
         
-
         constexpr MemoryResource(
         ) noexcept;
 
@@ -128,18 +126,30 @@ namespace klib::Kongkong::Memory
 
 namespace klib::Kongkong::Memory
 {
+    inline bool MemoryResource::do_free() noexcept
+    {
+        return MemoryPageHelper::Free(
+            m_p,
+            m_regionSize
+        );
+    }
+
+    inline void* MemoryResource::do_reserve(
+        size_t minBytes
+    ) noexcept
+    {
+        return MemoryPageHelper::Reserve(
+            minBytes
+        );
+    }
+
     inline size_t MemoryResource::GetPageLength(
         size_t bytes
     ) noexcept
     {
         if (bytes == 0) return 0;
 
-        return (bytes - 1) / s_pageSize + 1;
-    }
-
-    inline size_t MemoryResource::PageSize() noexcept
-    {
-        return s_pageSize;
+        return (bytes - 1) / PageSize() + 1;
     }
 
     constexpr MemoryResource::MemoryResource(
@@ -180,9 +190,40 @@ namespace klib::Kongkong::Memory
         return *this;
     }
 
+    inline bool MemoryResource::Commit(
+        void* targetAddress,
+        size_t bytes
+    ) noexcept
+    {
+        return MemoryPageHelper::Commit(
+            targetAddress,
+            bytes
+        );
+    }
+
     constexpr void* MemoryResource::Data() const noexcept
     {
         return m_p;
+    }
+
+    bool MemoryResource::Decommit(
+        void* targetAddress,
+        size_t bytes
+    ) noexcept
+    {
+        return MemoryPageHelper::Decommit(
+            targetAddress,
+            bytes
+        );
+    }
+
+    bool MemoryResource::DecommitAll(
+    ) noexcept
+    {
+        return MemoryPageHelper::Decommit(
+            m_p,
+            m_regionSize
+        );
     }
 
     inline bool MemoryResource::Free() noexcept

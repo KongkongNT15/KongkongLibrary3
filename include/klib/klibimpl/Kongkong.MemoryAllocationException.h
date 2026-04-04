@@ -2,11 +2,12 @@
 #define KLIB_KONGKONG_MEMORYALLOCATIONEXCEPTION_H
 
 #include "base.h"
+#include "Kongkong.MemoryException.h"
 
 namespace klib::Kongkong
 {
-    struct MemoryAllocationException {
-    public:
+    struct MemoryAllocationException : public MemoryException {
+        public:
 
         static void CheckNull(
             const void* p
@@ -21,8 +22,10 @@ namespace klib::Kongkong
         template <class TFunc>
         static void CheckNull(
             const void* p,
-            TFunc f
+            TFunc&& f
         );
+
+        constexpr MemoryAllocationException() noexcept;
     };
 }
 
@@ -31,7 +34,7 @@ namespace klib::Kongkong
     template <class TFunc>
     void MemoryAllocationException::CheckNull(
         const void* p,
-        TFunc f
+        TFunc&& f
     )
     {
         if (p == nullptr) [[unlikely]] {
