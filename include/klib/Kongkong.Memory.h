@@ -6,6 +6,8 @@
 #include "klibimpl/Kongkong.Memory.GCArrayObject.h"
 #include "klibimpl/Kongkong.Memory.GCHandle.h"
 #include "klibimpl/Kongkong.Memory.VirtualMemoryRegion.h"
+#include "klibimpl/Kongkong.Memory.MemoryPage.h"
+#include "klibimpl/Kongkong.Memory.MemoryPageHelper.h"
 #include "klibimpl/Kongkong.Memory.MemoryResource.h"
 #include "klibimpl/Kongkong.Memory.SharedPointer.h"
 #include "klibimpl/Kongkong.Memory.SharedPointerBase.h"

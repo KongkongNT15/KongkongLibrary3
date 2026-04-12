@@ -1,16 +1,72 @@
-﻿namespace klib::Kongkong::Memory
-{
-#if KLIB_ENV_WINDOWS
-    size_t MemoryResource::s_pageSize = [] () {
-        ::SYSTEM_INFO si;
-        ::GetSystemInfo(&si);
-        return si.dwPageSize;
-    }();
+﻿#ifndef KLIB_KONGKONG_MEMORY_MEMORYPAGEHELPER_H
+#define KLIB_KONGKONG_MEMORY_MEMORYPAGEHELPER_H
 
-    bool MemoryResource::do_free() noexcept
+#include "base.h"
+
+#if KLIB_ENV_WINDOWS
+
+#elif KLIB_ENV_UNIX
+    #include <sys/mman.h>
+    #include <stdio.h>
+#endif
+
+namespace klib::Kongkong::Memory
+{
+    class MemoryPageHelper final {
+        private:
+
+        static size_t s_pageSize;
+
+        public:
+
+        KLIB_STATIC_CLASS(MemoryPageHelper);
+
+        static bool Commit(
+            void* targetAddress,
+            size_t bytes
+        ) noexcept;
+
+        static bool Free(
+            void* page,
+            size_t regionSize
+        ) noexcept;
+
+        [[nodiscard]]
+        static size_t PageSize() noexcept;
+
+        [[nodiscard]]
+        static void* Reserve(
+            size_t minBytes
+        ) noexcept;
+
+        static bool Decommit(
+            void* targetAddress,
+            size_t bytes
+        ) noexcept;
+
+        static bool DecommitAll(
+            void* page,
+            size_t bytes
+        ) noexcept;
+    };
+}
+
+namespace klib::Kongkong::Memory
+{
+    inline size_t MemoryPageHelper::PageSize() noexcept
+    {
+        return s_pageSize;
+    }
+#if KLIB_ENV_WINDOWS
+    
+
+    inline bool MemoryPageHelper::Free(
+        void* page,
+        size_t
+    ) noexcept
     {
         ::BOOL result = ::VirtualFree(
-            m_p,
+            page,
             0,
             MEM_RELEASE
         );
@@ -18,7 +74,7 @@
         return static_cast<bool>(result);
     }
 
-    void* MemoryResource::do_reserve(
+    inline void* MemoryPageHelper::Reserve(
         size_t minBytes
     ) noexcept
     {
@@ -30,7 +86,7 @@
         );
     }
 
-    bool MemoryResource::Commit(
+    inline bool MemoryPageHelper::Commit(
         void* targetAddress,
         size_t bytes
     ) noexcept
@@ -43,7 +99,7 @@
         ) != nullptr;
     }
 
-    bool MemoryResource::Decommit(
+    inline bool MemoryPageHelper::Decommit(
         void* targetAddress,
         size_t bytes
     ) noexcept
@@ -57,11 +113,13 @@
         return static_cast<bool>(result);
     }
 
-    bool MemoryResource::DecommitAll(
+    inline bool MemoryPageHelper::DecommitAll(
+        void* page,
+        size_t
     ) noexcept
     {
         ::BOOL result = ::VirtualFree(
-            m_p,
+            page,
             0,
             MEM_DECOMMIT
         );
@@ -70,14 +128,16 @@
     }
 
 #elif KLIB_ENV_UNIX
-    size_t MemoryResource::s_pageSize = ::sysconf(_SC_PAGESIZE);
 
-    bool MemoryResource::do_free() noexcept
+    inline bool MemoryPageHelper::Free(
+        void* page,
+        size_t regionSize
+    ) noexcept
     {
-        return ::munmap(m_p, m_regionSize) != EOF;
+        return ::munmap(page, regionSize) != EOF;
     }
 
-    void* MemoryResource::do_reserve(
+    inline void* MemoryPageHelper::Reserve(
         size_t minBytes
     ) noexcept
     {
@@ -91,7 +151,7 @@
         );
     }
 
-    bool MemoryResource::Commit(
+    inline bool MemoryPageHelper::Commit(
         void* targetAddress,
         size_t bytes
     ) noexcept
@@ -103,7 +163,7 @@
         ) != EOF;
     }
 
-    bool MemoryResource::Decommit(
+    inline bool MemoryPageHelper::Decommit(
         void* targetAddress,
         size_t bytes
     ) noexcept
@@ -115,13 +175,15 @@
         return result1 != EOF && result2 != EOF;
     }
 
-    bool MemoryResource::DecommitAll(
+    inline bool MemoryPageHelper::DecommitAll(
+        void* page,
+        size_t bytes
     ) noexcept
     {
         // 同じアドレスに対して PROT_NONE で上書きマッピングを行うｳﾋｮｯ
         return mmap(
-            m_p,
-            m_regionSize,
+            page,
+            bytes,
             PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED,
             -1,
             0
@@ -129,3 +191,5 @@
     }
 #endif
 }
+
+#endif //!KLIB_KONGKONG_MEMORY_MEMORYPAGEHELPER_H

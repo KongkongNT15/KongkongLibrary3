@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_MEMORY_PRIMITIVES_GCHANDLEENTRY_H
 
 #include "base.h"
+#include "Kongkong.Memory.Primitives.GCObject.h"
 #include "Kongkong.Memory.Primitives.GCObjectFlag.h"
 
 #include <atomic>
@@ -16,6 +17,9 @@ namespace klib::Kongkong::Memory::Primitives
 
         [[nodiscard]]
         constexpr GCObjectHeader<>* GetHeader() const noexcept;
+
+        [[nodiscard]]
+        constexpr GCObject<>* GetObject() const noexcept;
     };
 }
 
@@ -26,6 +30,12 @@ namespace klib::Kongkong::Memory::Primitives
         intptr_t addr = reinterpret_cast<intptr_t>(ObjectPtr);
 
         return reinterpret_cast<GCObjectHeader<>*>(addr - Offset);
+    }
+
+    constexpr GCObject<>*
+    GCHandleEntry::GetObject() const noexcept
+    {
+        return GCObject<>::GetObject(GetHeader());
     }
 }
 

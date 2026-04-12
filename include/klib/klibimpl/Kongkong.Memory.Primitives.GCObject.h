@@ -12,9 +12,14 @@ namespace klib::Kongkong::Memory::Primitives
         private:
         GCObjectHeader<> m_header;
         void* m_objectPtr;
-        GCObject<void>* m_next;
+        GCObject<>* m_next;
 
         public:
+
+        [[nodiscard]]
+        static constexpr GCObject<>* GetObject(
+            GCObjectHeader<>* header
+        ) noexcept;
 
         constexpr GCObject(
             GCObjectHeader<> header,
@@ -26,6 +31,13 @@ namespace klib::Kongkong::Memory::Primitives
         ) noexcept;
 
         ~GCObject();
+
+        [[nodiscard]]
+        constexpr GCObject<>* Next() const noexcept;
+
+        constexpr void Next(
+            GCObject<>* value
+        ) noexcept;
     };
 
     template <class T>
@@ -44,6 +56,14 @@ namespace klib::Kongkong::Memory::Primitives
 
 namespace klib::Kongkong::Memory::Primitives
 {
+    constexpr GCObject<>*
+    GCObject<void>::GetObject(
+        GCObjectHeader<>* header
+    ) noexcept
+    {
+        return reinterpret_cast<GCObject<>*>(header);
+    }
+
     constexpr GCObject<void>::GCObject(
         GCObjectHeader<> header,
         void* objectPtr
@@ -73,6 +93,19 @@ namespace klib::Kongkong::Memory::Primitives
         m_header.Destruct(m_objectPtr);
     }
 
+    constexpr GCObject<>*
+    GCObject<void>::Next() const noexcept
+    {
+        return m_next;
+    }
+
+    constexpr void GCObject<void>::Next(
+        GCObject<>* value
+    ) noexcept
+    {
+        m_next = value;
+    }
+    
     template <class T>
     template <class... TArgs>
     constexpr GCObject<T>::GCObject(

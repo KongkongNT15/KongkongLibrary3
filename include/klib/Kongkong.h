@@ -6,6 +6,7 @@
 #include "klibimpl/Kongkong.Interface.h"
 #include "klibimpl/Kongkong.LazyObject.h"
 #include "klibimpl/Kongkong.MemoryAllocationException.h"
+#include "klibimpl/Kongkong.MemoryException.h"
 #include "klibimpl/Kongkong.NonType.h"
 #include "klibimpl/Kongkong.UnsafeLazyObject.h"
 
