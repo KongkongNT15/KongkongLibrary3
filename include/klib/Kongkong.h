@@ -1,6 +1,7 @@
 ﻿#ifndef KLIB_KONGKONG_H
 #define KLIB_KONGKONG_H
 
+#include "klibimpl/Kongkong.Enum.h"
 #include "klibimpl/Kongkong.ValueType.h"
 #include "klibimpl/Kongkong.Interface.h"
 #include "klibimpl/Kongkong.LazyObject.h"

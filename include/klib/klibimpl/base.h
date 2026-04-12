@@ -298,6 +298,10 @@ namespace klib::Kongkong
 
     struct ArgumentException;
     struct ArgumentOutOfRangeException;
+
+    template <class TEnum = void> requires ::std::is_enum_v<TEnum>
+    struct Enum;
+
     struct Exception;
     enum struct ErrorCode;
     class Initializer;

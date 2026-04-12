@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_MEMORY_GCPINGUARD_H
 
 #include "base.h"
+#include "Kongkong.Memory.GCHandle.h"
 #include "Kongkong.Memory.Primitives.GCHandleEntry.h"
 
 #include <atomic>
@@ -13,6 +14,7 @@ namespace klib::Kongkong::Memory
         public:
         private:
         ::std::atomic<Primitives::GCHandleEntry>* m_handleEntry;
+        T* m_p;
 
         GCPinGuard(
             ::std::nullptr_t
@@ -25,7 +27,7 @@ namespace klib::Kongkong::Memory
         ~GCPinGuard();
 
         [[nodiscard]]
-        constexpr GCObject<T>* operator->() const noexcept;
+        constexpr T* operator->() const noexcept;
     };
 }
 
@@ -35,7 +37,7 @@ namespace klib::Kongkong::Memory
     GCPinGuard<T>::GCPinGuard(
         ::std::atomic<Primitives::GCHandleEntry>* objectPtr
     ) noexcept
-        : m_objectPtr(objectPtr)
+        : m_handleEntry(objectPtr)
     {
 #warning GCPinGuard<T>::GCPinGuard()
         // TODO: ここに処理を書きます
@@ -50,10 +52,10 @@ namespace klib::Kongkong::Memory
     }
 
     template <class T>
-    constexpr GCObject<T>*
+    constexpr T*
     GCPinGuard<T>::operator->() const noexcept
     {
-        return m_objectPtr;
+        return m_p;
     }
 }
 
