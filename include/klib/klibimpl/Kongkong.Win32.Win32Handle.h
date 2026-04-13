@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_WIN32_WIN32HANDLE_H
 
 #include "base.h"
+#include "Kongkong.HandleType.h"
 
 #if KLIB_ENV_WINDOWS
 

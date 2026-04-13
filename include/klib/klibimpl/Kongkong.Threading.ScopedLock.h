@@ -25,6 +25,10 @@ namespace klib::Kongkong::Threading
         ScopedLock& operator=(
             ScopedLock const&
         ) = delete;
+
+        [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode(
+        ) const noexcept;
     };
 }
 
@@ -41,6 +45,13 @@ namespace klib::Kongkong::Threading
     inline ScopedLock::~ScopedLock()
     {
         m_pMutex->Unlock();
+    }
+
+    constexpr Hash::ResultType
+    ScopedLock::GetHashCode(
+    ) const noexcept
+    {
+        return ::std::hash<void*>().operator()(m_pMutex);
     }
 }
 

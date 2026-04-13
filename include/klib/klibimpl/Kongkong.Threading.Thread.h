@@ -140,8 +140,6 @@ namespace klib::Kongkong::Threading
         return exitCode;
     }
 
-    
-
     inline void Thread::Join()
     {
         Join(static_cast<uint32_t>(-1));

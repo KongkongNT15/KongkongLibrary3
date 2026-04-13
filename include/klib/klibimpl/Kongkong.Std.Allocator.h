@@ -2,12 +2,13 @@
 #define KLIB_KONGKONG_STD_ALLOCATOR_H
 
 #include "base.h"
+#include "Kongkong.StatelessType.h"
 #include "Kongkong.Memory.GC.h"
 
 namespace klib::Kongkong::Std
 {
     template <class T>
-    struct Allocator {
+    struct Allocator : public StatelessType {
         public:
         using difference_type = ptrdiff_t;
         using is_always_equal = ::std::true_type;
@@ -24,6 +25,10 @@ namespace klib::Kongkong::Std
             value_type* ptr,
             size_type
         ) noexcept;
+
+        [[nodisacard]]
+        constexpr Hash::ResultType GetHashCode(
+        ) const noexcept;
     };
 
     template <class T>
@@ -63,6 +68,14 @@ namespace klib::Kongkong::Std
     }
 
     template <class T>
+    constexpr Hash::ResultType
+    Allocator<T>::GetHashCode(
+    ) const noexcept
+    {
+        return 0;
+    }
+
+    template <class T>
     constexpr bool operator==(
         Allocator<T> const&,
         Allocator<T> const&
@@ -79,6 +92,7 @@ namespace klib::Kongkong::Std
     {
         return false;
     }
+    
 }
 
 #endif //!KLIB_KONGKONG_STD_ALLOCATOR_H

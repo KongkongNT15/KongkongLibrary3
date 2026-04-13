@@ -40,6 +40,9 @@ namespace klib::Kongkong::Memory
         THandle Cast() const;
 
         [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode() const noexcept;
+
+        [[nodiscard]]
         constexpr Type* GetRawPointerUnsafe() const noexcept;
 
         template <class TPredicate>
@@ -82,6 +85,16 @@ namespace klib::Kongkong::Memory
         if constexpr (::std::derived_from<typename Type, type>) {
 
         }
+    }
+
+    template <class T>
+    constexpr Hash::ResultType
+    GCHandle<T>::GetHashCode() const noexcept
+    {
+        if (this->m_pointer.m_pointer == nullptr) return 0;
+        GCPinGuard<T> guard = this->operator->();
+
+        return Hash::Get<Type>(*GetRawPointerUnsafe());
     }
 
     template <class T>

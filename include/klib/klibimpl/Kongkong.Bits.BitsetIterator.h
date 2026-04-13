@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_BITS_BITSETITERATOR_H
 
 #include "base.h"
+#include "Kongkong.ValueType.h"
 #include "Kongkong.Bits.BitsetElement.h"
 #include "Kongkong.Numerics.Int.h"
 
@@ -40,7 +41,8 @@ namespace klib::Kongkong::Bits
         [[nodiscard]]
         constexpr BitsetElement operator*() const noexcept;
 
-
+        [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode() const noexcept;
     };
 
     [[nodiscard]]
@@ -106,6 +108,13 @@ namespace klib::Kongkong::Bits
         return BitsetElement(*m_p, m_indexBit);
     }
 
+    constexpr Hash::ResultType
+    BitsetIterator::GetHashCode() const noexcept
+    {
+        auto h1 = reinterpret_cast<Hash::ResultType>(m_p);
+        return h1 + m_indexBit;
+    }
+
     constexpr bool operator==(
         BitsetIterator left,
         BitsetIterator right
@@ -123,6 +132,7 @@ namespace klib::Kongkong::Bits
     {
         return !(left == right);
     }
+    
 }
 
 #endif //!KLIB_KONGKONG_BITS_BITSETITERATOR_H

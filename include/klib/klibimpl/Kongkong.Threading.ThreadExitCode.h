@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_THREADING_THREADEXITCODE_H
 
 #include "base.h"
+#include "Kongkong.ValueType.h"
 
 namespace klib::Kongkong::Threading
 {
@@ -20,6 +21,10 @@ namespace klib::Kongkong::Threading
             int code,
             bool success
         ) noexcept;
+
+        [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode(
+        ) const noexcept;
     };
 }
 
@@ -50,6 +55,13 @@ namespace klib::Kongkong::Threading
         : Code(code)
         , Success(success)
     {
+    }
+
+    constexpr Hash::ResultType ThreadExitCode::GetHashCode(
+    ) const noexcept
+    {
+        auto v = ::std::hash<int>().operator()(Code);
+        return v + static_cast<int>(Success);
     }
 }
 

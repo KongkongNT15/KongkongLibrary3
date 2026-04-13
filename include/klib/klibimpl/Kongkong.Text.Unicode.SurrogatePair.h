@@ -14,6 +14,12 @@ namespace klib::Kongkong::Text::Unicode
             char16_t lowSurrogate
         );
 
+        [[noreturn]]
+        static void do_throwHighSurrogateError();
+
+        [[noreturn]]
+        static void do_throwLowSurrogateError();
+
         char16_t m_lowSurrogate;
         char16_t m_highSurrogate;
 
@@ -49,6 +55,10 @@ namespace klib::Kongkong::Text::Unicode
             char16_t highSurrogate,
             char16_t lowSurrogate
         );
+
+        [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode(
+        ) const noexcept;
 
         [[nodiscard]]
         constexpr char16_t HighSurrogate() const noexcept;
@@ -189,6 +199,19 @@ namespace klib::Kongkong::Text::Unicode
 
 namespace klib::Kongkong::Text::Unicode
 {
+    inline void SurrogatePair::s_checkPair(
+        char16_t highSurrogate,
+        char16_t lowSurrogate
+    )
+    {
+        if (!UnicodeTraits::IsHighSurrogate(highSurrogate)) [[unlikely]] {
+            do_throwHighSurrogateError();
+        }
+        if (!UnicodeTraits::IsLowSurrogate(lowSurrogate)) [[unlikely]] {
+            do_throwLowSurrogateError();
+        }
+    }
+    
     constexpr SurrogatePair SurrogatePair::CreateUnsafe(
         char32_t c
     ) noexcept
@@ -238,6 +261,13 @@ namespace klib::Kongkong::Text::Unicode
         , m_lowSurrogate(lowSurrogate)
     {
         s_checkPair(highSurrogate, lowSurrogate);
+    }
+
+    constexpr Hash::ResultType SurrogatePair::GetHashCode(
+    ) const noexcept
+    {
+        char32_t c = ToUnicode();
+        return ::std::hash<char32_t>().operator()(c);
     }
 
     constexpr char16_t SurrogatePair::HighSurrogate() const noexcept

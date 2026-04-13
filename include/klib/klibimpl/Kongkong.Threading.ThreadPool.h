@@ -9,9 +9,8 @@
     #include <malloc.h>
 #elif KLIB_COMPILER_APPLE_CLANG
     #include <dispatch/dispatch.h>
-    #include <alloca.h>
 #elif KLIB_ENV_UNIX
-    #include <alloca.h>
+
 #endif
 
 #include <coroutine>

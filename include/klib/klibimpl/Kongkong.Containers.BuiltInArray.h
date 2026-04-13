@@ -168,6 +168,10 @@ namespace klib::Kongkong::Containers
         ) const noexcept;
 
         [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode(
+        ) const noexcept;
+
+        [[nodiscard]]
         constexpr ArrayView<T> GetView() const noexcept;
 
         [[nodiscard]]
@@ -491,6 +495,20 @@ namespace klib::Kongkong::Containers
     ) const noexcept
     {
         return Arr[0];
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr Hash::ResultType
+    BuiltInArray<KLIB_CLASS_TEMPLATE_PARAM>::GetHashCode(
+    ) const noexcept
+    {
+        Hash::ResultType result = 0;
+
+        for (ElementType const& v : Arr) {
+            result += Hash::Get<ElementType>(v);
+        }
+
+        return result;
     }
 
     KLIB_CLASS_TEMPLATE_DEF

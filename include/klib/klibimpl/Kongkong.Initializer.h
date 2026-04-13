@@ -11,6 +11,10 @@ namespace klib::Kongkong
         Initializer(
             TFunc&& func
         );
+
+        [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode(
+        ) const noexcept;
     };
 }
 
@@ -22,6 +26,13 @@ namespace klib::Kongkong
     )
     {
         func();
+    }
+
+    constexpr Hash::ResultType
+    Initializer::GetHashCode(
+    ) const noexcept
+    {
+        return 0;
     }
 }
 

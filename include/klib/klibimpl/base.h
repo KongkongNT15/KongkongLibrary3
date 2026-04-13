@@ -293,6 +293,8 @@ namespace klib
 namespace klib::Kongkong
 {
     struct KLibType;
+    class HandleType;
+    class StatelessType;
     struct ValueType;
     struct NonType;
 
@@ -327,6 +329,9 @@ namespace klib::Kongkong
 
     template <class T>
     struct UnsafeLazyObject;
+
+    template <class T>
+    concept CKLibType = ::std::derived_from<T, KLibType>;
 }
 
 namespace klib::Kongkong::AppleDevice
@@ -647,9 +652,7 @@ namespace klib
 // 
 namespace klib::Kongkong
 {
-    struct KLibType {
-
-    };
+    struct KLibType {};
 
     class Hash final {
         public:

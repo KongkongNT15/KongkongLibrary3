@@ -2,11 +2,12 @@
 #define KLIB_KONGKONG_NUMERICS_NUMBERPARSERESULT_H
 
 #include "base.h"
+#include "Kongkong.ValueType.h"
 
 namespace klib::Kongkong::Numerics
 {
     template <class TNum> requires CNumber<TNum>
-    struct NumberParseResult {
+    struct NumberParseResult : public ValueType {
     private:
         TNum m_result;
         bool m_success;
@@ -22,6 +23,10 @@ namespace klib::Kongkong::Numerics
             TNum result,
             bool success
         ) noexcept;
+
+        [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode(
+        ) const noexcept;
 
         [[nodiscard]]
         constexpr TNum Result() const noexcept;
@@ -65,6 +70,14 @@ namespace klib::Kongkong::Numerics
         : m_result(result)
         , m_success(success)
     {
+    }
+
+    template <class TNum> requires CNumber<TNum>
+    constexpr Hash::ResultType
+    NumberParseResult<TNum>::GetHashCode(
+    ) const noexcept
+    {
+        return ::std::hash<TNum>().operator()(m_result) + m_success;
     }
 
     template <class TNum> requires CNumber<TNum>

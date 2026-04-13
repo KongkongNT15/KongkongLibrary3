@@ -69,7 +69,7 @@ namespace klib::Kongkong::Text::Unicode
         char32_t c
     ) noexcept
     {
-        return U'\U00010000' <= c &&  c <= U'\U0010FFFF';
+        return U'\U00010000' <= c && c <= U'\U0010FFFF';
     }
 
     constexpr bool UnicodeTraits::IsValidCodePoint(

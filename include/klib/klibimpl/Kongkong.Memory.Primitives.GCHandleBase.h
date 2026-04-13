@@ -2,11 +2,12 @@
 #define KLIB_KONGKONG_MEMORY_PRIMITIVES_GCHANDLEBASE_H
 
 #include "base.h"
+#include "Kongkong.HandleType.h"
 #include "Kongkong.Memory.Primitives.GCHandleEntry.h"
 
 namespace klib::Kongkong::Memory::Primitives
 {
-    class GCHandleBase {
+    class GCHandleBase : public HandleType {
         friend GC;
         template <class T>
         friend class GCHandle;

@@ -2,17 +2,18 @@
 #define KLIB_KONGKONG_UNSAFELAZYOBJECT_H
 
 #include "base.h"
+#include "Kongkong.ValueType.h"
 
 namespace klib::Kongkong
 {
     template <class T>
-    struct UnsafeLazyObject final {
+    struct UnsafeLazyObject final : public ValueType {
     public:
         using Type = ::std::remove_cvref<T>;
         
     private:
         static constexpr ssize_t s_size = sizeof(Type);
-        byte m_placeHolder[s_size];
+        alignas(alignof(Type)) byte m_placeHolder[s_size];
 
         UnsafeLazyObject(
             UnsafeLazyObject&&
@@ -48,6 +49,10 @@ namespace klib::Kongkong
         void EmplaceUnsafe(
             Args&&... args
         ) noexcept(noexcept(Type(::std::forward<Args>(args)...)));
+
+        [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode(
+        ) const noexcept;
 
         [[nodiscard]]
         Type& GetValueUnsafe() noexcept;
@@ -89,6 +94,20 @@ namespace klib::Kongkong
         Type& unsafeValue = GetValueUnsafe();
 
         new(&unsafeValue) Type(::std::forward<Args>(args)...);
+    }
+
+    template <class T>
+    constexpr Hash::ResultType
+    UnsafeLazyObject<T>::GetHashCode(
+    ) const noexcept
+    {
+        int result = 0;
+
+        for (byte v : m_placeHolder) {
+            result += v;
+        }
+
+        return ::std::hash<int>().operator()(result);
     }
 
     template <class T>

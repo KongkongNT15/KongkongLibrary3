@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_ENUM_H
 
 #include "base.h"
+#include "Kongkong.ValueType.h"
 
 #define KLIB_CLASS_TEMPLATE_DEF template <class TEnum> requires ::std::is_enum_v<TEnum>
 #define KLIB_CLASS_TEMPLATE_PARAM TEnum
@@ -34,7 +35,7 @@ namespace klib::Kongkong
     };
 
     template <class TEnum> requires ::std::is_enum_v<TEnum>
-    struct Enum {
+    struct Enum : ValueType {
         public:
         using Base = typename ::std::underlying_type_t<TEnum>;
 
@@ -71,6 +72,10 @@ namespace klib::Kongkong
         constexpr Enum& operator&=(
             Enum value
         ) noexcept;
+
+        [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode(
+        ) const noexcept;
     };
 
     KLIB_CLASS_TEMPLATE_DEF
@@ -202,6 +207,16 @@ namespace klib::Kongkong
     ) noexcept
     {
         return *this &= value.Value;
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr Hash::ResultType
+    Enum<KLIB_CLASS_TEMPLATE_PARAM>::GetHashCode(
+    ) const noexcept
+    {
+        return ::std::hash<Base>().operator()(
+            static_cast<Base>(Value)
+        );
     }
 
     KLIB_CLASS_TEMPLATE_DEF

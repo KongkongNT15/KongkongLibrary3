@@ -113,7 +113,12 @@ namespace klib::Kongkong::Std
         );
 
         [[nodiscard]]
-        constexpr Containers::ArrayView<T> GetView() const noexcept;
+        constexpr Hash::ResultType GetHashCode(
+        ) const noexcept;
+
+        [[nodiscard]]
+        constexpr Containers::ArrayView<T> GetView(
+        ) const noexcept;
 
         [[nodiscard]]
         constexpr ssize_t IndexOf(
@@ -381,6 +386,14 @@ namespace klib::Kongkong::Std
             pred(*itr);
             ++itr;
         }
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr Hash::ResultType
+    StlVector<KLIB_CLASS_TEMPLATE_PARAM>::GetHashCode(
+    ) const noexcept
+    {
+        return ::std::hash<Base>().operator()(m_vector);
     }
 
     KLIB_CLASS_TEMPLATE_DEF

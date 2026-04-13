@@ -5,7 +5,7 @@
 
 namespace klib::Kongkong
 {
-    struct NonType final {
+    struct NonType final : KLibType {
         [[nodiscard]]
         constexpr Hash::ResultType GetHashCode(
         ) const noexcept;
