@@ -25,10 +25,6 @@ namespace klib::Kongkong::Std
             value_type* ptr,
             size_type
         ) noexcept;
-
-        [[nodisacard]]
-        constexpr Hash::ResultType GetHashCode(
-        ) const noexcept;
     };
 
     template <class T>
@@ -65,14 +61,6 @@ namespace klib::Kongkong::Std
     ) noexcept
     {
         Memory::GC::Release(ptr);
-    }
-
-    template <class T>
-    constexpr Hash::ResultType
-    Allocator<T>::GetHashCode(
-    ) const noexcept
-    {
-        return 0;
     }
 
     template <class T>

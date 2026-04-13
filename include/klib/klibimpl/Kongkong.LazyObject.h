@@ -2,13 +2,14 @@
 #define KLIB_KONGKONG_LAZYOBJECT_H
 
 #include "base.h"
+#include "Kongkong.ValueType.h"
 
 namespace klib::Kongkong
 {
     /// @brief 遅延初期化可能なオブジェクト
     /// @tparam T 格納する型
     template <class T>
-    struct LazyObject final {
+    struct LazyObject final : public ValueType {
         public:
         using ElementType = typename ::std::remove_cvref_t<T>;
         constexpr bool IsNothrowCopyConstructible = ::std::is_nothrow_copy_constructible_v<ElementType>;
@@ -80,6 +81,9 @@ namespace klib::Kongkong
 
         [[nodiscard]]
         ElementType const& operator*() const;
+
+        [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode() const noexcept;
 
         /// @brief 値へのポインターを取得
         [[nodiscard]]
@@ -400,6 +404,14 @@ namespace klib::Kongkong
     LazyObject<T>::operator*() const
     {
         return Value();
+    }
+
+    template <class T>
+    constexpr Hash::ResultType
+    LazyObject<T>::GetHashCode() const noexcept
+    {
+        if (m_isInitialized) return Hash::Get<ElementType>(GetValueUnsafe());
+        return ::std::hash<bool>().operator()(false);
     }
 
     template <class T>

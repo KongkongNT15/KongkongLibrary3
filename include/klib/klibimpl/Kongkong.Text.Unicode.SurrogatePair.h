@@ -3,10 +3,11 @@
 
 #include "base.h"
 #include "Kongkong.NonType.h"
+#include "Kongkong.ValueType.h"
 
 namespace klib::Kongkong::Text::Unicode
 {
-    struct SurrogatePair {
+    struct SurrogatePair : public ValueType {
         private:
 
         static void s_checkPair(
@@ -211,7 +212,7 @@ namespace klib::Kongkong::Text::Unicode
             do_throwLowSurrogateError();
         }
     }
-    
+
     constexpr SurrogatePair SurrogatePair::CreateUnsafe(
         char32_t c
     ) noexcept

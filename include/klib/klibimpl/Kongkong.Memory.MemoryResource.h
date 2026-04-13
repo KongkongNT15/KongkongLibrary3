@@ -2,11 +2,12 @@
 #define KLIB_KONGKONG_MEMORY_MEMORYRESOURCE_H
 
 #include "base.h"
+#include "Kongkong.PointerType.h"
 #include "Kongkong.Memory.MemoryPageHelper.h"
 
 namespace klib::Kongkong::Memory
 {
-    class MemoryResource final {
+    class MemoryResource final : public PointerType {
 
         private:
 
@@ -65,6 +66,9 @@ namespace klib::Kongkong::Memory
         bool DecommitAll() noexcept;
 
         bool Free() noexcept;
+
+        [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode() const noexcept;
 
         [[nodiscard]]
         constexpr bool IsReserved() const noexcept;
@@ -152,6 +156,11 @@ namespace klib::Kongkong::Memory
         return (bytes - 1) / PageSize() + 1;
     }
 
+    inline size_t MemoryResource::PageSize() noexcept
+    {
+        return MemoryPageHelper::PageSize();
+    }
+
     constexpr MemoryResource::MemoryResource(
     ) noexcept
         : m_p(nullptr)
@@ -236,6 +245,14 @@ namespace klib::Kongkong::Memory
         return true;
     }
 
+    constexpr Hash::ResultType
+    MemoryResource::GetHashCode() const noexcept
+    {
+        auto v = ::std::hash<void*>().operator()(m_p);
+
+        return v + m_regionSize;
+    }
+
     constexpr bool MemoryResource::IsReserved() const noexcept
     {
         return m_p != nullptr;
@@ -269,11 +286,11 @@ namespace klib::Kongkong::Memory
 
         m_p = p;
 
-        if (minBytes % s_pageSize == 0) {
+        if (minBytes % PageSize() == 0) {
             m_regionSize = minBytes;
         }
         else {
-            m_regionSize = (minBytes / s_pageSize + 1) * s_pageSize;
+            m_regionSize = (minBytes / PageSize() + 1) * PageSize();
         }
     }
 

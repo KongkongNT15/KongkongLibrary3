@@ -2,19 +2,16 @@
 #define KLIB_KONGKONG_INITIALIZER_H
 
 #include "base.h"
+#include "Kongkong.StatelessType.h"
 
 namespace klib::Kongkong
 {
-    class Initializer final {
+    class Initializer final : public StatelessType {
         
         template <class TFunc>
         Initializer(
             TFunc&& func
         );
-
-        [[nodiscard]]
-        constexpr Hash::ResultType GetHashCode(
-        ) const noexcept;
     };
 }
 
@@ -26,13 +23,6 @@ namespace klib::Kongkong
     )
     {
         func();
-    }
-
-    constexpr Hash::ResultType
-    Initializer::GetHashCode(
-    ) const noexcept
-    {
-        return 0;
     }
 }
 

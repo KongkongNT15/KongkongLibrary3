@@ -294,6 +294,7 @@ namespace klib::Kongkong
 {
     struct KLibType;
     class HandleType;
+    class PointerType;
     class StatelessType;
     struct ValueType;
     struct NonType;
