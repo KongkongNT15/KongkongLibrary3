@@ -370,6 +370,9 @@ namespace klib::Kongkong::Containers
     template <class T>
     class IIterator;
 
+    class PageChache;
+    struct PageChacheAppendFailureArgs;
+
     template <class T>
     class PagedList;
 }
@@ -411,12 +414,19 @@ namespace klib::Kongkong::Functional
 
 namespace klib::Kongkong::IO
 {
+    class BinaryReader;
+    class BinaryWriter;
+    struct EndOfStreamException;
     enum struct FileCreateMode;
     enum struct FileShareMode;
     class HandleStream;
+    class InputStreamBuffer;
     struct IOException;
     class MemoryStream;
+    class OutputStreamBuffer;
     class Stream;
+    class StreamRWBase;
+    struct StreamRWResult;
 }
 
 namespace klib::Kongkong::Memory

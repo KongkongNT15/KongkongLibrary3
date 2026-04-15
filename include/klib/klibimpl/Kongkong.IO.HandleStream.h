@@ -30,12 +30,12 @@ namespace klib::Kongkong::IO
             byte& result
         ) noexcept override;
 
-        bool TryRead(
+        StreamRWResult TryRead(
             uint32_t length,
             void* buffer
         ) noexcept override;
         
-        bool TryWrite(
+        StreamRWResult TryWrite(
             uint32_t length,
             const void* buffer
         ) noexcept override;

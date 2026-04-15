@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_IO_STREAM_H
 
 #include "base.h"
+#include "Kongkong.IO.StreamRWResult.h"
 
 namespace klib::Kongkong::IO
 {
@@ -55,12 +56,12 @@ namespace klib::Kongkong::IO
         [[nodiscard]]
         virtual bool IsOpen() const noexcept = 0;
 
-        void Read(
+        uint32_t Read(
             uint32_t length,
             void* buffer
         );
 
-        virtual bool TryRead(
+        virtual StreamRWResult TryRead(
             uint32_t length,
             void* buffer
         ) noexcept;
@@ -72,12 +73,12 @@ namespace klib::Kongkong::IO
             byte& result
         ) noexcept = 0;
         
-        void Write(
+        uint32_t Write(
             uint32_t length,
             const void* buffer
         );
 
-        virtual bool TryWrite(
+        virtual StreamRWResult TryWrite(
             uint32_t length,
             const void* buffer
         ) noexcept;
@@ -97,6 +98,100 @@ namespace klib::Kongkong::IO
     inline Stream::~Stream()
     {
         Close();
+    }
+
+    inline uint32_t Stream::Read(
+        uint32_t length,
+        void* buffer
+    )
+    {
+        auto result = TryRead(length, buffer);
+
+        if (!result.Success) [[unlikely]] {
+            CheckCanRead();
+            ThrowReadError();
+        }
+
+        return result.BytesTransferred;
+    }
+
+    inline StreamRWResult Stream::TryRead(
+        uint32_t length,
+        void* buffer
+    ) noexcept
+    {
+        byte* itr = static_cast<byte*>(buffer);
+        byte* end = itr + length;
+
+        while (itr != end) {
+            if (!TryReadByte(*itr)) [[unlikely]] {
+                uint32_t readLength = static_cast<uint32_t>(
+                    itr - static_cast<byte*>(buffer)
+                );
+                return StreamRWResult{ readLength, readLength != 0 };
+            }
+            ++itr;
+        }
+
+        return StreamRWResult{ length, true };
+    }
+
+    inline byte Stream::ReadByte()
+    {
+        byte result;
+
+        if (!TryReadByte(result)) [[unlikely]] {
+            CheckCanRead();
+            ThrowReadError();
+        }
+
+        return result;
+    }
+
+    inline void Stream::WriteByte(
+        byte value
+    )
+    {
+        if (!TryWriteByte(value)) [[unlikely]] {
+            CheckCanWrite();
+            ThrowWriteError();
+        }
+    }
+
+    inline uint32_t Stream::Write(
+        uint32_t length,
+        const void* buffer
+    )
+    {
+        auto result = TryWrite(length, buffer);
+
+        if (!result.Success) [[unlikely]] {
+            CheckCanWrite();
+            ThrowWriteError();
+        }
+
+        return result.BytesTransferred;
+    }
+
+    inline StreamRWResult Stream::TryWrite(
+        uint32_t length,
+        const void* buffer
+    ) noexcept
+    {
+        auto itr = static_cast<const byte*>(buffer);
+        auto end = itr + length;
+
+        while (itr != end) {
+            if (!TryWriteByte(*itr)) [[unlikely]] {
+                uint32_t writeLength = static_cast<uint32_t>(
+                    itr - static_cast<const byte*>(buffer)
+                );
+                return StreamRWResult{ writeLength, writeLength != 0 };
+            }
+            ++itr;
+        }
+        
+        return StreamRWResult{ length, true };
     }
 }
 

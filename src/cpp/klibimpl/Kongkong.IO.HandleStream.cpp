@@ -33,36 +33,46 @@
         );
     }
 
-    bool HandleStream::TryRead(
+    StreamRWResult HandleStream::TryRead(
         uint32_t length,
         void* buffer
     ) noexcept
     {
-        return static_cast<bool>(
-            ::ReadFile(
-                m_handle.RawHandle(),
-                buffer,
-                length,
-                nullptr,
-                nullptr
-            )
+        ::DWORD readLength;
+
+        ::BOOL result = ::ReadFile(
+            m_handle.RawHandle(),
+            buffer,
+            length,
+            &readLength,
+            nullptr
         );
+        
+        return StreamRWResult{
+            readLength,
+            static_cast<bool>(result)
+        };
     }
 
-    bool HandleStream::TryWrite(
+    StreamRWResult HandleStream::TryWrite(
         uint32_t length,
         const void* buffer
     ) noexcept
     {
-        return static_cast<bool>(
-            ::WriteFile(
-                m_handle.RawHandle(),
-                buffer,
-                length,
-                nullptr,
-                nullptr
-            )
+        ::DWORD writeLength;
+
+        ::BOOL result = ::WriteFile(
+            m_handle.RawHandle(),
+            buffer,
+            length,
+            &writeLength,
+            nullptr
         );
+
+        return StreamRWResult{
+            writeLength,
+            static_cast<bool>(result)
+        };
     }
 
     bool HandleStream::TryWriteByte(
@@ -107,28 +117,38 @@
         ) != EOF;
     }
 
-    bool HandleStream::TryRead(
+    StreamRWResult HandleStream::TryRead(
         uint32_t length,
         void* buffer
     ) noexcept
     {
-        return ::read(
+        ssize_t result = ::read(
             m_fd,
             buffer,
             length
-        ) != EOF;
+        );
+
+        return StreamRWResult{
+            static_cast<uint32_t>(result),
+            result != EOF
+        };
     }
 
-    bool HandleStream::TryWrite(
+    StreamRWResult HandleStream::TryWrite(
         uint32_t length,
         const void* buffer
     ) noexcept
     {
-        return ::write(
+        ssize_t result = ::write(
             m_fd,
             buffer,
             length
-        ) != EOF;
+        );
+
+        return StreamRWResult{
+            static_cast<uint32_t>(result),
+            result != EOF
+        };
     }
 
     bool HandleStream::TryWriteByte(

@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_BITS_BITSET_H
 
 #include "base.h"
+#include "Kongkong.ValueType.h"
 #include "Kongkong.Bits.BitsetConstIterator.h"
 #include "Kongkong.Bits.BitsetHelper.h"
 #include "Kongkong.Bits.BitsetIterator.h"
@@ -13,7 +14,7 @@
 namespace klib::Kongkong::Bits
 {
     KLIB_CLASS_TEMPLATE_DEF
-    struct Bitset {
+    struct Bitset : public ValueType {
         public:
         private:
         int m_placeHolder[((N - 1) / Numrics::Int::Bits()) + 1];
