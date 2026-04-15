@@ -2,6 +2,7 @@
 
 #include "klibimpl/Kongkong.Containers.ContainerHelper.cpp"
 #include "klibimpl/Kongkong.IO.HandleStream.cpp"
+#include "klibimpl/Kongkong.IO.InputStreamBuffer.cpp"
 #include "klibimpl/Kongkong.IO.Stream.cpp"
 #include "klibimpl/Kongkong.Memory.GCHandleBase.cpp"
 #include "klibimpl/Kongkong.Memory.SharedPointerBase.cpp"

@@ -424,6 +424,7 @@ namespace klib::Kongkong::IO
     struct IOException;
     class MemoryStream;
     class OutputStreamBuffer;
+    enum struct SeekOrigin;
     class Stream;
     class StreamRWBase;
     struct StreamRWResult;

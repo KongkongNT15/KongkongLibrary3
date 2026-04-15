@@ -3,6 +3,7 @@
 
 #include "base.h"
 #include "Kongkong.Memory.MemoryPage.h"
+#include "Kongkong.IO.Stream.h"
 
 namespace klib::Kongkong::IO
 {
@@ -13,9 +14,17 @@ namespace klib::Kongkong::IO
         ssize_t m_current;
         ssize_t m_length;
 
+        static uint32_t LoadFromStream(
+            IO::Stream& stream,
+            ssize_t pageLength,
+            void* dest
+        );
+
         public:
 
         InputStreamBuffer();
+
+        ~InputStreamBuffer();
 
         [[nodiscard]]
         int Read(
@@ -32,18 +41,37 @@ namespace klib::Kongkong::IO
             IO::Stream& stream
         ) noexcept;
 
-        
+        void LoadFromStream(
+            IO::Stream& stream
+        ) noexcept;
     };
 }
 
 namespace klib::Kongkong::IO
 {
+    inline uint32_t InputStreamBuffer::LoadFromStream(
+        IO::Stream& stream,
+        ssize_t pageLength,
+        void* dest
+    ) noexcept
+    {
+        return stream.Read(
+            Memory::MemoryPageHelper::PageSize() * pageLength,
+            dest
+        );
+    }
+
     inline InputStreamBuffer::InputStreamBuffer()
         : m_page()
         , m_current(0)
         , m_length(0)
     {
         m_page.AllocUnsafe();
+    }
+
+    inline InputStreamBuffer::~InputStreamBuffer()
+    {
+        m_page.Dispose();
     }
 
     inline int InputStreamBuffer::Read(
@@ -63,26 +91,6 @@ namespace klib::Kongkong::IO
         return result;
     }
 
-    inline uint32_t InputStreamBuffer::Read(
-        IO::Stream& stream,
-        uint32_t length,
-        void* data
-    )
-    {
-        ssize_t nokori = length;
-        ssize_t pageSize = static_cast<ssize_t>(Memory::MemoryPageHelper::PageSize());
-        byte* target = static_cast<byte*>(data);
-
-        if (m_current != m_length) {
-
-        }
-
-        while (nokori > pageSize) {
-
-            nokori -= pageSize;
-        }
-    }
-
     inline bool InputStreamBuffer::TryLoadFromStream(
         IO::Stream& stream
     ) noexcept
@@ -98,6 +106,19 @@ namespace klib::Kongkong::IO
         m_current = 0;
 
         return true;
+    }
+
+    inline void InputStreamBuffer::LoadFromStream(
+        IO::Stream& stream
+    ) noexcept
+    {
+        auto result = stream.Read(
+            Memory::MemoryPageHelper::PageSize(),
+            m_page.Data()
+        );
+        
+        m_length = result;
+        m_current = 0;
     }
 }
 

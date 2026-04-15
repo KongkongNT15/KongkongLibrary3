@@ -54,12 +54,20 @@ namespace klib::Kongkong::IO
         virtual bool Flush() noexcept = 0;
 
         [[nodiscard]]
+        virtual int64_t Length() = 0;
+
+        [[nodiscard]]
         virtual bool IsOpen() const noexcept = 0;
 
         uint32_t Read(
             uint32_t length,
             void* buffer
         );
+
+        virtual int64_t Seek(
+            int64_t offset,
+            SeekOrigin origin
+        ) = 0;
 
         virtual StreamRWResult TryRead(
             uint32_t length,
