@@ -3,7 +3,6 @@
 
 #include "base.h"
 #include "Kongkong.IO.Stream.h"
-#include "Kongkong.Containers.PageCache.h"
 
 namespace klib::Kongkong::IO
 {
@@ -11,7 +10,6 @@ namespace klib::Kongkong::IO
         private:
 
         Stream* m_pStream;
-        Containers::PageChache m_page;
 
         protected:
 
@@ -58,9 +56,8 @@ namespace klib::Kongkong::IO
     StreamRWBase::GetHashCode() const noexcept
     {
         auto h1 = ::std::hash<void*>().operator()(m_pStream);
-        auto h2 = m_page.GetHashCode();
 
-        return h1 + h2;
+        return h1;
     }
 
     constexpr Stream&

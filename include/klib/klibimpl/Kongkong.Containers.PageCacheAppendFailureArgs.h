@@ -6,11 +6,11 @@
 
 namespace klib::Kongkong::Containers
 {
-    struct PageChacheAppendFailureArgs : public ValueType {
+    struct PageCacheAppendFailureArgs : public ValueType {
         const byte* RemainingData;
         ssize_t RemainingLength;
 
-        constexpr PageChacheAppendFailureArgs(
+        constexpr PageCacheAppendFailureArgs(
             const byte* remainingData,
             ssize_t remainingLength
         ) noexcept;
@@ -22,7 +22,7 @@ namespace klib::Kongkong::Containers
 
 namespace klib::Kongkong::Containers
 {
-    constexpr PageChacheAppendFailureArgs::PageChacheAppendFailureArgs(
+    constexpr PageCacheAppendFailureArgs::PageCacheAppendFailureArgs(
         const byte* remainingData,
         ssize_t remainingLength
     ) noexcept
@@ -32,7 +32,7 @@ namespace klib::Kongkong::Containers
     }
 
     constexpr Hash::ResultType
-    PageChacheAppendFailureArgs::GetHashCode() const noexcept
+    PageCacheAppendFailureArgs::GetHashCode() const noexcept
     {
         ssize_t h1 = ::std::hash<const void*>().operator()(RemainingData);
         

@@ -11,10 +11,21 @@
         if (!CanRead()) [[unlikely]] throw NotSupportedException(u"このストリームは読み込みをサポートしていません。");
     }
 
+    void Stream::CheckCanSeek() const
+    {
+        CheckIsOpen();
+        if (!CanSeek()) [[unlikely]] throw NotSupportedException(u"このストリームの長さを取得することはできません。");
+    }
+
     void Stream::CheckCanWrite() const
     {
         CheckIsOpen();
         if (!CanWrite()) [[unlikely]] throw NotSupportedException(u"このストリームは書き込みをサポートしていません。");
+    }
+
+    void Stream::ThrowIOError()
+    {
+        throw IOException(u"ストリームの操作に失敗しました。");
     }
 
     void Stream::ThrowReadError()

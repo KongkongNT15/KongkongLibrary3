@@ -9,7 +9,7 @@
 
 namespace klib::Kongkong::Containers
 {
-    class PageChache : public Primitives::ArrayBase<byte>, ValueType {
+    class PageCache : public Primitives::ArrayBase<byte>, ValueType {
         private:
 
         Memory::MemoryPage m_page;
@@ -19,7 +19,7 @@ namespace klib::Kongkong::Containers
         [[nodiscard]]
         static ssize_t PageSize() noexcept;
 
-        PageChache();
+        PageCache();
 
         bool Append(
             byte value
@@ -62,21 +62,21 @@ namespace klib::Kongkong::Containers
 
 namespace klib::Kongkong::Containers
 {
-    inline ssize_t PageChache::PageSize() noexcept
+    inline ssize_t PageCache::PageSize() noexcept
     {
         return static_cast<ssize_t>(
             Memory::MemoryPageHelper::PageSize()
         );
     }
 
-    inline PageChache::PageChache()
+    inline PageCache::PageCache()
         : Primitives::ArrayBase<byte>()
         , m_page()
     {
         m_p = static_cast<byte*>(m_page.Data());
     }
 
-    inline bool PageChache::Append(
+    inline bool PageCache::Append(
         byte value
     ) noexcept
     {
@@ -89,7 +89,7 @@ namespace klib::Kongkong::Containers
     }
 
     template <class TPredicate>
-    void PageChache::AppendWithFallBack(
+    void PageCache::AppendWithFallBack(
         byte value,
         TPredicate&& fallBack
     )
@@ -97,7 +97,7 @@ namespace klib::Kongkong::Containers
         if (!Append(value)) [[unlikely]] {
             fallBack(
                 *this,
-                PageChacheAppendFailureArgs{
+                PageCacheAppendFailureArgs{
                     &value,
                     1
                 }
@@ -106,7 +106,7 @@ namespace klib::Kongkong::Containers
     }
 
     template <class TPredicate>
-    void PageChache::AppendWithFallBackUnsafe(
+    void PageCache::AppendWithFallBackUnsafe(
         ssize_t length,
         const void* data,
         TPredicate&& fallBack
@@ -117,7 +117,7 @@ namespace klib::Kongkong::Containers
         if (writeLength != length) {
             fallBack(
                 *this,
-                PageChacheAppendFailureArgs{
+                PageCacheAppendFailureArgs{
                     static_cast<const byte*>(data) + writeLength,
                     length - writeLength
                 }
@@ -125,7 +125,7 @@ namespace klib::Kongkong::Containers
         }
     }
 
-    inline ssize_t PageChache::AppendUnsafe(
+    inline ssize_t PageCache::AppendUnsafe(
         ssize_t length,
         const void* data
     ) noexcept
@@ -154,20 +154,20 @@ namespace klib::Kongkong::Containers
         return writeLength;
     }
 
-    inline ssize_t PageChache::Capacity() const noexcept
+    inline ssize_t PageCache::Capacity() const noexcept
     {
         return static_cast<ssize_t>(
             Memory::MemoryPageHelper::PageSize()
         );
     }
 
-    constexpr void PageChache::Clear() noexcept
+    constexpr void PageCache::Clear() noexcept
     {
         m_length = 0;
     }
 
     constexpr Hash::ResultType
-    PageChache::GetHashCode() const noexcept
+    PageCache::GetHashCode() const noexcept
     {
         return m_page.GetHashCode();
     }

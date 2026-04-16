@@ -24,6 +24,10 @@ namespace klib::Kongkong::IO
 
         bool Flush() noexcept override;
 
+        bool TryGetLength(
+            int64_t& dest
+        ) const noexcept override;
+
         bool IsOpen() const noexcept override;
 
         bool TryReadByte(

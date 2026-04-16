@@ -10,6 +10,7 @@ namespace klib::Kongkong::IO
         private:
 
         void CheckCanRead() const;
+        void CheckCanSeek() const;
         void CheckCanWrite() const;
         void CheckIsOpen() const;
 
@@ -18,6 +19,9 @@ namespace klib::Kongkong::IO
         
         [[noreturn]]
         static void ThrowWriteError();
+
+        [[noreturn]]
+        static void ThrowIOError();
         
         protected:
 
@@ -47,6 +51,9 @@ namespace klib::Kongkong::IO
         virtual bool CanRead() const noexcept = 0;
 
         [[nodiscard]]
+        virtual bool CanSeek() const noexcept = 0;
+
+        [[nodiscard]]
         virtual bool CanWrite() const noexcept = 0;
 
         virtual bool Close() noexcept = 0;
@@ -54,7 +61,7 @@ namespace klib::Kongkong::IO
         virtual bool Flush() noexcept = 0;
 
         [[nodiscard]]
-        virtual int64_t Length() = 0;
+        int64_t Length() const;
 
         [[nodiscard]]
         virtual bool IsOpen() const noexcept = 0;
@@ -68,6 +75,10 @@ namespace klib::Kongkong::IO
             int64_t offset,
             SeekOrigin origin
         ) = 0;
+
+        virtual bool TryGetLength(
+            int64_t& dest
+        ) const noexcept = 0;
 
         virtual StreamRWResult TryRead(
             uint32_t length,
@@ -106,6 +117,18 @@ namespace klib::Kongkong::IO
     inline Stream::~Stream()
     {
         Close();
+    }
+
+    inline int64_t Stream::Length() const
+    {
+        int64_t result;
+
+        if (!TryGetLength(result)) [[unlikely]] {
+            CheckCanSeek();
+            ThrowIOError();
+        }
+
+        return result;
     }
 
     inline uint32_t Stream::Read(

@@ -370,8 +370,8 @@ namespace klib::Kongkong::Containers
     template <class T>
     class IIterator;
 
-    class PageChache;
-    struct PageChacheAppendFailureArgs;
+    class PageCache;
+    struct PageCacheAppendFailureArgs;
 
     template <class T>
     class PagedList;

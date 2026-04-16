@@ -18,6 +18,18 @@
         return m_handle != nullptr;
     }
 
+    bool HandleStream::TryGetLength(
+        int64_t& dest
+    ) const noexcept
+    {
+        auto result = ::GetFileSizeEx(
+            m_handle.RawHandle(),
+            reinterpret_cast<PLARGE_INTEGER>(&dest)
+        );
+
+        return static_cast<bool>(result);
+    }
+
     bool HandleStream::TryReadByte(
         byte& result
     ) noexcept
