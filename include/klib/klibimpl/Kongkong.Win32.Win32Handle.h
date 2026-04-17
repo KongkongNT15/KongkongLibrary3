@@ -8,7 +8,7 @@
 
 namespace klib::Kongkong::Win32
 {
-    class Win32Handle final {
+    class Win32Handle final : public HandleType {
     private:
 
         [[nodiscard]]
@@ -181,7 +181,7 @@ namespace klib::Kongkong::Win32
     {
         if (m_rawHandle == INVALID_HANDLE_VALUE) [[unlikely]] return true;
 
-        ::BOOL result =::CloseHandle(m_rawHandle);
+        ::BOOL result = ::CloseHandle(m_rawHandle);
 
         m_rawHandle = INVALID_HANDLE_VALUE;
 
