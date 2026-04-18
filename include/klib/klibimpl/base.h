@@ -485,6 +485,9 @@ namespace klib::Kongkong::Numerics
         && (::std::same_as<T, bool> == false)
     );
 
+    struct Integer16Byte;
+    struct Integer16ByteBase;
+
     template <class TNum = void>
     struct Number;
 
@@ -496,6 +499,8 @@ namespace klib::Kongkong::Numerics
 
     template <CNumber TNum = float>
     struct Vector3;
+
+    struct UnsignedInteger16Byte;
 }
 
 namespace klib::Kongkong::Ranges
@@ -659,6 +664,14 @@ namespace klib
             unsigned long long n
         );
     }
+
+    using int_least128_t = Kongkong::Numerics::Integer16Byte;
+    using uint_least128_t = Kongkong::Numerics::UnsignedInteger16Byte;
+
+#if CHAR_BIT == 8
+    using int128_t = Kongkong::Numerics::Integer16Byte;
+    using uint128_t = Kongkong::Numerics::UnsignedInteger16Byte;
+#endif
 }
 
 // 
