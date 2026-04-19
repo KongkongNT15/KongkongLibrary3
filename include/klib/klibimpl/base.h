@@ -30,6 +30,7 @@
 
     #if defined(__MINGW32__) || defined(__MINGW64__)
         #define KLIB_COMPILER_MINGW 1
+        #define KLIB_COMPILER_GCC 1
         #if defined(__aarch64__)
             #define KLIB_ENV_ARM64 1
         #elif defined(__x86_64__)
@@ -135,6 +136,10 @@
     #define KLIB_COMPILER_MSVC 0
 #endif
 
+#ifndef KLIB_COMPILER_GCC
+    #define KLIB_COMPILER_GCC 0
+#endif
+
 #ifndef KLIB_COMPILER_MINGW
     #define KLIB_COMPILER_MINGW 0
 #endif
@@ -180,6 +185,8 @@
     #define KLIB_CPP23_CONSTEXPR
     #define KLIB_CPP23_CONSTEXPR_OR_INLINE inline
 #endif
+
+#define KLIB_ENV_64BIT (KLIB_ENV_X64 || KLIB_ENV_ARM64)
 
 // インスタンス化できないようにする
 #define KLIB_STATIC_CLASS(className) \
@@ -479,14 +486,17 @@ namespace klib::Kongkong::Memory::Primitives
 
 namespace klib::Kongkong::Numerics
 {
+    struct Integer16ByteBase;
+
     template <class T>
     concept CNumber = (
         (::std::integral<T> || ::std::floating_point<T>)
         && (::std::same_as<T, bool> == false)
+        && (::std::derived_from<T, Integer16ByteBase>)
     );
 
     struct Integer16Byte;
-    struct Integer16ByteBase;
+    
 
     template <class TNum = void>
     struct Number;
@@ -610,6 +620,51 @@ namespace klib::Kongkong::Win32::UI
     class WindowHandle;
 }
 
+#if KLIB_COMPILER_MSVC
+#include <__msvc_int128.hpp>
+
+namespace klib
+{
+    using int128_t = ::std::_Signed128;
+    using uint128_t = ::std::_Unsigned128;
+
+    using int_fast128_t = int128_t;
+    using uint_fast128_t = uint128_t;
+
+    using int_least128_t = int128_t;
+    using uint_least128_t = uint128_t;
+}
+
+
+#elif (KLIB_COMPILER_GCC || KLIB_COMPILER_CLANG) && KLIB_ENV_64BIT
+
+namespace klib
+{
+    using int128_t = __int128;
+    using uint128_t = __uint128_t;
+
+    using int_fast128_t = int128_t;
+    using uint_fast128_t = uint128_t;
+
+    using int_least128_t = int128_t;
+    using uint_least128_t = uint128_t;
+}
+
+#else
+
+namespace klib
+{
+    using int_least128_t = Kongkong::Numerics::Integer16Byte;
+    using uint_least128_t = Kongkong::Numerics::UnsignedInteger16Byte;
+
+    #if CHAR_BIT == 8
+    using int128_t = Kongkong::Numerics::Integer16Byte;
+    using uint128_t = Kongkong::Numerics::UnsignedInteger16Byte;
+    #endif
+}
+    
+#endif
+
 namespace klib::Kongkong::Numerics
 {
     using NativeChar = Number<char>;
@@ -664,14 +719,6 @@ namespace klib
             unsigned long long n
         );
     }
-
-    using int_least128_t = Kongkong::Numerics::Integer16Byte;
-    using uint_least128_t = Kongkong::Numerics::UnsignedInteger16Byte;
-
-#if CHAR_BIT == 8
-    using int128_t = Kongkong::Numerics::Integer16Byte;
-    using uint128_t = Kongkong::Numerics::UnsignedInteger16Byte;
-#endif
 }
 
 // 

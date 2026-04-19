@@ -18,61 +18,61 @@ namespace klib::Kongkong::Numerics
         KLIB_STATIC_CLASS(Number);
 
         [[nodiscard]]
-        static constexpr int Digits() noexcept;
+        static consteval int Digits() noexcept;
 
         [[nodiscard]]
-        static constexpr NumType Epsiron() noexcept;
+        static consteval NumType Epsiron() noexcept;
 
         [[nodiscard]]
-        static constexpr bool IsFloatingPoint() noexcept;
+        static consteval bool IsFloatingPoint() noexcept;
 
         [[nodiscard]]
-        static constexpr bool IsInteger() noexcept;
+        static consteval bool IsInteger() noexcept;
 
         [[nodiscard]]
-        static constexpr bool IsSigned() noexcept;
+        static consteval bool IsSigned() noexcept;
 
         [[nodiscard]]
-        static constexpr NumType MaxValue() noexcept;
+        static consteval NumType MaxValue() noexcept;
 
         [[nodiscard]]
-        static constexpr NumType MinValue() noexcept;
+        static consteval NumType MinValue() noexcept;
     };
 }
 
 namespace klib::Kongkong::Numerics
 {
-    constexpr int Single::Digits() noexcept
+    consteval int Single::Digits() noexcept
     {
         return FLT_MANT_DIG;
     }
 
-    constexpr Single::NumType Single::Epsiron() noexcept
+    consteval Single::NumType Single::Epsiron() noexcept
     {
         return FLT_EPSILON;
     }
 
-    constexpr bool Single::IsFloatingPoint() noexcept
+    consteval bool Single::IsFloatingPoint() noexcept
     {
         return true;
     }
 
-    constexpr bool Single::IsInteger() noexcept
+    consteval bool Single::IsInteger() noexcept
     {
         return false;
     }
 
-    constexpr bool Single::IsSigned() noexcept
+    consteval bool Single::IsSigned() noexcept
     {
         return true;
     }
 
-    constexpr Single::NumType Single::MaxValue() noexcept
+    consteval Single::NumType Single::MaxValue() noexcept
     {
         return FLT_MAX;
     }
 
-    constexpr Single::NumType Single::MinValue() noexcept
+    consteval Single::NumType Single::MinValue() noexcept
     {
         return FLT_MIN;
     }

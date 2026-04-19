@@ -18,53 +18,53 @@ namespace klib::Kongkong::Numerics
         KLIB_STATIC_CLASS(Number);
 
         [[nodiscard]]
-        static constexpr int Digits() noexcept;
+        static consteval int Digits() noexcept;
 
         [[nodiscard]]
-        static constexpr bool IsFloatingPoint() noexcept;
+        static consteval bool IsFloatingPoint() noexcept;
 
         [[nodiscard]]
-        static constexpr bool IsInteger() noexcept;
+        static consteval bool IsInteger() noexcept;
 
         [[nodiscard]]
-        static constexpr bool IsSigned() noexcept;
+        static consteval bool IsSigned() noexcept;
 
         [[nodiscard]]
-        static constexpr NumType MaxValue() noexcept;
+        static consteval NumType MaxValue() noexcept;
 
         [[nodiscard]]
-        static constexpr NumType MinValue() noexcept;
+        static consteval NumType MinValue() noexcept;
     };
 }
 
 namespace klib::Kongkong::Numerics
 {
-    constexpr int Char::Digits() noexcept
+    consteval int Char::Digits() noexcept
     {
         return sizeof(::int_least16_t) * CHAR_BIT;
     }
 
-    constexpr bool Char::IsFloatingPoint() noexcept
+    consteval bool Char::IsFloatingPoint() noexcept
     {
         return false;
     }
 
-    constexpr bool Char::IsInteger() noexcept
+    consteval bool Char::IsInteger() noexcept
     {
         return true;
     }
 
-    constexpr bool Char::IsSigned() noexcept
+    consteval bool Char::IsSigned() noexcept
     {
         return false;
     }
 
-    constexpr Char::NumType Char::MaxValue() noexcept
+    consteval Char::NumType Char::MaxValue() noexcept
     {
         return u'\uFFFF';
     }
 
-    constexpr Char::NumType Char::MinValue() noexcept
+    consteval Char::NumType Char::MinValue() noexcept
     {
         return u'\0';
     }

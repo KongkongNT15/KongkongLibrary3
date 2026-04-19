@@ -18,61 +18,61 @@ namespace klib::Kongkong::Numerics
         KLIB_STATIC_CLASS(Number);
 
         [[nodiscard]]
-        static constexpr int Bits() noexcept;
+        static consteval int Bits() noexcept;
 
         [[nodiscard]]
-        static constexpr int Digits() noexcept;
+        static consteval int Digits() noexcept;
 
         [[nodiscard]]
-        static constexpr bool IsFloatingPoint() noexcept;
+        static consteval bool IsFloatingPoint() noexcept;
 
         [[nodiscard]]
-        static constexpr bool IsInteger() noexcept;
+        static consteval bool IsInteger() noexcept;
 
         [[nodiscard]]
-        static constexpr bool IsSigned() noexcept;
+        static consteval bool IsSigned() noexcept;
 
         [[nodiscard]]
-        static constexpr NumType MaxValue() noexcept;
+        static consteval NumType MaxValue() noexcept;
 
         [[nodiscard]]
-        static constexpr NumType MinValue() noexcept;
+        static consteval NumType MinValue() noexcept;
     };
 }
 
 namespace klib::Kongkong::Numerics
 {
-    constexpr int Int::Bits() noexcept
+    consteval int Int::Bits() noexcept
     {
         return sizeof(int) * CHAR_BIT;
     }
 
-    constexpr int Int::Digits() noexcept
+    consteval int Int::Digits() noexcept
     {
         return sizeof(NumType) * CHAR_BIT - 1;
     }
 
-    constexpr bool Int::IsFloatingPoint() noexcept
+    consteval bool Int::IsFloatingPoint() noexcept
     {
         return false;
     }
 
-    constexpr bool Int::IsInteger() noexcept
+    consteval bool Int::IsInteger() noexcept
     {
         return true;
     }
 
-    constexpr bool Int::IsSigned() noexcept
+    consteval bool Int::IsSigned() noexcept
     {
         return true;
     }
 
-    constexpr Int::NumType Int::MaxValue() noexcept
+    consteval Int::NumType Int::MaxValue() noexcept
     {
         return INT_MAX;
     }
 
-    constexpr Int::NumType Int::MinValue() noexcept
+    consteval Int::NumType Int::MinValue() noexcept
     {
         return INT_MIN;
     }

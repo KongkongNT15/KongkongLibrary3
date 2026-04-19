@@ -15,7 +15,7 @@ namespace klib::Kongkong::Numerics
         using ElementType = TNum;
 
         [[nodiscard]]
-        constexpr ssize_t Dimension() noexcept;
+        consteval ssize_t Dimension() noexcept;
 
         ElementType X;
         ElementType Y;
@@ -101,7 +101,7 @@ namespace klib::Kongkong::Numerics
 namespace klib::Kongkong::Numerics
 {
     KLIB_CLASS_TEMPLATE_DEF
-    constexpr ssize_t
+    consteval ssize_t
     Vector2<KLIB_CLASS_TEMPLATE_PARAM>::Dimension() noexcept
     {
         return 2;

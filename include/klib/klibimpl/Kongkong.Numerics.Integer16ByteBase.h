@@ -8,7 +8,7 @@
 
 namespace klib::Kongkong::Numerics
 {
-    struct Integer16ByteBase : public ValueType {
+    struct alignas(16) Integer16ByteBase : public ValueType {
         protected:
 
         uint_least64_t m_lowPart;
@@ -17,9 +17,19 @@ namespace klib::Kongkong::Numerics
         constexpr Integer16ByteBase() = default;
 
         constexpr Integer16ByteBase(
+            int_least64_t value
+        ) noexcept;
+
+        constexpr Integer16ByteBase(
+            uint_least64_t value
+        ) noexcept;
+
+        constexpr Integer16ByteBase(
             uint_least64_t lowPart,
             uint_least64_t highPart
         ) noexcept;
+
+        constexpr void do_decrement() noexcept;
 
         constexpr void do_increment() noexcept;
 
@@ -52,6 +62,11 @@ namespace klib::Kongkong::Numerics
 
 namespace klib::Kongkong::Numerics
 {
+    constexpr void Integer16ByteBase::do_decrement() noexcept
+    {
+        if (--m_lowPart == static_cast<uint_least64_t>(-1)) --m_highPart;
+    }
+
     constexpr void Integer16ByteBase::do_increment() noexcept
     {
         if (++m_lowPart == 0) ++m_highPart;
@@ -77,6 +92,31 @@ namespace klib::Kongkong::Numerics
     {
         m_highPart = 0;
         m_lowPart = value;
+    }
+
+    constexpr Integer16ByteBase::Integer16ByteBase(
+        int_least64_t value
+    ) noexcept
+        : m_lowPart(value)
+        , m_highPart(-1)
+    {
+    }
+
+    constexpr Integer16ByteBase::Integer16ByteBase(
+        uint_least64_t value
+    ) noexcept
+        : m_lowPart(value)
+        , m_highPart(0)
+    {
+    }
+
+    constexpr Integer16ByteBase::Integer16ByteBase(
+        uint_least64_t lowPart,
+        uint_least64_t highPart
+    ) noexcept
+        : m_lowPart(lowPart)
+        , m_highPart(highPart)
+    {
     }
 
     constexpr bool Integer16ByteBase::operator!() const noexcept
