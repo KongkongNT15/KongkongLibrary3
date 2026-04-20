@@ -11,6 +11,18 @@ namespace klib::Kongkong
         [[nodiscard]]
         constexpr Hash::ResultType GetHashCode() const noexcept;
     };
+
+    [[nodiscard]]
+    constexpr bool operator==(
+        StatelessType const&,
+        StatelessType const&
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator!=(
+        StatelessType const&,
+        StatelessType const&
+    ) noexcept;
 }
 
 namespace klib::Kongkong
@@ -19,6 +31,22 @@ namespace klib::Kongkong
     StatelessType::GetHashCode() const noexcept
     {
         return 0;
+    }
+
+    constexpr bool operator==(
+        StatelessType const&,
+        StatelessType const&
+    ) noexcept
+    {
+        return true;
+    }
+
+    constexpr bool operator!=(
+        StatelessType const&,
+        StatelessType const&
+    ) noexcept
+    {
+        return false;
     }
 }
 

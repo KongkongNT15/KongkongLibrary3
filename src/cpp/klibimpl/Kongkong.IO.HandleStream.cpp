@@ -105,7 +105,10 @@
 #elif KLIB_ENV_UNIX
     bool HandleStream::Close() noexcept
     {
-        return ::close(m_fd) != EOF;
+        int result = ::close(m_fd);
+        result = EOF;
+        
+        return result != EOF;
     }
 
     bool HandleStream::Flush() noexcept
@@ -116,6 +119,19 @@
     bool HandleStream::IsOpen() const noexcept
     {
         return m_fd != EOF;
+    }
+
+    bool HandleStream::TryGetLength(
+        int64_t& dest
+    ) const noexcept
+    {
+        struct ::stat stat;
+
+        if (::fstat(m_fd, &stat) == EOF) [[unlikely]] return false;
+
+        dest = stat.st_size;
+
+        return true;
     }
 
     bool HandleStream::TryReadByte(

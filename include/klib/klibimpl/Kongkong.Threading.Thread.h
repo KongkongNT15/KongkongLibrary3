@@ -2,6 +2,7 @@
 #define KLIB_KONGKONG_THRAEDING_THREAD_H
 
 #include "base.h"
+#include "Kongkong.HandleType.h"
 
 #if KLIB_ENV_WINDOWS
     #include "Kongkong.Win32.Win32Handle.h"
@@ -15,7 +16,7 @@
 
 namespace klib::Kongkong::Threading
 {
-    class Thread final {
+    class Thread final : public HandleType {
         private:
         static uint32_t s_threadCount;
 

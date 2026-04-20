@@ -2,23 +2,11 @@
 #define KLIB_KONGKONG_NONTYPE_H
 
 #include "base.h"
+#include "Kongkong.StatelessType.h"
 
 namespace klib::Kongkong
 {
-    struct NonType final : KLibType {
-        [[nodiscard]]
-        constexpr Hash::ResultType GetHashCode(
-        ) const noexcept;
-    };
-}
-
-namespace klib::Kongkong
-{
-    constexpr Hash::ResultType NonType::GetHashCode(
-    ) const noexcept
-    {
-        return 0;
-    }
+    struct NonType final : public StatelessType {};
 }
 
 #endif //!KLIB_KONGKONG_NONTYPE_H

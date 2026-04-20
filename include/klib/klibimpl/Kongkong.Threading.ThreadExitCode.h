@@ -6,7 +6,7 @@
 
 namespace klib::Kongkong::Threading
 {
-    struct ThreadExitCode {
+    struct ThreadExitCode : public ValueType {
         public:
         int Code;
         bool Success;

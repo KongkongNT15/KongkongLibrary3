@@ -71,10 +71,10 @@ namespace klib::Kongkong::IO
             void* buffer
         );
 
-        virtual int64_t Seek(
+        int64_t Seek(
             int64_t offset,
             SeekOrigin origin
-        ) = 0;
+        );
 
         virtual bool TryGetLength(
             int64_t& dest
@@ -91,6 +91,12 @@ namespace klib::Kongkong::IO
         virtual bool TryReadByte(
             byte& result
         ) noexcept = 0;
+
+        virtual bool TrySeek(
+            int64_t offset,
+            SeekOrigin origin,
+            int64_t& result
+        ) = 0;
         
         uint32_t Write(
             uint32_t length,
@@ -165,6 +171,21 @@ namespace klib::Kongkong::IO
         }
 
         return StreamRWResult{ length, true };
+    }
+
+    inline int64_t Stream::Seek(
+        int64_t offset,
+        SeekOrigin origin
+    )
+    {
+        int64_t result;
+        
+        if (!TrySeek(offset, origin, result)) [[unlikely]] {
+            CheckCanSeek();
+            ThrowIOError();
+        }
+
+        return result;
     }
 
     inline byte Stream::ReadByte()

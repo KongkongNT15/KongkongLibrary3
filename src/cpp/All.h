@@ -5,6 +5,7 @@
 
 #if KLIB_ENV_UNIX
     #include <sys/mman.h>
+    #include <sys/stat.h>
 #endif
 
 #include <klib/Kongkong.h>
