@@ -463,6 +463,7 @@ namespace klib::Kongkong::Memory
     class MemoryPage;
     class MemoryPageHelper;
     class MemoryResource;
+    class MemoryStatus;
     class VirtualMemoryRegion;
     
 
