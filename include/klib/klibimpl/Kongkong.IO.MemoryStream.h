@@ -60,4 +60,27 @@ namespace klib::Kongkong::IO
     };
 }
 
+namespace klib::Kongkong::IO
+{
+    constexpr bool MemoryStream::CanRead() const noexcept
+    {
+        return true;
+    }
+
+    constexpr bool MemoryStream::CanSeek() const noexcept
+    {
+        return true;
+    }
+
+    constexpr bool MemoryStream::CanWrite() const noexcept
+    {
+        return true;
+    }
+
+    constexpr bool MemoryStream::Flush() noexcept
+    {
+        return true;
+    }
+}
+
 #endif //!KLIB_KONGKONG_IO_MEMORYSTREAM_H
