@@ -25,6 +25,9 @@ namespace klib::Kongkong::Memory
         bool Dispose() noexcept;
 
         [[nodiscard]]
+        void* End() const noexcept;
+
+        [[nodiscard]]
         constexpr Hash::ResultType GetHashCode(
         ) const noexcept;
     };
@@ -66,6 +69,13 @@ namespace klib::Kongkong::Memory
     inline bool MemoryPage::Dispose() noexcept
     {
         return MemoryPageHelper::Free(m_data, PageSize());
+    }
+
+    inline void* MemoryPage::End() const noexcept
+    {
+        byte* p = static_cast<byte*>(m_data);
+
+        return p + PageSize();
     }
 
     constexpr Hash::ResultType MemoryPage::GetHashCode(

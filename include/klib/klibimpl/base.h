@@ -369,6 +369,9 @@ namespace klib::Kongkong::Containers
     template <class T>
     class ChainedList;
 
+    template <class T>
+    class ChainedListIterator;
+
     class ContainerHelper;
 
     template <class T>

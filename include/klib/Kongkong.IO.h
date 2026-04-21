@@ -6,6 +6,7 @@
 #include "klibimpl/Kongkong.IO.FileShareMode.h"
 #include "klibimpl/Kongkong.IO.HandleStream.h"
 #include "klibimpl/Kongkong.IO.InputStreamBuffer.h"
+#include "klibimpl/Kongkong.IO.MemoryStream.h"
 #include "klibimpl/Kongkong.IO.OutputStreamBuffer.h"
 #include "klibimpl/Kongkong.IO.Stream.h"
 #include "klibimpl/Kongkong.IO.StreamRWBase.h"
