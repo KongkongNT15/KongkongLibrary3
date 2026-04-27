@@ -201,16 +201,16 @@
 
 #define KLIB_NEW new(::std::nothrow)
 
-#define KLIB_KONGKONG_OBJECT_CONSTRUCTER(type, base) \
+#define KLIB_OBJECT_CONSTRUCTER(type, base) \
     constexpr type(::std::nullptr_t) noexcept : base(nullptr) {}
 
-#define KLIB_KONGKONG_OBJECT_OPERATOR_UNSAFE \
+#define KLIB_OBJECT_OPERATOR_UNSAFE \
     [[nodiscard]] constexpr ImplType* operator->() const noexcept \
     { \
         return static_cast<ImplType*>(Object::GetPointer()); \
     }
 
-#define KLIB_KONGKONG_OBJECT_OPERATOR \
+#define KLIB_OBJECT_OPERATOR \
     [[nodiscard]] constexpr ImplType* operator->() const noexcept \
     { \
         auto p = Object::GetPointer(); \
@@ -218,11 +218,11 @@
         return static_cast<ImplType*>(p); \
     }
 
-#define KLIB_KONGKONG_OBJECT_OMAJINAI(type, base) \
-    KLIB_KONGKONG_OBJECT_CONSTRUCTER(type, base) \
-    KLIB_KONGKONG_OBJECT_OPERATOR
+#define KLIB_OBJECT_OMAJINAI(type, base) \
+    KLIB_OBJECT_CONSTRUCTER(type, base) \
+    KLIB_OBJECT_OPERATOR
 
-#define KLIB_KONGKONG_OBJECT_GETINSTANCE \
+#define KLIB_OBJECT_GETINSTANCE \
     (Object::GetPointerChecked<ImplType>())
 
 #define KLIB_CREATE_ENUM_CREATE_OPERATOR_OR(enumClass) \
@@ -297,7 +297,7 @@ namespace klib
 /// <summary>
 /// 基本クラスたち
 /// </summary>
-namespace klib::Kongkong
+namespace klib
 {
     struct KLibType;
     class HandleType;
@@ -342,12 +342,12 @@ namespace klib::Kongkong
     concept CKLibType = ::std::derived_from<T, KLibType>;
 }
 
-namespace klib::Kongkong::AppleDevice
+namespace klib::AppleDevice
 {
     class ObjCHandle;
 }
 
-namespace klib::Kongkong::Bits
+namespace klib::Bits
 {
     template <ssize_t N> requires (N >= 1)
     struct Bitset;
@@ -361,7 +361,7 @@ namespace klib::Kongkong::Bits
 /// <summary>
 /// コンテナ型
 /// </summary>
-namespace klib::Kongkong::Containers
+namespace klib::Containers
 {
     template <class T, ssize_t N> requires (N >= 1)
     struct BuiltInArray;
@@ -387,7 +387,7 @@ namespace klib::Kongkong::Containers
     class PagedList;
 }
 
-namespace klib::Kongkong::Containers::Primitives
+namespace klib::Containers::Primitives
 {
     template <class T>
     struct ArrayBase;
@@ -400,7 +400,7 @@ namespace klib::Kongkong::Containers::Primitives
     class PagedListHelper;
 }
 
-namespace klib::Kongkong::Functional
+namespace klib::Functional
 {
     template <class TResult, class... TArgs>
     struct FunctionBase;
@@ -422,7 +422,7 @@ namespace klib::Kongkong::Functional
     class Function;
 }
 
-namespace klib::Kongkong::IO
+namespace klib::IO
 {
     class BinaryReader;
     class BinaryWriter;
@@ -440,7 +440,7 @@ namespace klib::Kongkong::IO
     struct StreamRWResult;
 }
 
-namespace klib::Kongkong::Memory
+namespace klib::Memory
 {
     class GC;
 
@@ -473,7 +473,7 @@ namespace klib::Kongkong::Memory
     class SharedPointerBase;
 }
 
-namespace klib::Kongkong::Memory::Primitives
+namespace klib::Memory::Primitives
 {
     struct GCHandleEntry;
     struct GCHandleTable;
@@ -488,7 +488,7 @@ namespace klib::Kongkong::Memory::Primitives
     class GCObjectList;
 }
 
-namespace klib::Kongkong::Numerics
+namespace klib::Numerics
 {
     struct Integer16ByteBase;
 
@@ -517,7 +517,7 @@ namespace klib::Kongkong::Numerics
     struct UnsignedInteger16Byte;
 }
 
-namespace klib::Kongkong::Ranges
+namespace klib::Ranges
 {
     struct Index;
     struct IndexFromEnd;
@@ -527,7 +527,7 @@ namespace klib::Kongkong::Ranges
     
 }
 
-namespace klib::Kongkong::Std
+namespace klib::Std
 {
     template <class T>
     struct Allocator;
@@ -539,7 +539,7 @@ namespace klib::Kongkong::Std
 /// <summary>
 /// 文字列関連
 /// </summary>
-namespace klib::Kongkong::Text
+namespace klib::Text
 {
     template <class T>
     concept CChar =
@@ -578,13 +578,14 @@ namespace klib::Kongkong::Text
     struct GenericStringView;
 }
 
-namespace klib::Kongkong::Text::Unicode
+namespace klib::Text::Unicode
 {
     struct SurrogatePair;
     class UnicodeTraits;
+    enum struct Utf8CharAttribute;
 }
 
-namespace klib::Kongkong::Threading
+namespace klib::Threading
 {
     class Mutex;
     enum struct MutexType;
@@ -596,7 +597,7 @@ namespace klib::Kongkong::Threading
     
 }
 
-namespace klib::Kongkong::Threading::Async
+namespace klib::Threading::Async
 {
     struct AwaiterBase;
     struct AwaiterBasePromise;
@@ -612,12 +613,12 @@ namespace klib::Kongkong::Threading::Async
     struct AsyncOperationBase;
 }
 
-namespace klib::Kongkong::Win32
+namespace klib::Win32
 {
     class Win32Handle;
 }
 
-namespace klib::Kongkong::Win32::UI
+namespace klib::Win32::UI
 {
     class Button;
     class Window;
@@ -658,18 +659,18 @@ namespace klib
 
 namespace klib
 {
-    using int_least128_t = Kongkong::Numerics::Integer16Byte;
-    using uint_least128_t = Kongkong::Numerics::UnsignedInteger16Byte;
+    using int_least128_t = Numerics::Integer16Byte;
+    using uint_least128_t = Numerics::UnsignedInteger16Byte;
 
     #if CHAR_BIT == 8
-    using int128_t = Kongkong::Numerics::Integer16Byte;
-    using uint128_t = Kongkong::Numerics::UnsignedInteger16Byte;
+    using int128_t = Numerics::Integer16Byte;
+    using uint128_t = Numerics::UnsignedInteger16Byte;
     #endif
 }
     
 #endif
 
-namespace klib::Kongkong::Numerics
+namespace klib::Numerics
 {
     using NativeChar = Number<char>;
     using Short = Number<short>;
@@ -700,12 +701,12 @@ namespace klib::Kongkong::Numerics
     using Int32ParseResult = NumberParseResult<int32_t>;
 }
 
-namespace klib::Kongkong::Text
+namespace klib::Text
 {
     using Numerics::Char;
 }
 
-namespace klib::Kongkong::Threading::Async
+namespace klib::Threading::Async
 {
     using AsyncAction = AsyncOperation<void>;
     using AsyncActionPromise = AsyncOperationPromise<void>;
@@ -718,7 +719,7 @@ namespace klib
     inline namespace Literals
     {
         [[nodiscard]]
-        consteval Kongkong::Ranges::IndexFromEnd
+        consteval Ranges::IndexFromEnd
         operator""_end(
             unsigned long long n
         );
@@ -726,7 +727,7 @@ namespace klib
 }
 
 // 
-namespace klib::Kongkong
+namespace klib
 {
     struct KLibType {};
 
@@ -749,7 +750,7 @@ namespace klib::Kongkong
     };
 }
 
-namespace klib::Kongkong
+namespace klib
 {
     template <class T>
     constexpr Hash::ResultType Hash::Get(

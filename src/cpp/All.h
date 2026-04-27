@@ -8,25 +8,25 @@
     #include <sys/stat.h>
 #endif
 
-#include <klib/Kongkong.h>
-#include <klib/Kongkong.Bits.h>
-#include <klib/Kongkong.Containers.h>
-#include <klib/Kongkong.Functional.h>
-#include <klib/Kongkong.IO.h>
-#include <klib/Kongkong.Memory.h>
-#include <klib/Kongkong.Memory.Primitives.h>
-#include <klib/Kongkong.Numerics.h>
-#include <klib/Kongkong.Threading.h>
-#include <klib/Kongkong.Threading.Async.h>
-#include <klib/Kongkong.Ranges.h>
-#include <klib/Kongkong.Std.h>
-#include <klib/Kongkong.Text.Unicode.h>
+#include <klib/h>
+#include <klib/Bits.h>
+#include <klib/Containers.h>
+#include <klib/Functional.h>
+#include <klib/IO.h>
+#include <klib/Memory.h>
+#include <klib/Memory.Primitives.h>
+#include <klib/Numerics.h>
+#include <klib/Threading.h>
+#include <klib/Threading.Async.h>
+#include <klib/Ranges.h>
+#include <klib/Std.h>
+#include <klib/Text.Unicode.h>
 
 #if KLIB_ENV_WINDOWS
-#include <klib/Kongkong.Win32.h>
+#include <klib/Win32.h>
 #endif
 #if KLIB_OBJECTIVE_C_ENABLED
-#include <klib/Kongkong.AppleDevice.h>
+#include <klib/AppleDevice.h>
 #endif
 
 #if KLIB_ENV_UNIX

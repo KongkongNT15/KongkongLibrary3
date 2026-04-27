@@ -1,0 +1,67 @@
+﻿#ifndef KLIB_MEMORY_MEMORYADDRESS_H
+#define KLIB_MEMORY_MEMORYADDRESS_H
+
+#include "base.h"
+
+namespace klib::Memory
+{
+    class MemoryAddress final {
+        public:
+
+        KLIB_STATIC_CLASS(MemoryAddress);
+
+        [[nodiscard]]
+        static constexpr intptr_t AlignDownUnsafe(
+            intptr_t currentAddress,
+            ssize_t currentObjectAlignment,
+            ssize_t beforeObjectAlignment
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr intptr_t AlignUpUnsafe(
+            intptr_t address,
+            ssize_t alignment
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr void* AlignUpUnsafe(
+            void* address,
+            ssize_t alignment
+        ) noexcept;
+    };
+}
+
+namespace klib::Memory
+{
+    constexpr intptr_t MemoryAddress::AlignDownUnsafe(
+        intptr_t currentAddress,
+        ssize_t currentObjectAlignment,
+        ssize_t beforeObjectAlignment
+    ) noexcept
+    {
+        if (beforeObjectAlignment >= currentAddress) return currentAddress - beforeObjectAlignment;
+
+        
+    }
+
+    constexpr intptr_t MemoryAddress::AlignUpUnsafe(
+        intptr_t address,
+        ssize_t alignment
+    ) noexcept
+    {
+        return (address + (alignment - 1)) & ~(alignment - 1);
+    }
+
+    constexpr void* MemoryAddress::AlignUpUnsafe(
+        void* address,
+        ssize_t alignment
+    ) noexcept
+    {
+        intptr_t addr = reinterpret_cast<intptr_t>(address);
+        intptr_t result = AlignUpUnsafe(addr, alignment);
+
+        return reinterpret_cast<void*>(result);
+    }
+}
+
+#endif //!KLIB_MEMORY_MEMORYADDRESS_H
