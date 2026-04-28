@@ -2,11 +2,11 @@
 #define KLIB_THREADING_THREADEXITCODE_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 
 namespace klib::Threading
 {
-    struct ThreadExitCode : public ValueType {
+    struct ThreadExitCode : public Foundation::ValueType {
         public:
         int Code;
         bool Success;

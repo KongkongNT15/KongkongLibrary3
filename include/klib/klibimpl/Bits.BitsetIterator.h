@@ -2,13 +2,13 @@
 #define KLIB_BITS_BITSETITERATOR_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 #include "Bits.BitsetElement.h"
 #include "Numerics.Int.h"
 
 namespace klib::Bits
 {
-    class BitsetIterator {
+    class BitsetIterator : public Foundation::ValueType {
         friend constexpr bool operator==(
             BitsetIterator,
             BitsetIterator

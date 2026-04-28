@@ -2,11 +2,11 @@
 #define KLIB_CONTAINERS_PAGECACHEAPPENDFAILUREARGS_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 
 namespace klib::Containers
 {
-    struct PageCacheAppendFailureArgs : public ValueType {
+    struct PageCacheAppendFailureArgs : public Foundation::ValueType {
         const byte* RemainingData;
         ssize_t RemainingLength;
 

@@ -1,10 +1,10 @@
-﻿#ifndef KLIB_MEMORYALLOCATIONEXCEPTION_H
-#define KLIB_MEMORYALLOCATIONEXCEPTION_H
+﻿#ifndef KLIB_FOUNDATION_MEMORYALLOCATIONEXCEPTION_H
+#define KLIB_FOUNDATION_MEMORYALLOCATIONEXCEPTION_H
 
 #include "base.h"
-#include "MemoryException.h"
+#include "Foundation.MemoryException.h"
 
-namespace klib
+namespace klib::Foundation
 {
     struct MemoryAllocationException : public MemoryException {
         public:
@@ -29,7 +29,7 @@ namespace klib
     };
 }
 
-namespace klib
+namespace klib::Foundation
 {
     template <class TFunc>
     void MemoryAllocationException::CheckNull(
@@ -45,4 +45,4 @@ namespace klib
     }
 }
 
-#endif //!KLIB_MEMORYALLOCATIONEXCEPTION_H
+#endif //!KLIB_FOUNDATION_MEMORYALLOCATIONEXCEPTION_H

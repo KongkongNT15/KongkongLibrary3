@@ -1,10 +1,10 @@
-﻿#ifndef KLIB_UNSAFELAZYOBJECT_H
-#define KLIB_UNSAFELAZYOBJECT_H
+﻿#ifndef KLIB_FOUNDATION_UNSAFELAZYOBJECT_H
+#define KLIB_FOUNDATION_UNSAFELAZYOBJECT_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 
-namespace klib
+namespace klib::Foundation
 {
     template <class T>
     struct UnsafeLazyObject final : public ValueType {
@@ -62,7 +62,7 @@ namespace klib
     };
 }
 
-namespace klib
+namespace klib::Foundation
 {
     template <class T>
     template <class... Args>
@@ -129,4 +129,4 @@ namespace klib
     }
 }
 
-#endif //!KLIB_UNSAFELAZYOBJECT_H
+#endif //!KLIB_FOUNDATION_UNSAFELAZYOBJECT_H

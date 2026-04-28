@@ -1,9 +1,9 @@
-﻿#ifndef KLIB_INTERFACEVALUE_H
-#define KLIB_INTERFACEVALUE_H
+﻿#ifndef KLIB_FOUNDATION_INTERFACEVALUE_H
+#define KLIB_FOUNDATION_INTERFACEVALUE_H
 
 #include "base.h"
 
-namespace klib
+namespace klib::Foundation
 {
     template <class TStruct>
     struct InterfaceValue<TStruct> {};
@@ -14,4 +14,4 @@ namespace klib
     };
 }
 
-#endif //!KLIB_INTERFACEVALUE_H
+#endif //!KLIB_FOUNDATION_INTERFACEVALUE_H

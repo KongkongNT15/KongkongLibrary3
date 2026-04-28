@@ -1,10 +1,10 @@
-﻿#ifndef KLIB_INITIALIZER_H
-#define KLIB_INITIALIZER_H
+﻿#ifndef KLIB_FOUNDATION_INITIALIZER_H
+#define KLIB_FOUNDATION_INITIALIZER_H
 
 #include "base.h"
-#include "StatelessType.h"
+#include "Foundation.StatelessType.h"
 
-namespace klib
+namespace klib::Foundation
 {
     class Initializer final : public StatelessType {
         
@@ -15,7 +15,7 @@ namespace klib
     };
 }
 
-namespace klib
+namespace klib::Foundation
 {
     template <class TFunc>
     Initializer::Initializer(
@@ -26,4 +26,4 @@ namespace klib
     }
 }
 
-#endif //!KLIB_INITIALIZER_H
+#endif //!KLIB_FOUNDATION_INITIALIZER_H

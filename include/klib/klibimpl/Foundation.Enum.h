@@ -1,13 +1,13 @@
-﻿#ifndef KLIB_ENUM_H
-#define KLIB_ENUM_H
+﻿#ifndef KLIB_FOUNDATION_ENUM_H
+#define KLIB_FOUNDATION_ENUM_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 
 #define KLIB_CLASS_TEMPLATE_DEF template <class TEnum> requires ::std::is_enum_v<TEnum>
 #define KLIB_CLASS_TEMPLATE_PARAM TEnum
 
-namespace klib
+namespace klib::Foundation
 {
     template <>
     struct Enum<void> final {
@@ -91,7 +91,7 @@ namespace klib
     ) noexcept;
 }
 
-namespace klib
+namespace klib::Foundation
 {
     KLIB_CLASS_TEMPLATE_DEF
     constexpr Enum<KLIB_CLASS_TEMPLATE_PARAM>
@@ -247,4 +247,4 @@ namespace klib
 #undef KLIB_CLASS_TEMPLATE_DEF
 #undef KLIB_CLASS_TEMPLATE_PARAM
 
-#endif //!KLIB_ENUM_H
+#endif //!KLIB_FOUNDATION_ENUM_H

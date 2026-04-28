@@ -1,24 +1,24 @@
-﻿#ifndef KLIB_EXCEPTION_H
-#define KLIB_EXCEPTION_H
+﻿#ifndef KLIB_FOUNDATION_EXCEPTION_H
+#define KLIB_FOUNDATION_EXCEPTION_H
 
 #include "base.h"
-#include "ErrorCode.h"
-#include "NonType.h"
+#include "Foundation.ErrorCode.h"
+#include "Foundation.NonType.h"
 
-namespace klib
+namespace klib::Foundation
 {
     struct Exception {
         private:
-        static constexpr char16_t s_defaultMessage[] = u"klib::Exception";
+        static constexpr char16_t s_defaultMessage[] = u"klib::Foundation::Exception";
 
         const char16_t* m_message;
-        ErrorCode m_errorCode;
+        klib::Foundation::ErrorCode m_errorCode;
         bool m_shouldCopy;
 
         protected:
 
         constexpr Exception(
-            ErrorCode errorCode,
+            klib::Foundation::ErrorCode errorCode,
             const char16_t* message,
             NonType
         ) noexcept;
@@ -28,16 +28,16 @@ namespace klib
         constexpr Exception() noexcept;
 
         constexpr Exception(
-            ErrorCode errorCode
+            klib::Foundation::ErrorCode errorCode
         ) noexcept;
 
         Exception(
-            ErrorCode errorCode,
+            klib::Foundation::ErrorCode errorCode,
             const char16_t* message
         );
 
         Exception(
-            ErrorCode errorCode,
+            klib::Foundation::ErrorCode errorCode,
             const char16_t* message,
             bool shouldCopy
         );
@@ -45,7 +45,7 @@ namespace klib
         ~Exception();
 
         [[nodiscard]]
-        constexpr ErrorCode ErrorCode() const noexcept;
+        constexpr klib::Foundation::ErrorCode ErrorCode() const noexcept;
 
         [[nodiscard]]
         constexpr const char16_t* Message() const noexcept;
@@ -64,10 +64,10 @@ namespace klib
     ) noexcept;
 }
 
-namespace klib
+namespace klib::Foundation
 {
     constexpr Exception::Exception(
-        ErrorCode errorCode,
+        klib::Foundation::ErrorCode errorCode,
         const char16_t* message,
         NonType
     ) noexcept
@@ -83,7 +83,7 @@ namespace klib
     }
 
     constexpr Exception::Exception(
-        ErrorCode errorCode
+        klib::Foundation::ErrorCode errorCode
     ) noexcept
         : m_message(s_defaultMessage)
         , m_errorCode(errorCode)
@@ -92,7 +92,7 @@ namespace klib
     }
 
     inline Exception::Exception(
-        ErrorCode errorCode,
+        klib::Foundation::ErrorCode errorCode,
         const char16_t* message
     )
         : Exception(
@@ -103,7 +103,7 @@ namespace klib
     {
     }
 
-    constexpr ErrorCode
+    constexpr klib::Foundation::ErrorCode
     Exception::ErrorCode() const noexcept
     {
         return m_errorCode;
@@ -124,4 +124,4 @@ namespace klib
     }
 }
 
-#endif //!KLIB_EXCEPTION_H
+#endif //!KLIB_FOUNDATION_EXCEPTION_H

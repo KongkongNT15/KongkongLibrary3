@@ -8,7 +8,7 @@
     #include <sys/stat.h>
 #endif
 
-#include <klib/h>
+#include <klib/Foundation.h>
 #include <klib/Bits.h>
 #include <klib/Containers.h>
 #include <klib/Functional.h>
@@ -16,11 +16,13 @@
 #include <klib/Memory.h>
 #include <klib/Memory.Primitives.h>
 #include <klib/Numerics.h>
-#include <klib/Threading.h>
-#include <klib/Threading.Async.h>
 #include <klib/Ranges.h>
 #include <klib/Std.h>
+#include <klib/Text.h>
 #include <klib/Text.Unicode.h>
+#include <klib/Threading.h>
+#include <klib/Threading.Async.h>
+
 
 #if KLIB_ENV_WINDOWS
 #include <klib/Win32.h>

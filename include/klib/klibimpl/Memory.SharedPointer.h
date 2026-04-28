@@ -3,7 +3,7 @@
 
 #include "base.h"
 #include "Memory.SharedPointerBase.h"
-#include "MemoryAllocationException.h"
+#include "Foundation.MemoryAllocationException.h"
 
 namespace klib::Memory
 {
@@ -63,7 +63,7 @@ namespace klib::Memory
         : SharedPointerBase(DefaultDelete<Type>)
         , m_pointer(KLIB_NEW Type(::std::forward<Args>(args)...))
     {
-        MemoryAllocationException::CheckNull(
+        Foundation::MemoryAllocationException::CheckNull(
             m_pointer,
             [this->m_pData]() { delete this->m_pData; }
         );

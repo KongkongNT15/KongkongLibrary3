@@ -2,14 +2,14 @@
 #define KLIB_CONTAINERS_PAGECACHE_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 #include "Containers.PageCacheAppendFailureArgs.h"
 #include "Containers.Primitives.ArrayBase.h"
 #include "Memory.MemoryPage.h"
 
 namespace klib::Containers
 {
-    class PageCache : public Primitives::ArrayBase<byte>, ValueType {
+    class PageCache : public Primitives::ArrayBase<byte>, Foundation::ValueType {
         private:
 
         Memory::MemoryPage m_page;

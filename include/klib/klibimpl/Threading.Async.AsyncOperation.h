@@ -4,7 +4,7 @@
 #include "base.h"
 #include "Threading.Async.AwaiterBase.h"
 #include "Threading.Async.AwaiterBasePromise.h"
-#include "LazyObject.h"
+#include "Foundation.LazyObject.h"
 
 namespace klib::Threading::Async
 {
@@ -27,7 +27,7 @@ namespace klib::Threading::Async
         using CHType = ::std::coroutine_handle<promise_type>;
 
         CHType m_handle;
-        LazyObject<T> m_obj;
+        Foundation::LazyObject<T> m_obj;
 
         explicit AsyncOperation(
             promise_type& promise

@@ -2,13 +2,13 @@
 #define KLIB_CONTAINERS_PRIMITIVES_CHAINLINK_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 #include "Memory.MemoryPage.h"
 
 namespace klib::Containers::Primitives
 {
     template <class T>
-    struct ChainLink : public ValueType {
+    struct ChainLink : public Foundation::ValueType {
         private:
         Memory::MemoryPage m_page;
         public:

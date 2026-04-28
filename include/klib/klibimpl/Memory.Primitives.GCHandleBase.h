@@ -2,12 +2,12 @@
 #define KLIB_MEMORY_PRIMITIVES_GCHANDLEBASE_H
 
 #include "base.h"
-#include "HandleType.h"
+#include "Foundation.HandleType.h"
 #include "Memory.Primitives.GCHandleEntry.h"
 
 namespace klib::Memory::Primitives
 {
-    class GCHandleBase : public HandleType {
+    class GCHandleBase : public Foundation::HandleType {
         friend GC;
         template <class T>
         friend class GCHandle;

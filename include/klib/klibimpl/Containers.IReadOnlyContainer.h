@@ -2,12 +2,12 @@
 #define KLIB_CONTAINERS_IREADONLYCOLLECTION_H
 
 #include "base.h"
-#include "Interface.h"
+#include "Foundation.Interface.h"
 
 namespace klib::Containers
 {
     template <class T>
-    class IReadOnlyContainer : Interface<> {
+    class IReadOnlyContainer : Foundation::Interface<> {
         public:
         using ElementType = ::std::remove_cvref_t<T>;
         protected:

@@ -2,15 +2,16 @@
 #define KLIB_TEXT_UNICODE_SURROGATEPAIR_H
 
 #include "base.h"
-#include "NonType.h"
-#include "ValueType.h"
+#include "Foundation.NonType.h"
+#include "Foundation.ValueType.h"
+#include "Text.Unicode.UnicodeTraits.h"
 
 namespace klib::Text::Unicode
 {
-    struct SurrogatePair : public ValueType {
+    struct SurrogatePair : public Foundation::ValueType {
         private:
 
-        static void s_checkPair(
+        static constexpr void s_checkPair(
             char16_t highSurrogate,
             char16_t lowSurrogate
         );
@@ -48,11 +49,11 @@ namespace klib::Text::Unicode
             char16_t lowSurrogate
         ) noexcept;
 
-        SurrogatePair(
+        constexpr SurrogatePair(
             char32_t c
         );
 
-        SurrogatePair(
+        constexpr SurrogatePair(
             char16_t highSurrogate,
             char16_t lowSurrogate
         );
@@ -200,7 +201,7 @@ namespace klib::Text::Unicode
 
 namespace klib::Text::Unicode
 {
-    inline void SurrogatePair::s_checkPair(
+    constexpr void SurrogatePair::s_checkPair(
         char16_t highSurrogate,
         char16_t lowSurrogate
     )
@@ -246,7 +247,7 @@ namespace klib::Text::Unicode
         );
     }
 
-    inline SurrogatePair::SurrogatePair(
+    constexpr SurrogatePair::SurrogatePair(
         char32_t c
     )
         : SurrogatePair(c, NonType{})
@@ -254,7 +255,7 @@ namespace klib::Text::Unicode
         s_checkPair(m_highSurrogate, m_lowSurrogate);
     }
 
-    inline SurrogatePair::SurrogatePair(
+    constexpr SurrogatePair::SurrogatePair(
             char16_t highSurrogate,
             char16_t lowSurrogate
     )

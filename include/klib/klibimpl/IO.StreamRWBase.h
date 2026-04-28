@@ -2,11 +2,12 @@
 #define KLIB_IO_STREAMRWBASE_H
 
 #include "base.h"
+#include "Foundation.HandleType.h"
 #include "IO.Stream.h"
 
 namespace klib::IO
 {
-    class StreamRWBase : public HandleType {
+    class StreamRWBase : public Foundation::HandleType {
         private:
 
         Stream* m_pStream;

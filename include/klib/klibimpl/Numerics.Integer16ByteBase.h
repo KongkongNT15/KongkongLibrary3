@@ -2,7 +2,7 @@
 #define KLIB_NUMERICS_INTEGER16BYTEBASE_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 
 #include <inttypes.h>
 

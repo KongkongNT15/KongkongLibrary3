@@ -2,11 +2,11 @@
 #define KLIB_IO_STREAMRWRESULT_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 
 namespace klib::IO
 {
-    struct StreamRWResult : public ValueType {
+    struct StreamRWResult : public Foundation::ValueType {
 
         uint32_t BytesTransferred;
         bool Success;

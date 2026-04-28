@@ -2,12 +2,12 @@
 #define KLIB_MEMORY_MEMORYRESOURCE_H
 
 #include "base.h"
-#include "PointerType.h"
+#include "Foundation.PointerType.h"
 #include "Memory.MemoryPageHelper.h"
 
 namespace klib::Memory
 {
-    class MemoryResource final : public PointerType {
+    class MemoryResource final : public Foundation::PointerType {
 
         private:
 

@@ -2,13 +2,13 @@
 #define KLIB_WIN32_WIN32HANDLE_H
 
 #include "base.h"
-#include "HandleType.h"
+#include "Foundation.HandleType.h"
 
 #if KLIB_ENV_WINDOWS
 
 namespace klib::Win32
 {
-    class Win32Handle final : public HandleType {
+    class Win32Handle final : public Foundation::HandleType {
     private:
 
         [[nodiscard]]

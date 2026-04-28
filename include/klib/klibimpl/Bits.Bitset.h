@@ -2,7 +2,7 @@
 #define KLIB_BITS_BITSET_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 #include "Bits.BitsetConstIterator.h"
 #include "Bits.BitsetHelper.h"
 #include "Bits.BitsetIterator.h"
@@ -14,7 +14,7 @@
 namespace klib::Bits
 {
     KLIB_CLASS_TEMPLATE_DEF
-    struct Bitset : public ValueType {
+    struct Bitset : public Foundation::ValueType {
         public:
         private:
         int m_placeHolder[((N - 1) / Numrics::Int::Bits()) + 1];

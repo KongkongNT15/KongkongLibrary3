@@ -1,9 +1,9 @@
-﻿#ifndef KLIB_STATELESSTYPE_H
-#define KLIB_STATELESSTYPE_H
+﻿#ifndef KLIB_FOUNDATION_STATELESSTYPE_H
+#define KLIB_FOUNDATION_STATELESSTYPE_H
 
 #include "base.h"
 
-namespace klib
+namespace klib::Foundation
 {
     class StatelessType : public KLibType {
         public:
@@ -25,7 +25,7 @@ namespace klib
     ) noexcept;
 }
 
-namespace klib
+namespace klib::Foundation
 {
     constexpr Hash::ResultType
     StatelessType::GetHashCode() const noexcept
@@ -50,4 +50,4 @@ namespace klib
     }
 }
 
-#endif //!KLIB_STATELESSTYPE_H
+#endif //!KLIB_FOUNDATION_STATELESSTYPE_H

@@ -297,7 +297,7 @@ namespace klib
 /// <summary>
 /// 基本クラスたち
 /// </summary>
-namespace klib
+namespace klib::Foundation
 {
     struct KLibType;
     class HandleType;
@@ -576,6 +576,12 @@ namespace klib::Text
 
     template <CChar TChar>
     struct GenericStringView;
+
+    class TextEncoder;
+    class TextEncoding;
+
+    template <CChar TBase, CChar TResult>
+    struct TextEncodingArgs;
 }
 
 namespace klib::Text::Unicode
@@ -623,6 +629,11 @@ namespace klib::Win32::UI
     class Button;
     class Window;
     class WindowHandle;
+}
+
+namespace klib
+{
+    using namespace ::klib::Foundation;
 }
 
 #if KLIB_COMPILER_MSVC
@@ -727,7 +738,7 @@ namespace klib
 }
 
 // 
-namespace klib
+namespace klib::Foundation
 {
     struct KLibType {};
 
@@ -750,7 +761,7 @@ namespace klib
     };
 }
 
-namespace klib
+namespace klib::Foundation
 {
     template <class T>
     constexpr Hash::ResultType Hash::Get(

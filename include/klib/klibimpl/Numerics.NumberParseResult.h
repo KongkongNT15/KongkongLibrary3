@@ -2,12 +2,12 @@
 #define KLIB_NUMERICS_NUMBERPARSERESULT_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 
 namespace klib::Numerics
 {
     template <class TNum> requires CNumber<TNum>
-    struct NumberParseResult : public ValueType {
+    struct NumberParseResult : public Foundation::ValueType {
     private:
         TNum m_result;
         bool m_success;

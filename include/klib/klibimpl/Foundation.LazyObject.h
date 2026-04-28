@@ -1,10 +1,10 @@
-﻿#ifndef KLIB_LAZYOBJECT_H
-#define KLIB_LAZYOBJECT_H
+﻿#ifndef KLIB_FOUNDATION_LAZYOBJECT_H
+#define KLIB_FOUNDATION_LAZYOBJECT_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 
-namespace klib
+namespace klib::Foundation
 {
     /// @brief 遅延初期化可能なオブジェクト
     /// @tparam T 格納する型
@@ -268,7 +268,7 @@ namespace klib
     ) noexcept;
 }
 
-namespace klib
+namespace klib::Foundation
 {
     template <class T>
     template <class... Args>
@@ -697,4 +697,4 @@ namespace klib
     }
 }
 
-#endif //!KLIB_LAZYOBJECT_H
+#endif //!KLIB_FOUNDATION_LAZYOBJECT_H

@@ -4,7 +4,7 @@
 #include "base.h"
 #include "Memory.Primitives.GCHandleBase.h"
 #include "Memory.GCPinGuard.h"
-#include "NullPointerException.h"
+#include "Foundation.NullPointerException.h"
 
 namespace klib::Memory
 {
@@ -70,7 +70,7 @@ namespace klib::Memory
             this->m_pointer.Get()
         );
 
-        NullPointerException::CheckNull(p);
+        Foundation::NullPointerException::CheckNull(p);
 
         return { p };
     }

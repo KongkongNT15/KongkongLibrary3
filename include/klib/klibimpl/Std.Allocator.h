@@ -2,13 +2,13 @@
 #define KLIB_STD_ALLOCATOR_H
 
 #include "base.h"
-#include "StatelessType.h"
+#include "Foundation.StatelessType.h"
 #include "Memory.GC.h"
 
 namespace klib::Std
 {
     template <class T>
-    struct Allocator : public StatelessType {
+    struct Allocator : public Foundation::StatelessType {
         public:
         using difference_type = ptrdiff_t;
         using is_always_equal = ::std::true_type;

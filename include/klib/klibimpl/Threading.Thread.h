@@ -2,7 +2,7 @@
 #define KLIB_THRAEDING_THREAD_H
 
 #include "base.h"
-#include "HandleType.h"
+#include "Foundation.HandleType.h"
 
 #if KLIB_ENV_WINDOWS
     #include "Win32.Win32Handle.h"
@@ -16,7 +16,7 @@
 
 namespace klib::Threading
 {
-    class Thread final : public HandleType {
+    class Thread final : public Foundation::HandleType {
         private:
         static uint32_t s_threadCount;
 
