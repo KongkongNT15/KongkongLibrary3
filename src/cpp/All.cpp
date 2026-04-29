@@ -8,6 +8,7 @@
 #include "klibimpl/Memory.SharedPointerBase.cpp"
 #include "klibimpl/Memory.VirtualMemoryRegion.cpp"
 #include "klibimpl/Text.Unicode.SurrogatePair.cpp"
+#include "klibimpl/Text.Unicode.Utf8Char.cpp"
 #include "klibimpl/Threading.Thread.cpp"
 #include "klibimpl/Threading.Async.AsyncAction.cpp"
 #include "klibimpl/Threading.Async.AwaiterBase.cpp"

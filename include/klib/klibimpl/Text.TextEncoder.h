@@ -29,6 +29,13 @@ namespace klib::Text
         template <class TPredicate>
         static constexpr void ToUtf32Unsafe(
             ssize_t length,
+            const char8_t* str,
+            TPredicate&& pred
+        ) noexcept;
+
+        template <class TPredicate>
+        static constexpr void ToUtf32Unsafe(
+            ssize_t length,
             const char16_t* str,
             TPredicate&& pred
         ) noexcept;
@@ -115,6 +122,22 @@ namespace klib::Text
 
             ++itr;
         }
+    }
+
+    template <class TPredicate>
+    static constexpr void TextEncoder::ToUtf32Unsafe(
+        ssize_t length,
+        const char8_t* str,
+        TPredicate&& pred
+    ) noexcept
+    {
+        constexpr bool isInvocaleAllArgs = ::std::invocable<TPredicate, TextEncodingArgs<char8_t, char32_t>>;
+        constexpr bool isInvocableCharBool = ::std::invocable<TPredicate, char32_t, bool>;
+
+        const char8_t* itr = str;
+        const char8_t* end = itr + length;
+
+        
     }
 
     template <class TPredicate>

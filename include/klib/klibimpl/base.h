@@ -588,6 +588,7 @@ namespace klib::Text::Unicode
 {
     struct SurrogatePair;
     class UnicodeTraits;
+    struct Utf8Char;
     enum struct Utf8CharAttribute;
 }
 
