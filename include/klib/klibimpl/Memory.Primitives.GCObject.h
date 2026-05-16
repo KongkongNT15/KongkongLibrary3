@@ -5,6 +5,10 @@
 #include "Memory.MemoryAddress.h"
 #include "Memory.Primitives.GCObjectHeader.h"
 
+#ifdef GetObject
+    #undef GetObject
+#endif
+
 namespace klib::Memory::Primitives
 {
     template <>

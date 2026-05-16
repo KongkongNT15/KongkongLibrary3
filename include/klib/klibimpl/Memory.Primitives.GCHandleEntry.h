@@ -7,6 +7,10 @@
 
 #include <atomic>
 
+#ifdef GetObject
+    #undef GetObject
+#endif
+
 namespace klib::Memory::Primitives
 {
     struct alignas(16) GCHandleEntry final {

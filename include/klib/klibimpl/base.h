@@ -400,6 +400,12 @@ namespace klib::Containers::Primitives
     class PagedListHelper;
 }
 
+namespace klib::CStd
+{
+    class CFileStream;
+    class CString;
+}
+
 namespace klib::Functional
 {
     template <class TResult, class... TArgs>

@@ -13,10 +13,24 @@ namespace klib::Text
 
         KLIB_STATIC_CLASS(TextEncoder);
 
+        
+
         [[nodiscard]]
         static ssize_t GetUtf16CharCountUnsafe(
             ssize_t length,
             const char32_t* str
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr bool ToUtf8Char(
+            char32_t source,
+            Unicode::Utf8Char& dest
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr int ToUtf8CharUnsafe(
+            char32_t source,
+            char8_t* dest
         ) noexcept;
 
         template <class TPredicate>
@@ -39,6 +53,8 @@ namespace klib::Text
             const char16_t* str,
             TPredicate&& pred
         ) noexcept;
+
+        
     };
 }
 
@@ -137,7 +153,7 @@ namespace klib::Text
         const char8_t* itr = str;
         const char8_t* end = itr + length;
 
-        
+
     }
 
     template <class TPredicate>
@@ -214,6 +230,40 @@ namespace klib::Text
 
             ++itr;
         }
+    }
+
+    constexpr int TextEncoder::ToUtf8CharUnsafe(
+        char32_t source,
+        char8_t* dest
+    ) noexcept
+    {
+        if (source < 0x80) {
+            dest[0] = static_cast<char8_t>(source);
+            return 1;
+        }
+        if (source < 0x800) {
+            dest[0] = static_cast<char8_t>(0xC0 | ((source >> 6) & 0x1F));
+            dest[1] = static_cast<char8_t>(0x80 | (source & 0x3F));
+            
+            return 2;
+        }
+        if (source < 0x10000) {
+            dest[0] = static_cast<char8_t>(0xE0 | ((source >> 12) & 0x0F));
+            dest[1] = static_cast<char8_t>(0x80 | ((source >> 6) & 0x3F));
+            dest[2] = static_cast<char8_t>(0x80 | (source & 0x3F));
+            
+            return 3;
+        }
+        if (source < 0x110000) {
+            dest[0] = static_cast<char8_t>(0xF0 | ((source >> 18) & 0x07));
+            dest[1] = static_cast<char8_t>(0x80 | ((source >> 12) & 0x3F));
+            dest[2] = static_cast<char8_t>(0x80 | ((source >> 6) & 0x3F));
+            dest[3] = static_cast<char8_t>(0x80 | (source & 0x3F));
+            
+            return 4;
+        }
+
+        return -1;
     }
 }
 

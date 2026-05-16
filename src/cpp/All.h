@@ -11,6 +11,7 @@
 #include <klib/Foundation.h>
 #include <klib/Bits.h>
 #include <klib/Containers.h>
+#include <klib/CStd.h>
 #include <klib/Functional.h>
 #include <klib/IO.h>
 #include <klib/Memory.h>

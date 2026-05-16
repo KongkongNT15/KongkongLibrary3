@@ -90,6 +90,8 @@ namespace klib::Containers
             this->begin(),
             this->end()
         );
+
+        m_region.Clear();
     }
 
     template <class T>
