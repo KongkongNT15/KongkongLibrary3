@@ -62,8 +62,8 @@ namespace klib::Memory::Primitives
 
         bool TryRelocateUnsafe(
             ssize_t index,
-            void* oldObjectPtr,
-            void* newObjectPtr
+            GCObject<>* oldObjectPtr,
+            GCObject<>* newObjectPtr
         ) noexcept;
     };
 }
@@ -142,7 +142,7 @@ namespace klib::Memory::Primitives
         }
     }
 
-    GCHandleTable::GCHandleTable(
+    inline GCHandleTable::GCHandleTable(
         ssize_t maxHandleCount
     )
     {
@@ -157,39 +157,6 @@ namespace klib::Memory::Primitives
         return m_entries[index]
             .load(::std::memory_order_acquire)
             .ObjectPtr;
-    }
-
-    // Geminiが作ったよ！
-    inline void GCHandleTable::MarkHandleUnsafe(
-        ssize_t index
-    ) noexcept
-    {
-        auto& entry = m_entries[index];
-        GCHandleEntry expected = entry.load(::std::memory_order_relaxed);
-        
-        while (true) {
-
-            // 既にマーク済みなら何もしないｳﾋｮｯ
-            if (expected.Flags & GCObjectFlag::Marked) {
-                return;
-            }
-            
-            GCHandleEntry desired = expected;
-            desired.Flags |= GCObjectFlag::Marked; // マークビットを立てるｳﾋｮｯ
-
-            // 16バイトCASでフラグを更新ｳﾋｮｯ
-            if (
-                entry.compare_exchange_weak(
-                    expected,
-                    desired,
-                    ::std::memory_order_release,
-                    ::std::memory_order_acquire
-                )
-            ) {
-                return; // マーク成功ｳﾋｮｯ
-            }
-            // 失敗（他スレッドが更新した）場合は、最新の expected でリトライｳﾋｮｯ
-        }
     }
 
     inline void GCHandleTable::SweepAndCompact(
@@ -248,8 +215,8 @@ namespace klib::Memory::Primitives
 
     inline bool GCHandleTable::TryRelocateUnsafe(
         ssize_t index,
-        void* oldObjectPtr,
-        void* newObjectPtr
+        GCObject<>* oldObjectPtr,
+        GCObject<>* newObjectPtr
     ) noexcept
     {
         auto& entry = m_entries[index];
@@ -259,7 +226,7 @@ namespace klib::Memory::Primitives
         );
 
         if (
-            expected.ObjectPtr != oldObjectPtr
+            expected.ObjectPtr != oldObjectPtr->GetValue()
             || (expected.Flags & GCObjectFlag::Pinned)
         ) {
             return false; // 他の理由で移動できない場合は失敗ｳﾋｮｯ

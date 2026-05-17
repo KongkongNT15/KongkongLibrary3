@@ -9,6 +9,8 @@
     #undef GetObject
 #endif
 
+#include <atomic>
+
 namespace klib::Memory::Primitives
 {
     template <>
@@ -16,7 +18,9 @@ namespace klib::Memory::Primitives
         private:
         GCObjectHeader<> m_header;
         void* m_objectPtr;
+        GCObject<>* m_previus;
         GCObject<>* m_next;
+        ::std::atomic<GCHandleEntry>* m_handle;
 
         public:
 
@@ -35,6 +39,19 @@ namespace klib::Memory::Primitives
         ) noexcept;
 
         ~GCObject();
+
+        [[nodiscard]]
+        constexpr ::std::atomic<GCHandleEntry>* GetHandle() const noexcept;
+
+        [[nodiscard]]
+        constexpr void* GetValue() const noexcept;
+
+        [[nodiscard]]
+        constexpr GCObject<>* Previus() const noexcept;
+
+        constexpr void Previus(
+            GCObject<>* value
+        ) noexcept;
 
         [[nodiscard]]
         constexpr GCObject<>* Next() const noexcept;
@@ -95,6 +112,31 @@ namespace klib::Memory::Primitives
     inline GCObject<void>::~GCObject()
     {
         m_header.Destruct(m_objectPtr);
+    }
+
+    constexpr ::std::atomic<GCHandleEntry>*
+    GCObject<void>::GetHandle() const noexcept
+    {
+        return m_handle;
+    }
+
+    constexpr void*
+    GCObject<void>::GetValue() const noexcept
+    {
+        return m_objectPtr;
+    }
+
+    constexpr GCObject<>*
+    GCObject<void>::Previus() const noexcept
+    {
+        return m_previus;
+    }
+
+    constexpr void GCObject<void>::Previus(
+        GCObject<>* value
+    ) noexcept
+    {
+        m_previus = value;
     }
 
     constexpr GCObject<>*
