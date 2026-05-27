@@ -528,9 +528,12 @@ namespace klib::Ranges
     struct Index;
     struct IndexFromEnd;
     class IteratorHelper;
+
+    template <class TElement = int>
     struct Range;
 
-    
+    template <class TElement = int>
+    struct RangeIterator;
 }
 
 namespace klib::Std
