@@ -41,6 +41,14 @@ namespace klib::Memory::Primitives
             ssize_t index
         ) noexcept;
 
+        void do_addFreeList(
+            GCObject<>* object
+        ) noexcept;
+
+        void do_addFreeList(
+            ::std::atomic<GCHandleEntry>* handle
+        ) noexcept;
+
         public:
 
         explicit GCHandleTable(
@@ -70,6 +78,22 @@ namespace klib::Memory::Primitives
 
 namespace klib::Memory::Primitives
 {
+    inline void GCHandleTable::do_addFreeList(
+        GCObject<>* object
+    ) noexcept
+    {
+        do_addFreeList(object->GetHandle());
+    }
+
+    inline void GCHandleTable::do_addFreeList(
+        ::std::atomic<GCHandleEntry>* handle
+    ) noexcept
+    {
+        auto index = handle - m_entries.Data();
+
+        m_freeList.Append(index);
+    }
+
     inline void GCHandleTable::do_relocateObject(
         GCObject<>&& oldValue,
         GCObject<>* newPtr

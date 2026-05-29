@@ -16,6 +16,7 @@
 #include <klib/IO.h>
 #include <klib/Memory.h>
 #include <klib/Memory.Primitives.h>
+#include <klib/Net.h>
 #include <klib/Numerics.h>
 #include <klib/Ranges.h>
 #include <klib/Std.h>

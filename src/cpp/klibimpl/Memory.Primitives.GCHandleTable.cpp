@@ -36,6 +36,7 @@
         VirtualMemoryRegion& heap
     )
     {
+        GCObject<>* previusObject = nullptr;
         GCObject<>* currentObject = static_cast<GCObject<>*>(heap.Data()); // 移動先の先頭アドレスｳﾋｮｯ
 
         while (currentObject != nullptr) {
@@ -46,12 +47,33 @@
 
             // 参照カウントがゼロなら回収
             if (entry.RefCount == 0) {
+                auto nextObject = currentObject->Next();
+
+                auto pHandle = currentObject->GetHandle();
+                do_addFreeList(pHandle);
                 //
                 currentObject->~GCObject();
 
-                
+                if (previusObject == nullptr) {
+                    // 最初のオブジェクトが破棄されるだと？？？
+
+                    if (nextObject != nullptr) {
+                        new (currentObject) GCObject<>(::std::move(*nextObject));
+                    }
+                    
+                    // previusもcurrentも更新しない
+                }
+                else {
+                    previusObject->Next(nextObject);
+
+                    // previusは更新しない
+                    currentObject = nextObject;
+                }
+
+                continue;
             }
 
+            previusObject = currentObject;
             currentObject = currentObject->Next();
         }
     }
