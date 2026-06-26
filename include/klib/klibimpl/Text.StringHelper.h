@@ -2,5 +2,4 @@
 #define KLIB_TEXT_STRINGHELPER_H
 
 
-
 #endif //!KLIB_TEXT_STRINGHELPER_H
