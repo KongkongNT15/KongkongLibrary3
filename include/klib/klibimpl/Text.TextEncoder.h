@@ -77,7 +77,7 @@ namespace klib::Text
     }
 
     template <class TPredicate>
-    static constexpr void TextEncoder::ToUtf16Unsafe(
+    constexpr void TextEncoder::ToUtf16Unsafe(
         ssize_t length,
         const char32_t* str,
         TPredicate&& pred
@@ -141,7 +141,7 @@ namespace klib::Text
     }
 
     template <class TPredicate>
-    static constexpr void TextEncoder::ToUtf32Unsafe(
+    constexpr void TextEncoder::ToUtf32Unsafe(
         ssize_t length,
         const char8_t* str,
         TPredicate&& pred
@@ -157,7 +157,7 @@ namespace klib::Text
     }
 
     template <class TPredicate>
-    static constexpr void TextEncoder::ToUtf32Unsafe(
+    constexpr void TextEncoder::ToUtf32Unsafe(
         ssize_t length,
         const char16_t* str,
         TPredicate&& pred
