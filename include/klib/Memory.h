@@ -3,7 +3,6 @@
 
 #include "klibimpl/Memory.GC.h"
 #include "klibimpl/Memory.GCArrayHandle.h"
-#include "klibimpl/Memory.GCArrayObject.h"
 #include "klibimpl/Memory.GCHandle.h"
 #include "klibimpl/Memory.VirtualMemoryRegion.h"
 #include "klibimpl/Memory.MemoryPage.h"

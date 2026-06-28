@@ -5,6 +5,8 @@
 #include "Foundation.HandleType.h"
 #include "Memory.Primitives.GCHandleEntry.h"
 
+#include <atomic>
+
 namespace klib::Memory::Primitives
 {
     class GCHandleBase : public Foundation::HandleType {
@@ -16,7 +18,7 @@ namespace klib::Memory::Primitives
 
         class s_pointer {
         private:
-            Primitives::GCHandleEntry* m_pointer;
+            ::std::atomic<Primitives::GCHandleEntry>* m_pointer;
         public:
             
 
@@ -81,7 +83,26 @@ namespace klib::Memory::Primitives
     {
         if (m_pointer == nullptr) return;
 
-        m_pointer->AddReferenceCount();
+        auto entry = m_pointer->load(
+            ::std::memory_order::relaxed
+        );
+
+        entry.RefCount++;
+
+        m_pointer->exchange(entry);
+    }
+
+    inline GCHandleBase::s_pointer::~s_pointer()
+    {
+        if (m_pointer == nullptr) return;
+
+        auto entry = m_pointer->load(
+            ::std::memory_order::relaxed
+        );
+
+        entry.RefCount--;
+
+        m_pointer->exchange(entry);
     }
 
     constexpr GCHandleBase::s_pointer::s_pointer(
@@ -95,7 +116,7 @@ namespace klib::Memory::Primitives
     constexpr void*
     GCHandleBase::s_pointer::Get() const noexcept
     {
-        return m_pointer;
+        return m_pointer->load().ObjectPtr;
     }
 
     constexpr GCHandleBase::GCHandleBase() noexcept

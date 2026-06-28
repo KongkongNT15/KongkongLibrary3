@@ -1,6 +1,7 @@
 ﻿#ifndef KLIB_MEMORY_PRIMITIVES_H
 #define KLIB_MEMORY_PRIMITIVES_H
 
+#include "klibimpl/Memory.Primitives.GCArrayObject.h"
 #include "klibimpl/Memory.Primitives.GCHandleBase.h"
 #include "klibimpl/Memory.Primitives.GCHandleEntry.h"
 #include "klibimpl/Memory.Primitives.GCHandleTable.h"

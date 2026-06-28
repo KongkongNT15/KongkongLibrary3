@@ -32,7 +32,7 @@
         }
     }
 
-    void GCHandleTable::SweepAndCompact(
+    GCObject<>* GCHandleTable::SweepAndCompact(
         VirtualMemoryRegion& heap
     )
     {
@@ -56,10 +56,6 @@
 
                 if (previusObject == nullptr) {
                     // 最初のオブジェクトが破棄されるだと？？？
-
-                    if (nextObject != nullptr) {
-                        new (currentObject) GCObject<>(::std::move(*nextObject));
-                    }
                     
                     // previusもcurrentも更新しない
                 }

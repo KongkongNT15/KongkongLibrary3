@@ -64,7 +64,7 @@ namespace klib::Memory::Primitives
             ssize_t index
         ) noexcept;
 
-        void SweepAndCompact(
+        GCObject<>* SweepAndCompact(
             VirtualMemoryRegion& heap
         );
 
