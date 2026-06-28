@@ -43,7 +43,7 @@ namespace klib::Memory
         constexpr Hash::ResultType GetHashCode() const noexcept;
 
         [[nodiscard]]
-        constexpr Type* GetRawPointerUnsafe() const noexcept;
+        constexpr Type* GetUnsafe() const noexcept;
 
         template <class TPredicate>
         void WithPinned(

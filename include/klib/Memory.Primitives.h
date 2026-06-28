@@ -5,6 +5,7 @@
 #include "klibimpl/Memory.Primitives.GCHandleBase.h"
 #include "klibimpl/Memory.Primitives.GCHandleEntry.h"
 #include "klibimpl/Memory.Primitives.GCHandleTable.h"
+#include "klibimpl/Memory.Primitives.HeapObjectBase.h"
 #include "klibimpl/Memory.Primitives.GCObject.h"
 #include "klibimpl/Memory.Primitives.GCObjectFlag.h"
 #include "klibimpl/Memory.Primitives.GCObjectHeader.h"

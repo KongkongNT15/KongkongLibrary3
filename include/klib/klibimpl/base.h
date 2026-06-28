@@ -517,6 +517,11 @@ namespace klib::Memory::Primitives
     struct GCObject;
 
     class GCObjectList;
+
+    struct HeapObjectBase;
+
+    template <class T>
+    struct HeapObject;
 }
 
 namespace klib::Numerics
