@@ -14,8 +14,28 @@ namespace klib::Foundation
 
         using Exception::Exception;
 
-        
+        NullPointerException();
     };
+}
+
+namespace klib::Foundation
+{
+#if KLIB_DEBUG
+    inline void NullPointerException::CheckNull(
+        const void* p
+    )
+    {
+        if (p == nullptr) [[unlikely]] throw NullPointerException();
+    }
+
+#else
+    inline void NullPointerException::CheckNull(
+        const void*
+    )
+    {
+        // 何もしないお
+    }
+#endif
 }
 
 #endif //!KLIB_FOUNDATION_NULLPOINTEREXCEPTION_H

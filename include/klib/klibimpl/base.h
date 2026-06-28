@@ -6,6 +6,31 @@
 #define KLIB_VERSION_PATCH 0
 #define KLIB_VERSION_BUILD 0
 
+#ifdef NDEBUG
+    #define KLIB_DEBUG 0
+    #define KLIB_NDEBUG 1
+#else
+    #define KLIB_DEBUG 1
+    #define KLIB_NDEBUG 0
+#endif
+
+#ifdef KLIB_ENABLE_GC
+    #if KLIB_ENABLE_GC
+        #define KLIB_DISABLE_GC 0
+    #else
+        #define KLIB_DISABLE_GC 1
+    #endif
+#elif defined(KLIB_DISABLE_GC)
+    #if KLIB_ENABLE_GC
+        #define KLIB_ENABLE_GC 0
+    #else
+        #define KLIB_ENABLE_GC 1
+    #endif
+#else
+    #define KLIB_DISABLE_GC 1
+    #define KLIB_ENABLE_GC 0
+#endif
+
 #if __has_include(<Windows.h>)
     #define KLIB_ENV_WINDOWS 1
 

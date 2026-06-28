@@ -53,13 +53,43 @@ namespace klib::IO
     {
     }
 
-    int BinaryReader::Read() noexcept
+    inline int BinaryReader::Read() noexcept
     {
         byte result;
 
         if (!BaseStream().TryReadByte(result)) return -1;
 
         return result;
+    }
+
+    inline bool BinaryReader::ReadBool()
+    {
+        return ReadData<bool>();
+    }
+
+    inline byte BinaryReader::ReadByte()
+    {
+        return ReadData<byte>();
+    }
+
+    inline short BinaryReader::ReadShort()
+    {
+        return ReadData<short>();
+    }
+
+    inline int BinaryReader::ReadInt()
+    {
+        return ReadData<int>();
+    }
+
+    inline long BinaryReader::ReadLong()
+    {
+        return ReadData<long>();
+    }
+
+    inline long long BinaryReader::ReadLLong()
+    {
+        return ReadData<long long>();
     }
 
     template <class T> requires ::std::is_trivial_v<T>
