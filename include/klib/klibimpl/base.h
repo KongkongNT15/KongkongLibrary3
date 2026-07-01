@@ -349,6 +349,8 @@ namespace klib::Foundation
     
     struct OutOfMemoryException;
 
+    struct TypeMetadata;
+
     struct Hash;
 
     template <class TStruct, class... TOtherStructs>

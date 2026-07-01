@@ -17,6 +17,14 @@ namespace klib::Memory
 
     private:
 
+#if KLIB_ENABLE_GC
+
+#else
+        [[nodiscard]]
+        constexpr Primitives::HeapObject<Type>* DoGetObject() const noexcept;
+
+#endif
+
     public:
 
         constexpr GCHandle(
@@ -56,6 +64,8 @@ namespace klib::Memory
 
 namespace klib::Memory
 {
+#if KLIB_ENABLE_GC
+
     template <class T>
     constexpr GCHandle<T>::GCHandle(
         ::std::nullptr_t
@@ -98,6 +108,13 @@ namespace klib::Memory
     }
 
     template <class T>
+    constexpr GCHandle<T>::Type*
+    GCHandle<T>::GetUnsafe() const noexcept
+    {
+
+    }
+
+    template <class T>
     template <class TPredicate>
     void GCHandle<T>::WithPinned(
         TPredicate pred
@@ -109,6 +126,76 @@ namespace klib::Memory
 
         pred(*objectPtr);
     }
+#else
+        template <class T>
+    constexpr Primitives::HeapObject<typename GCHandle<T>::Type>*
+    GCHandle<T>::DoGetObject() const noexcept
+    {
+        return static_cast<Primitives::HeapObject<Type>*>(this->m_pointer.ObjectBase());
+    }
+
+    template <class T>
+    constexpr GCHandle<T>::GCHandle(
+        ::std::nullptr_t
+    ) noexcept
+    {
+    }
+
+    template <class T>
+    GCPinGuard<T> GCHandle<T>::operator->() const
+    {
+        auto p = static_cast<Type*>(
+            this->m_pointer.Get()
+        );
+
+        Foundation::NullPointerException::CheckNull(p);
+
+        return { p };
+    }
+
+    template <class T>
+    template <class THandle>
+        requires ::std::derived_from<THandle, GCHandleBase>
+    THandle GCHandle<T>::Cast() const
+    {
+        using type = typename THandle::Type;
+
+        if constexpr (::std::derived_from<typename Type, type>) {
+
+        }
+    }
+
+    template <class T>
+    constexpr Hash::ResultType
+    GCHandle<T>::GetHashCode() const noexcept
+    {
+        if (this->m_pointer.m_pointer == nullptr) return 0;
+
+        return Hash::Get<Type>(*GetUnsafe());
+    }
+
+    template <class T>
+    constexpr GCHandle<T>::Type*
+    GCHandle<T>::GetUnsafe() const noexcept
+    {
+        return &DoGetObject()->Value;
+    }
+
+    template <class T>
+    template <class TPredicate>
+    void GCHandle<T>::WithPinned(
+        TPredicate pred
+    ) const
+    {
+        auto p = GetUnsafe();
+
+        if (p == nullptr) [[unlikely]] return;
+
+        pred(*p);
+    }
+
+#endif
+    
 }
 
 #endif //!KLIB_MEMORY_GCHANDLE_H

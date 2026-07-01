@@ -21,6 +21,15 @@ namespace klib::Memory::Primitives
         ) noexcept;
 
         public:
+
+        constexpr size_t AddRefCount() noexcept;
+
+        constexpr void Dispose() noexcept;
+
+        [[nodiscard]]
+        constexpr void* Get() const noexcept;
+
+        constexpr size_t RemoveRefCount() noexcept;
     };
 }
 
@@ -34,6 +43,26 @@ namespace klib::Memory::Primitives
         , m_pValue(pValue)
         , m_refCount(1)
     {
+    }
+
+    constexpr size_t HeapObjectBase::AddRefCount() noexcept
+    {
+        return ++m_refCount;
+    }
+
+    constexpr void HeapObjectBase::Dispose() noexcept
+    {
+        m_destructor(m_pValue);
+    }
+
+    constexpr void* HeapObjectBase::Get() const noexcept
+    {
+        return m_pValue;
+    }
+
+    constexpr size_t HeapObjectBase::RemoveRefCount() noexcept
+    {
+        return --m_refCount;
     }
 }
 
