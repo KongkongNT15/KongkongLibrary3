@@ -520,6 +520,7 @@ namespace klib::Memory::Primitives
 
     class GCObjectList;
 
+    struct HeapMemory;
     struct HeapObjectBase;
 
     template <class T>
