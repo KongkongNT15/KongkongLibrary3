@@ -491,6 +491,9 @@ namespace klib::Memory
     template <class T>
     struct GCPinGuard;
 
+    template <class T>
+    class HeapMemory;
+
     class MemoryAddress;
 
     class MemoryPage;
@@ -520,7 +523,7 @@ namespace klib::Memory::Primitives
 
     class GCObjectList;
 
-    struct HeapMemory;
+    
     struct HeapObjectBase;
 
     template <class T>

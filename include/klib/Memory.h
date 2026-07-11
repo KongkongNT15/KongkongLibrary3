@@ -4,6 +4,7 @@
 #include "klibimpl/Memory.GC.h"
 #include "klibimpl/Memory.GCArrayHandle.h"
 #include "klibimpl/Memory.GCHandle.h"
+#include "klibimpl/Memory.HeapMemory.h"
 #include "klibimpl/Memory.VirtualMemoryRegion.h"
 #include "klibimpl/Memory.MemoryPage.h"
 #include "klibimpl/Memory.MemoryPageHelper.h"
