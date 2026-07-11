@@ -54,6 +54,14 @@ namespace klib::Memory
 
         [[nodiscard]]
         constexpr ssize_t Length() const noexcept;
+
+        bool Resize(
+            ssize_t newLength
+        ) noexcept;
+
+        void ResizeUnsafe(
+            ssize_t newLength
+        ) noexcept;
     };
 
     template <class T>
@@ -103,7 +111,7 @@ namespace klib::Memory
 namespace klib::Memory
 {
     template <class T>
-    constexpr HeapMemory<T>::HeapMemory(
+    HeapMemory<T>::HeapMemory(
         ssize_t length
     ) noexcept
         : m_p(
@@ -216,6 +224,33 @@ namespace klib::Memory
     HeapMemory<T>::Length() const noexcept
     {
         return m_length;
+    }
+
+    template <class T>
+    bool HeapMemory<T>::Resize(
+        ssize_t newLength
+    ) noexcept
+    {
+        ElementType* p = static_cast<ElementType*>(
+            ::realloc(m_p, newLength * sizeof(ElementType))
+        );
+
+        if (p == nullptr) [[unlikely]] return false;
+
+        m_p = p;
+        m_length = newLength;
+    }
+
+    template <class T>
+    void HeapMemory<T>::ResizeUnsafe(
+        ssize_t newLength
+    ) noexcept
+    {
+        m_p = static_cast<ElementType*>(
+            ::realloc(m_p, newLength * sizeof(ElementType))
+        );
+
+        m_length = newLength;
     }
 
     template <class T>
