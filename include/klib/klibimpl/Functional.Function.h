@@ -25,7 +25,7 @@ namespace klib::Functional
 
         template <class TInstance, class TMemberFunction> requires ::std::is_member_function_pointer_v<TMemberFunction>
         Function(
-            TInstance* p,
+            TInstance&& p,
             TMemberFunction f
         );
 
@@ -58,22 +58,27 @@ namespace klib::Functional
             m_func = new FunctionPointer<TResult, TArgs...>(f);
         }
         // 関数ポインタ
-        else if constexpr (::std::same_as<TFunc, TResult(*)(TArgs...)) {
+        else if constexpr (::std::same_as<TFunc, TResult(*)(TArgs...)>) {
             m_func = new FunctionPointer<TResult, TArgs...>(f);
         }
         // 関数オブジェクト？？？
         else {
-            m_func = new FunctionObject<TResult, TArgs...>(::std::forward<TFunc>(f));
+            m_func = new FunctionObject<TFunc, TResult, TArgs...>(::std::forward<TFunc>(f));
         }
     }
 
     template <class TResult, class... TArgs>
     template <class TInstance, class TMemberFunction> requires ::std::is_member_function_pointer_v<TMemberFunction>
     Function<TResult, TArgs...>::Function(
-        TInstance* p,
+        TInstance&& p,
         TMemberFunction f
     )
-        : m_func(new MemberFunction<TInstance, TMemberFunction, TArgs...>(p, f))
+        : m_func(
+            new MemberFunction<TInstance, TMemberFunction, TArgs...>(
+                ::std::forward<TInstance>(p),
+                f
+            )
+        )
     {
     }
 
@@ -99,7 +104,7 @@ namespace klib::Functional
         Function<TResult, TArgs...>&& other
     ) noexcept
     {
-        if (&other != this) [[likeky]] {
+        if (&other != this) [[likely]] {
             if (m_func != nullptr) {
                 delete m_func;
             }

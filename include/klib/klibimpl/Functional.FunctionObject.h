@@ -4,13 +4,13 @@
 #include "base.h"
 #include "Functional.FunctionBase.h"
 
-#define KLIB_CLASS_TEMPLATE_DEF template <class TFunc, class TResult, class... TArgs> requires ::std::is_invocable_v<TFunc, TArgs&&...>
+#define KLIB_CLASS_TEMPLATE_DEF template <class TFunc, class TResult, class... TArgs> requires ::std::is_invocable_v<TFunc, TArgs...>
 #define KLIB_CLASS_TEMPLATE_PARAM TFunc, TResult, TArgs...
 
 namespace klib::Functional
 {
     KLIB_CLASS_TEMPLATE_DEF
-    struct FunctionObject : FunctionBase<TResult, TArgs&&...> {
+    struct FunctionObject : FunctionBase<TResult, TArgs...> {
         private:
         TFunc m_func;
 
@@ -59,7 +59,7 @@ namespace klib::Functional
     }
 }
 
-#undef KLIB_TEMPLATE_DEF
-#undef KLIB_TEMPLATE_PARAM
+#undef KLIB_CLASS_TEMPLATE_DEF
+#undef KLIB_CLASS_TEMPLATE_PARAM
 
 #endif //!KLIB_FUNCTIONAL_FUNCTIONOBJECT_H

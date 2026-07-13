@@ -12,30 +12,37 @@ namespace klib::Functional
     KLIB_CLASS_TEMPLATE_DEF
     struct MemberFunction :
         public FunctionBase<
-            typename decltype(
-                (::std::declval<TInstance>().*::std::declval<TFType>())(::std::declval<TArgs>())
-            ),
+            typename ::std::invoke_result_t<
+                TFType,
+                typename ::std::remove_reference_t<decltype(*::std::declval<TInstance>())>,
+                TArgs...
+            >,
             TArgs...
         >
     {
         public:
 
-        using FType = TResult(TInstance::*)(TArgs...);
-
-        using TResult = typename decltype(
-            (::std::declval<TInstance>().*::std::declval<TFType>())(::std::declval<TArgs>())
-        );
+        using TResult = typename ::std::invoke_result_t<
+            TFType,
+            typename ::std::remove_reference_t<decltype(*::std::declval<TInstance>())>,
+            TArgs...
+        >;
 
         private:
 
-        TInstance* m_p;
-        FType m_f;
+        TInstance m_p;
+        TFType m_f;
 
         public:
 
         constexpr MemberFunction(
-            TInstance* p,
-            FType f
+            TInstance const& p,
+            TFType f
+        ) noexcept;
+
+        constexpr MemberFunction(
+            TInstance&& p,
+            TFType f
         ) noexcept;
 
         TResult operator()(
@@ -48,10 +55,20 @@ namespace klib::Functional
 {
     KLIB_CLASS_TEMPLATE_DEF
     constexpr MemberFunction<KLIB_CLASS_TEMPLATE_PARAM>::MemberFunction(
-        TInstance* p,
-        FType f
+        TInstance const& p,
+        TFType f
     ) noexcept
         : m_p(p)
+        , m_f(f)
+    {
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    constexpr MemberFunction<KLIB_CLASS_TEMPLATE_PARAM>::MemberFunction(
+        TInstance&& p,
+        TFType f
+    ) noexcept
+        : m_p(::std::move(p))
         , m_f(f)
     {
     }
@@ -65,5 +82,8 @@ namespace klib::Functional
         return (m_p->*m_f)(::std::forward<TArgs>(args)...);
     }
 }
+
+#undef KLIB_CLASS_TEMPLATE_DEF
+#undef KLIB_CLASS_TEMPLATE_PARAM
 
 #endif //!KLIB_FUNCTIONAL_MEMBERFUNCTION_H
