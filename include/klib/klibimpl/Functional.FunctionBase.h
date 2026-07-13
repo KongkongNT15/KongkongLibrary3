@@ -9,6 +9,8 @@ namespace klib::Functional
     struct FunctionBase {
         public:
 
+        virtual ~FunctionBase() = default;
+
         virtual TResult operator()(
             TArgs&&... args
         ) = 0;

@@ -441,7 +441,7 @@ namespace klib::Functional
     template <class TResult, class... TArgs>
     struct FunctionPointer;
 
-    template <class TPointerType, class TResult, class... TArgs>
+    template <class TInstance, class TFType, class... TArgs>
     struct MemberFunction;
 
     template <class TResult, class... TArgs>
@@ -570,6 +570,12 @@ namespace klib::Ranges
 
     template <class TElement = int>
     struct RangeIterator;
+}
+
+namespace klib::Signals
+{
+    template <class TResult, class... TArgs>
+    class Delegate;
 }
 
 namespace klib::Std

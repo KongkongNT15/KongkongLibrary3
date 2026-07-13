@@ -19,6 +19,7 @@
 #include <klib/Net.h>
 #include <klib/Numerics.h>
 #include <klib/Ranges.h>
+#include <klib/Signals.h>
 #include <klib/Std.h>
 #include <klib/Text.h>
 #include <klib/Text.Unicode.h>

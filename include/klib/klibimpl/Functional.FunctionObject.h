@@ -17,7 +17,11 @@ namespace klib::Functional
         public:
 
         FunctionObject(
-            TFunc func
+            TFunc const& func
+        );
+
+        FunctionObject(
+            TFunc&& func
         );
 
         TResult operator()(
@@ -30,9 +34,17 @@ namespace klib::Functional
 {
     KLIB_CLASS_TEMPLATE_DEF
     FunctionObject<KLIB_CLASS_TEMPLATE_PARAM>::FunctionObject(
-        TFunc func
+        TFunc const& func
     )
         : m_func(func)
+    {
+    }
+
+    KLIB_CLASS_TEMPLATE_DEF
+    FunctionObject<KLIB_CLASS_TEMPLATE_PARAM>::FunctionObject(
+        TFunc&& func
+    )
+        : m_func(::std::move(func))
     {
     }
 

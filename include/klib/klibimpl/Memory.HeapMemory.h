@@ -11,7 +11,7 @@ namespace klib::Memory
     class HeapMemory final {
         public:
 
-        using ElementType = ::std::remove_cvref_t<T>;
+        using ElementType = typename ::std::remove_cvref_t<T>;
 
         private:
         ElementType* m_p;
@@ -232,7 +232,10 @@ namespace klib::Memory
     ) noexcept
     {
         ElementType* p = static_cast<ElementType*>(
-            ::realloc(m_p, newLength * sizeof(ElementType))
+            ::realloc(
+                m_p,
+                newLength * sizeof(ElementType)
+            )
         );
 
         if (p == nullptr) [[unlikely]] return false;
@@ -247,7 +250,10 @@ namespace klib::Memory
     ) noexcept
     {
         m_p = static_cast<ElementType*>(
-            ::realloc(m_p, newLength * sizeof(ElementType))
+            ::realloc(
+                m_p,
+                newLength * sizeof(ElementType)
+            )
         );
 
         m_length = newLength;

@@ -2,12 +2,12 @@
 #define KLIB_FUNCTIONAL_FUNCTIONPOINTER_H
 
 #include "base.h"
-#include "Functional.FunctionPointer.h"
+#include "Functional.FunctionBase.h"
 
 namespace klib::Functional
 {
     template <class TResult, class... TArgs>
-    struct FunctionPointer {
+    struct FunctionPointer : FunctionBase<TResult, TArgs...> {
         public:
         using FuncType = TResult(*)(TArgs&&...);
         private:
@@ -28,7 +28,21 @@ namespace klib::Functional
 
 namespace klib::Functional
 {
+    template <class TResult, class... TArgs>
+    constexpr FunctionPointer<TResult, TArgs...>::FunctionPointer(
+        FuncType func
+    ) noexcept
+        : m_funcPointer(func)
+    {
+    }
 
+    template <class TResult, class... TArgs>
+    TResult FunctionPointer<TResult, TArgs...>::operator()(
+        TArgs&&... args
+    )
+    {
+        return m_funcPoitner(::std::forward<TArgs>(args)...);
+    }
 }
 
 #endif //!KLIB_FUNCTIONAL_FUNCTIONPOINTER_H
