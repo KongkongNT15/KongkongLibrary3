@@ -14,7 +14,7 @@ namespace klib::Signals
         public:
 
         using FunctionType =
-            typename Functional::Function<TResult, TArgs...>;
+            typename Functional::Function<TResult(TArgs...)>;
 
         private:
 

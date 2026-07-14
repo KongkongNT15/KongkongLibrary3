@@ -451,8 +451,11 @@ namespace klib::Functional
     requires ::std::is_invocable_v<TFunc, TArgs...>
     struct FunctionObject;
 
-    template <class TResult, class... TArgs>
+    template <class>
     class Function;
+
+    template <class TResult, class... TArgs>
+    class Function<TResult(TArgs...)>;
 }
 
 namespace klib::IO

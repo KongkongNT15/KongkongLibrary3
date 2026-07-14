@@ -11,7 +11,7 @@
 namespace klib::Functional
 {
     template <class TResult, class... TArgs>
-    class Function {
+    class Function<TResult(TArgs...)> {
         private:
 
         FunctionBase<TResult, TArgs...>* m_func;
@@ -49,7 +49,7 @@ namespace klib::Functional
 {
     template <class TResult, class... TArgs>
     template <class TFunc> requires ::std::is_invocable_v<TFunc, TArgs...>
-    Function<TResult, TArgs...>::Function(
+    Function<TResult(TArgs...)>::Function(
         TFunc&& f
     )
     {
@@ -69,7 +69,7 @@ namespace klib::Functional
 
     template <class TResult, class... TArgs>
     template <class TInstance, class TMemberFunction> requires ::std::is_member_function_pointer_v<TMemberFunction>
-    Function<TResult, TArgs...>::Function(
+    Function<TResult(TArgs...)>::Function(
         TInstance&& p,
         TMemberFunction f
     )
@@ -83,8 +83,8 @@ namespace klib::Functional
     }
 
     template <class TResult, class... TArgs>
-    constexpr Function<TResult, TArgs...>::Function(
-        Function<TResult, TArgs...>&& other
+    constexpr Function<TResult(TArgs...)>::Function(
+        Function<TResult(TArgs...)>&& other
     ) noexcept
         : m_func(other.m_func)
     {
@@ -92,7 +92,7 @@ namespace klib::Functional
     }
 
     template <class TResult, class... TArgs>
-    Function<TResult, TArgs...>::~Function()
+    Function<TResult(TArgs...)>::~Function()
     {
         if (m_func == nullptr) return;
 
@@ -100,8 +100,8 @@ namespace klib::Functional
     }
 
     template <class TResult, class... TArgs>
-    Function<TResult, TArgs...>& Function<TResult, TArgs...>::operator=(
-        Function<TResult, TArgs...>&& other
+    Function<TResult(TArgs...)>& Function<TResult(TArgs...)>::operator=(
+        Function<TResult(TArgs...)>&& other
     ) noexcept
     {
         if (&other != this) [[likely]] {
@@ -117,7 +117,7 @@ namespace klib::Functional
     }
 
     template <class TResult, class... TArgs>
-    TResult Function<TResult, TArgs...>::operator()(
+    TResult Function<TResult(TArgs...)>::operator()(
         TArgs&&... args
     ) const
     {

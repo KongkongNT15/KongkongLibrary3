@@ -9,7 +9,7 @@ namespace klib::Functional
     template <class TResult, class... TArgs>
     struct FunctionPointer : FunctionBase<TResult, TArgs...> {
         public:
-        using FuncType = TResult(*)(TArgs&&...);
+        using FuncType = TResult(*)(TArgs...);
         private:
 
         FuncType m_funcPointer;
@@ -41,7 +41,7 @@ namespace klib::Functional
         TArgs&&... args
     )
     {
-        return m_funcPoitner(::std::forward<TArgs>(args)...);
+        return m_funcPointer(::std::forward<TArgs>(args)...);
     }
 }
 
