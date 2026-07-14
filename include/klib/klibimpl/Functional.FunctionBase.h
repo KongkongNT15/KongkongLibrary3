@@ -14,6 +14,14 @@ namespace klib::Functional
         virtual TResult operator()(
             TArgs&&... args
         ) = 0;
+
+        [[nodiscard]]
+        virtual FunctionBase* CreateClone() const = 0;
+
+        [[nodiscard]]
+        virtual bool Equals(
+            FunctionBase const& other
+        ) const noexcept = 0;
     };
 }
 

@@ -6,7 +6,6 @@
 #include "Functional.FunctionObject.h"
 #include "Functional.FunctionPointer.h"
 #include "Functional.MemberFunction.h"
-#include "Functional.RawFunction.h"
 
 namespace klib::Functional
 {
@@ -30,10 +29,18 @@ namespace klib::Functional
         );
 
         constexpr Function(
+            Function const& other
+        ) noexcept;
+
+        constexpr Function(
             Function&& other
         ) noexcept;
 
         ~Function();
+
+        Function& operator=(
+            Function const& other
+        ) noexcept;
 
         Function& operator=(
             Function&& other
@@ -80,6 +87,15 @@ namespace klib::Functional
             )
         )
     {
+    }
+
+    template <class TResult, class... TArgs>
+    constexpr Function<TResult(TArgs...)>::Function(
+        Function<TResult(TArgs...)>&& other
+    ) noexcept
+        : m_func(other.m_func)
+    {
+        other.m_func = nullptr;
     }
 
     template <class TResult, class... TArgs>

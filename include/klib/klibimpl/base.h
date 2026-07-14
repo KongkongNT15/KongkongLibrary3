@@ -444,9 +444,6 @@ namespace klib::Functional
     template <class TInstance, class TFType, class... TArgs>
     struct MemberFunction;
 
-    template <class TResult, class... TArgs>
-    struct RawFunction;
-
     template <class TFunc, class TResult, class... TArgs>
     requires ::std::is_invocable_v<TFunc, TArgs...>
     struct FunctionObject;
