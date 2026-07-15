@@ -5,8 +5,6 @@
 #include "Containers.ArrayView.h"
 #include "Signals.Event.h"
 
-#include <vector>
-
 namespace klib::Signals
 {
     template <class TResult, class... TArgs>
