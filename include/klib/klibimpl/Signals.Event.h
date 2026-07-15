@@ -15,11 +15,10 @@ namespace klib::Signals
 
         using FunctionType =
             typename Functional::Function<TResult(TArgs...)>;
-        private:
-
-        ::std::vector<FunctionType> m_vec;
 
         protected:
+
+        ::std::vector<FunctionType> m_vec;
 
         Event() = default;
         Event(Event const&) = default;
