@@ -574,8 +574,14 @@ namespace klib::Ranges
 
 namespace klib::Signals
 {
-    template <class TResult, class... TArgs>
+    template <class>
     class Delegate;
+
+    template <class TResult, class... TArgs>
+    class Delegate<TResult(TArgs...)>;
+
+    template <class TResult, class... TArgs>
+    class Event;
 }
 
 namespace klib::Std

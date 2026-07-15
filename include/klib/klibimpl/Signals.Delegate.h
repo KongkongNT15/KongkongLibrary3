@@ -3,22 +3,18 @@
 
 #include "base.h"
 #include "Containers.ArrayView.h"
-#include "Functional.Function.h"
+#include "Signals.Event.h"
 
 #include <vector>
 
 namespace klib::Signals
 {
     template <class TResult, class... TArgs>
-    class Delegate final {
+    class Delegate<TResult(TArgs...)> final : public Event<TResult, TArgs...> {
         public:
 
-        using FunctionType =
-            typename Functional::Function<TResult(TArgs...)>;
-
-        private:
-
-        ::std::vector<FunctionType> m_vec;
+        using Base = typename Event<TResult, TArgs...>;
+        using FunctionType = typename Base::FunctionType;
 
         public:
 
@@ -35,6 +31,12 @@ namespace klib::Signals
         );
 
         [[nodiscard]]
+        constexpr Base& Event() noexcept;
+
+        [[nodiscard]]
+        constexpr Base const& Event() const noexcept;
+
+        [[nodiscard]]
         constexpr Containers::ArrayView<FunctionType>
         InvocationList() const noexcept;
 
@@ -47,68 +49,72 @@ namespace klib::Signals
 namespace klib::Signals
 {
     template <class TResult, class... TArgs>
-    Delegate<TResult, TArgs...>&
-    Delegate<TResult, TArgs...>::operator+=(
+    Delegate<TResult(TArgs...)>&
+    Delegate<TResult(TArgs...)>::operator+=(
         FunctionType const& f
     )
     {
-        m_vec.push_back(f);
+        Base::operator+=(f);
         return *this;
     }
 
     template <class TResult, class... TArgs>
-    Delegate<TResult, TArgs...>&
-    Delegate<TResult, TArgs...>::operator+=(
+    Delegate<TResult(TArgs...)>&
+    Delegate<TResult(TArgs...)>::operator+=(
         FunctionType&& f
     )
     {
-        m_vec.push_back(::std::move(f));
+        Base::operator+=(::std::move(f));
         return *this;
     }
 
     template <class TResult, class... TArgs>
-    Delegate<TResult, TArgs...>&
-    Delegate<TResult, TArgs...>::operator-=(
+    Delegate<TResult(TArgs...)>&
+    Delegate<TResult(TArgs...)>::operator-=(
         FunctionType const& f
     )
     {
-        auto itr = m_vec.begin();
-        auto end = m_vec.end();
+        Base::operator-=(f);
+        return *this;
+    }
 
-        while (itr != end) {
-            if (*itr == f) {
-                m_vec.erase(itr);
-                break;
-            }
-            ++itr;
-        }
+    template <class TResult, class... TArgs>
+    constexpr Delegate<TResult(TArgs...)>::Base&
+    Delegate<TResult(TArgs...)>::Event() noexcept
+    {
+        return *this;
+    }
 
+    template <class TResult, class... TArgs>
+    constexpr Delegate<TResult(TArgs...)>::Base const&
+    Delegate<TResult(TArgs...)>::Event() const noexcept
+    {
         return *this;
     }
 
     template <class TResult, class... TArgs>
     constexpr Containers::ArrayView<
-        typename Delegate<TResult, TArgs...>::FunctionType
+        typename Delegate<TResult(TArgs...)>::FunctionType
     >
-    Delegate<TResult, TArgs...>::InvocationList() const noexcept
+    Delegate<TResult(TArgs...)>::InvocationList() const noexcept
     {
-        return { m_vec.size(), m_vec.data() };
+        return { this->m_vec.size(), this->m_vec.data() };
     }
 
     template <class TResult, class... TArgs>
-    TResult Delegate<TResult, TArgs...>::Invoke(
+    TResult Delegate<TResult(TArgs...)>::Invoke(
         TArgs&&... args
     )
     {
         if constexpr (::std::same_as<TResult, void>) {
-            for (auto&& f : m_vec) {
+            for (auto&& f : this->m_vec) {
                 f.operator()(::std::forward<TArgs>(args)...);
             }
         }
         else {
             TResult result{};
 
-            for (auto&& f : m_vec) {
+            for (auto&& f : this->m_vec) {
                 result = f.operator()(::std::forward<TArgs>(args)...);
             }
 
