@@ -53,6 +53,10 @@ namespace klib::AppleDevice
         [[nodiscard]]
         constexpr bool operator!() const noexcept;
 
+        template <class T>
+        [[nodiscard]]
+        constexpr T* As() const noexcept;
+
         [[nodiscard]]
         constexpr void* GetRawPointer() const noexcept;
 
@@ -184,6 +188,12 @@ namespace klib::AppleDevice
     constexpr bool ObjCHandle::operator!() const noexcept
     {
         return m_objectPtr == nullptr;
+    }
+
+    template <class T>
+    constexpr T* ObjCHandle::As() const noexcept
+    {
+        return static_cast<T*>(m_objectPtr);
     }
 
     constexpr void* ObjCHandle::GetRawPointer() const noexcept

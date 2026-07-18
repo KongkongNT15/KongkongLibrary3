@@ -362,6 +362,8 @@ namespace klib::Foundation
     template <class T>
     struct LazyObject;
 
+    class String;
+
     template <class T>
     struct UnsafeLazyObject;
 
