@@ -689,6 +689,11 @@ namespace klib::Win32::UI
     class WindowHandle;
 }
 
+namespace klib::WinRT
+{
+    class HString;
+}
+
 namespace klib
 {
     using namespace ::klib::Foundation;

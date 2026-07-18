@@ -29,6 +29,7 @@
 
 #if KLIB_ENV_WINDOWS
 #include <klib/Win32.h>
+#include <klib/WinRT.h>
 #endif
 #if KLIB_OBJECTIVE_C_ENABLED
 #include <klib/AppleDevice.h>

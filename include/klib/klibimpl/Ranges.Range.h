@@ -54,14 +54,14 @@ namespace klib::Ranges
     constexpr RangeIterator<TElement>
     Range<TElement>::begin() const noexcept
     {
-        return Range<TElement>(m_start);
+        return RangeIterator<TElement>(m_start);
     }
 
     template <class TElement>
     constexpr RangeIterator<TElement>
     Range<TElement>::end() const noexcept
     {
-        return Range<TElement>(m_end);
+        return RangeIterator<TElement>(m_end);
     }
 
     template <class TElement>
