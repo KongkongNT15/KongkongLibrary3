@@ -29,11 +29,13 @@ namespace klib::Text
             SizeType n
         );
 
+        constexpr void DoRemove() noexcept;
+
         public:
 
-        template <class TArray> requires ::std::is_array_v<TArray> //&& ::std::is_convertible_v<TArray, const ElementType*>
+        template <ssize_t N>
         consteval GenericString(
-            TArray&& array
+            const ElementType(&arr)[N]
         ) noexcept;
 
         GenericString(
@@ -41,7 +43,23 @@ namespace klib::Text
             ElementType c
         );
 
+        constexpr GenericString(
+            GenericString const& other
+        ) noexcept;
+
+        constexpr GenericString(
+            GenericString&& other
+        ) noexcept;
+
         constexpr ~GenericString();
+
+        constexpr GenericString& operator=(
+            GenericString const& other
+        ) noexcept;
+
+        constexpr GenericString& operator=(
+            GenericString&& other
+        ) noexcept;
 
         [[nodiscard]]
         constexpr ElementType operator[](
@@ -50,6 +68,9 @@ namespace klib::Text
 
         [[nodiscard]]
         constexpr const ElementType* begin() const noexcept;
+
+        [[nodiscard]]
+        constexpr const ElementType* c_str() const noexcept;
 
         [[nodiscard]]
         constexpr const ElementType* end() const noexcept;
@@ -79,11 +100,21 @@ namespace klib::Text
     }
 
     template <CChar TChar>
-    template <class TArray> requires ::std::is_array_v<TArray> //&& ::std::is_convertible_v<TArray, const typename GenericString<TChar>::ElementType*>
+    constexpr void GenericString<TChar>::DoRemove() noexcept
+    {
+        if (m_pRefCount == nullptr) return;
+
+        if (m_pRefCount->operator--() == 0) {
+            ::free(m_pRefCount);
+        }
+    }
+
+    template <CChar TChar>
+    template <ssize_t N>
     consteval GenericString<TChar>::GenericString(
-        TArray&& array
+        const ElementType(&arr)[N]
     ) noexcept
-        : m_length(::std::extent_v<TArray> - 1)
+        : m_length(N - 1)
         , m_p(arr)
         , m_pRefCount(nullptr)
     {
@@ -114,13 +145,73 @@ namespace klib::Text
     }
 
     template <CChar TChar>
-    constexpr GenericString<TChar>::~GenericString()
+    constexpr GenericString<TChar>::GenericString(
+        GenericString<TChar> const& other
+    ) noexcept
+        : m_length(other.m_length)
+        , m_p(other.m_p)
+        , m_pRefCount(other.m_pRefCount)
     {
         if (m_pRefCount == nullptr) return;
 
-        if (m_pRefCount->operator--() == 0) {
-            ::free(m_pRefCount);
+        m_pRefCount->operator++();
+    }
+
+    template <CChar TChar>
+    constexpr GenericString<TChar>::GenericString(
+        GenericString<TChar>&& other
+    ) noexcept
+        : m_length(other.m_length)
+        , m_p(other.m_p)
+        , m_pRefCount(other.m_pRefCount)
+    {
+        other.m_pRefCount = nullptr;
+    }
+
+    template <CChar TChar>
+    constexpr GenericString<TChar>::~GenericString()
+    {
+        DoRemove();
+    }
+
+    template <CChar TChar>
+    constexpr GenericString<TChar>&
+    GenericString<TChar>::operator=(
+        GenericString<TChar> const& other
+    ) noexcept
+    {
+        if (&other != this) [[likely]] {
+            DoRemove();
+
+            m_length = other.m_length;
+            m_p = other.m_p;
+            m_pRefCount = other.m_pRefCount;
+
+            if (m_pRefCount != nullptr) {
+                m_pRefCount->operator++();
+            }
         }
+
+        return *this;
+    }
+
+    template <CChar TChar>
+    constexpr GenericString<TChar>&
+    GenericString<TChar>::operator=(
+        GenericString<TChar>&& other
+    ) noexcept
+    {
+        if (&other != this) [[likely]] {
+            DoRemove();
+
+            m_length = other.m_length;
+            m_p = other.m_p;
+            m_pRefCount = other.m_pRefCount;
+
+            other.m_pRefCount = nullptr;
+        }
+
+        return *this;
     }
 
     template <CChar TChar>
@@ -130,6 +221,34 @@ namespace klib::Text
     ) const noexcept
     {
         return m_p[index];
+    }
+
+    template <CChar TChar>
+    constexpr const typename GenericString<TChar>::ElementType*
+    GenericString<TChar>::begin() const noexcept
+    {
+        return m_p;
+    }
+
+    template <CChar TChar>
+    constexpr const typename GenericString<TChar>::ElementType*
+    GenericString<TChar>::c_str() const noexcept
+    {
+        return m_p;
+    }
+
+    template <CChar TChar>
+    constexpr const typename GenericString<TChar>::ElementType*
+    GenericString<TChar>::end() const noexcept
+    {
+        return m_p + m_length;
+    }
+
+    template <CChar TChar>
+    constexpr typename GenericString<TChar>::SizeType
+    GenericString<TChar>::Length() const noexcept
+    {
+        return m_length;
     }
 }
 

@@ -607,30 +607,8 @@ namespace klib::Text
         ::std::same_as<T, char16_t> ||
         ::std::same_as<T, char32_t>;
 
-
-    template <CChar TChar>
-    struct GenericFastString;
-
-    template <CChar TChar>
-    class GenericFastStringBase;
-
-    template <CChar TChar, ssize_t N>
-    struct GenericStaticFastString;
-
-    template <CChar TChar, ssize_t N>
-    struct GenericStaticMutableString;
-
-    template <CChar TChar>
-    class GenericStaticString;
-
     template <CChar TChar>
     class GenericString;
-
-    template <CChar TChar>
-    class GenericHeapString;
-
-    template <CChar TChar>
-    struct GenericStringMemory;
 
     template <CChar TChar>
     struct GenericStringView;
@@ -745,6 +723,11 @@ namespace klib
     
 #endif
 
+namespace klib::Foundation
+{
+    using String = Text::GenericString<char16_t>;
+}
+
 namespace klib::Numerics
 {
     using NativeChar = Number<char>;
@@ -779,6 +762,13 @@ namespace klib::Numerics
 namespace klib::Text
 {
     using Numerics::Char;
+
+    using CharString = GenericString<char>;
+    using WCharString = GenericString<wchar_t>;
+    using Utf8String = GenericString<char8_t>;
+    using Utf16String = GenericString<char16_t>;
+    using Utf32String = GenericString<char32_t>;
+    
 }
 
 namespace klib::Threading::Async
