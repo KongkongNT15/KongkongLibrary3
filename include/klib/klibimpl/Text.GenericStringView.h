@@ -11,7 +11,9 @@ namespace klib::Text
 
         public:
 
-        
+        constexpr GenericStringView(
+            GenericString<TChar> const& str
+        ) noexcept;
     };
 }
 

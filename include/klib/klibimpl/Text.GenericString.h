@@ -2,6 +2,7 @@
 #define KLIB_TEXT_GENERICSTRING_H
 
 #include "base.h"
+#include "Text.GenericStringView.h"
 #include "Text.StringHelper.h"
 #include "Foundation.ExceptionThrower.h"
 
@@ -19,6 +20,8 @@ namespace klib::Text
 
         private:
 
+        static constexpr ElementType s_emptyStr = 0;
+
         SizeType m_length;
         const ElementType* m_p;
 
@@ -33,10 +36,16 @@ namespace klib::Text
 
         public:
 
+        consteval GenericString() noexcept;
+
         template <ssize_t N>
         consteval GenericString(
             const ElementType(&arr)[N]
         ) noexcept;
+
+        GenericString(
+            GenericStringView<TChar> sv
+        );
 
         GenericString(
             SizeType n,
@@ -76,6 +85,9 @@ namespace klib::Text
         constexpr const ElementType* end() const noexcept;
 
         [[nodiscard]]
+        constexpr bool IsEmpty() const noexcept;
+
+        [[nodiscard]]
         constexpr SizeType Length() const noexcept;
     };
 }
@@ -107,6 +119,14 @@ namespace klib::Text
         if (m_pRefCount->operator--() == 0) {
             ::free(m_pRefCount);
         }
+    }
+
+    template <CChar TChar>
+    consteval GenericString<TChar>::GenericString() noexcept
+        : m_length(0)
+        , m_p(&s_emptyStr)
+        , m_pRefCount(nullptr)
+    {
     }
 
     template <CChar TChar>
@@ -242,6 +262,13 @@ namespace klib::Text
     GenericString<TChar>::end() const noexcept
     {
         return m_p + m_length;
+    }
+
+    template <CChar TChar>
+    constexpr bool
+    GenericString<TChar>::IsEmpty() const noexcept
+    {
+        return m_length == 0;
     }
 
     template <CChar TChar>

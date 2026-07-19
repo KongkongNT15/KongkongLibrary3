@@ -537,14 +537,16 @@ namespace klib::Numerics
 
     template <class T>
     concept CNumber = (
-        (::std::integral<T> || ::std::floating_point<T>)
+        (
+            ::std::integral<T>
+            || ::std::floating_point<T>
+            || ::std::derived_from<T, Integer16ByteBase>
+        )
         && (::std::same_as<T, bool> == false)
-        && (::std::derived_from<T, Integer16ByteBase>)
     );
 
     struct Integer16Byte;
     
-
     template <class TNum = void>
     struct Number;
 
