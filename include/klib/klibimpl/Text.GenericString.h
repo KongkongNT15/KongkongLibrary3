@@ -2,6 +2,7 @@
 #define KLIB_TEXT_GENERICSTRING_H
 
 #include "base.h"
+#include "Containers.ArrayView.h"
 #include "Text.GenericStringView.h"
 #include "Text.StringHelper.h"
 #include "Foundation.ExceptionThrower.h"
@@ -85,11 +86,28 @@ namespace klib::Text
         constexpr const ElementType* end() const noexcept;
 
         [[nodiscard]]
+        constexpr const ElementType* Data() const noexcept;
+
+        [[nodiscard]]
         constexpr bool IsEmpty() const noexcept;
 
         [[nodiscard]]
         constexpr SizeType Length() const noexcept;
     };
+}
+
+namespace klib::Text
+{
+    template <CChar TChar>
+    constexpr GenericStringView<TChar>::GenericStringView(
+        GenericString<TChar> const& str
+    ) noexcept
+        : Base(
+            str.Length(),
+            str.Data()
+        )
+    {
+    }
 }
 
 namespace klib::Text

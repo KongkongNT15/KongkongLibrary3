@@ -16,3 +16,4 @@
 #include "klibimpl/Threading.Async.AwaiterBase.cpp"
 #include "klibimpl/Threading.ThreadPool.cpp"
 #include "klibimpl/Win32.Win32Handle.cpp"
+#include "klibimpl/WinRT.HString.cpp"

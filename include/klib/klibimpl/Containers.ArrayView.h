@@ -9,7 +9,7 @@
 namespace klib::Containers
 {
     template <class T>
-    struct ArrayView final : public Primitives::ContainerBase {
+    struct ArrayView : public Primitives::ContainerBase {
         public:
         using ElementType = ::std::remove_cvref_t<T>;
         using IteratorType = ElementType*;
@@ -53,6 +53,16 @@ namespace klib::Containers
 
         [[nodiscard]]
         constexpr const ElementType* Data() const noexcept;
+
+        [[nodiscard]]
+        constexpr bool EndsWith(
+            ElementType const& value
+        ) const noexcept;
+
+        [[nodiscard]]
+        constexpr bool EndsWithUnsafe(
+            ElementType const& value
+        ) const noexcept;
 
         [[nodiscard]]
         ElementType const& Front() const;
@@ -113,6 +123,17 @@ namespace klib::Containers
         constexpr ssize_t IndexOf(
             ElementType const& value
         ) const noexcept;
+
+        [[nodiscard]]
+        constexpr bool StartWith(
+            ElementType const& value
+        ) const noexcept;
+
+        [[nodiscard]]
+        constexpr bool StartWithUnsafe(
+            ElementType const& value
+        ) const noexcept;
+        
     };
 }
 
@@ -192,6 +213,28 @@ namespace klib::Containers
     ArrayView<T>::Data() const noexcept
     {
         return m_p;
+    }
+
+    template <class T>
+    constexpr bool ArrayView<T>::EndsWith(
+        ElementType const& value
+    ) const noexcept
+    {
+        if (m_p == nullptr) return false;
+
+        return EndsWithUnsafe(value);
+    }
+
+    template <class T>
+    constexpr bool ArrayView<T>::EndsWithUnsafe(
+        ElementType const& value
+    ) const noexcept
+    {
+        return ContainerHelper::EndsWithUnsafe(
+            this->m_length,
+            m_p,
+            value
+        );
     }
 
     template <class T>
@@ -317,6 +360,29 @@ namespace klib::Containers
     {
         return ContainerHelper::IndexOfUnsafe(
             this->m_length,
+            m_p,
+            value
+        );
+    }
+
+    template <class T>
+    constexpr bool ArrayView<T>::StartWith(
+        ElementType const& value
+    ) const noexcept
+    {
+        return ContainerHelper::StartsWithUnsafe(
+            this->m_length,
+            m_p,
+            value
+        );
+    }
+
+    template <class T>
+    constexpr bool ArrayView<T>::StartWithUnsafe(
+        ElementType const& value
+    ) const noexcept
+    {
+        return ContainerHelper::StartsWithUnsafe(
             m_p,
             value
         );

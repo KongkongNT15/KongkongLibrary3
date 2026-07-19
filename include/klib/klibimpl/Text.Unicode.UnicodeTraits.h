@@ -2,6 +2,7 @@
 #define KLIB_TEXT_UNICODE_UNICODETRAITS_H
 
 #include "base.h"
+#include "Text.Unicode.Utf8CharAttribute.h"
 
 namespace klib::Text::Unicode
 {
@@ -9,6 +10,12 @@ namespace klib::Text::Unicode
         public:
 
         KLIB_STATIC_CLASS(UnicodeTraits);
+
+        [[nodiscard]]
+        static constexpr Utf8CharAttribute
+        CharAttribute(
+            char8_t c
+        ) noexcept;
 
         [[nodiscard]]
         static constexpr bool IsHighSurrogate(
@@ -44,6 +51,20 @@ namespace klib::Text::Unicode
 
 namespace klib::Text::Unicode
 {
+    constexpr Utf8CharAttribute UnicodeTraits::CharAttribute(
+        char8_t c
+    ) noexcept
+    {
+        if ((c & 0x80) == 0x00) return Utf8CharAttribute::SingleByte;
+        if ((c & 0xE0) == 0xC0) return Utf8CharAttribute::TwoByteLead;
+        if ((c & 0xF0) == 0xE0) return Utf8CharAttribute::ThreeByteLead;
+        if ((c & 0xF8) == 0xF0) return Utf8CharAttribute::FourByteLead;
+        if ((c & 0xFC) == 0xF8) return Utf8CharAttribute::FiveByteLead;
+        if ((c & 0xFE) == 0xFC) return Utf8CharAttribute::SixByteLead;
+
+        return Utf8CharAttribute::ContinuationByte;
+    }
+
     constexpr bool UnicodeTraits::IsHighSurrogate(
         char16_t c
     ) noexcept

@@ -4,6 +4,7 @@
 #include "base.h"
 #include "Foundation.ErrorCode.h"
 #include "Foundation.NonType.h"
+#include "Text.GenericString.h"
 
 namespace klib::Foundation
 {
@@ -11,7 +12,7 @@ namespace klib::Foundation
         private:
         static constexpr char16_t s_defaultMessage[] = u"klib::Foundation::Exception";
 
-        const char16_t* m_message;
+        String m_message;
         klib::Foundation::ErrorCode m_errorCode;
         bool m_shouldCopy;
 
@@ -112,7 +113,7 @@ namespace klib::Foundation
     constexpr const char16_t*
     Exception::Message() const noexcept
     {
-        return m_message;
+        return m_message.c_str();
     }
 
     constexpr bool operator!=(
