@@ -726,6 +726,7 @@ namespace klib
 namespace klib::Foundation
 {
     using String = Text::GenericString<char16_t>;
+    using StringView = Text::GenericStringView<char16_t>;
 }
 
 namespace klib::Numerics
@@ -768,6 +769,12 @@ namespace klib::Text
     using Utf8String = GenericString<char8_t>;
     using Utf16String = GenericString<char16_t>;
     using Utf32String = GenericString<char32_t>;
+
+    using CharStringView = GenericStringView<char>;
+    using WCharStringView = GenericStringView<wchar_t>;
+    using Utf8StringView = GenericStringView<char8_t>;
+    using Utf16StringView = GenericStringView<char16_t>;
+    using Utf32StringView = GenericStringView<char32_t>;
     
 }
 
