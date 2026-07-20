@@ -3,6 +3,7 @@
 
 #include "base.h"
 #include "Foundation.MemoryException.h"
+#include "Foundation.Initializer.h"
 
 namespace klib::Foundation
 {
@@ -10,6 +11,8 @@ namespace klib::Foundation
         private:
 
         static constexpr String s_defaultMessage = u"メモリの確保に失敗しました。";
+
+        static Initializer s_initializer;
 
         public:
 

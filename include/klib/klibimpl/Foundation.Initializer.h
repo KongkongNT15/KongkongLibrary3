@@ -7,6 +7,7 @@
 namespace klib::Foundation
 {
     class Initializer final : public StatelessType {
+        public:
         
         template <class TFunc>
         Initializer(

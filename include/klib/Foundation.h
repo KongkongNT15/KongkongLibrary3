@@ -4,11 +4,13 @@
 #include "klibimpl/Foundation.Enum.h"
 #include "klibimpl/Foundation.ExceptionThrower.h"
 #include "klibimpl/Foundation.ValueType.h"
+#include "klibimpl/Foundation.Initializer.h"
 #include "klibimpl/Foundation.Interface.h"
 #include "klibimpl/Foundation.LazyObject.h"
 #include "klibimpl/Foundation.MemoryAllocationException.h"
 #include "klibimpl/Foundation.MemoryException.h"
 #include "klibimpl/Foundation.NonType.h"
+#include "klibimpl/Foundation.NotSupportedException.h"
 #include "klibimpl/Foundation.NullPointerException.h"
 #include "klibimpl/Foundation.UnsafeLazyObject.h"
 

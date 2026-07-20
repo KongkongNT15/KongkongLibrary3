@@ -2,6 +2,7 @@
 
 #include "klibimpl/Containers.ContainerHelper.cpp"
 #include "klibimpl/CStd.CFileStream.cpp"
+#include "klibimpl/Foundation.MemoryAllocationException.cpp"
 #include "klibimpl/IO.HandleStream.cpp"
 #include "klibimpl/IO.InputStreamBuffer.cpp"
 #include "klibimpl/IO.Stream.cpp"
