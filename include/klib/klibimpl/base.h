@@ -292,6 +292,7 @@
 #include <stdint.h>
 #include <compare>
 #include <concepts>
+#include <iosfwd>
 #include <type_traits>
 #include <utility>
 
@@ -849,6 +850,19 @@ namespace klib::Foundation
             );
         }
     }
+}
+
+namespace std
+{
+    ostream& operator<<(
+        ostream& out,
+        klib::Text::CharStringView view
+    );
+
+    ostream& operator<<(
+        ostream& out,
+        klib::Text::CharString const& view
+    );
 }
 
 #endif //!KLIB_BASE_H
