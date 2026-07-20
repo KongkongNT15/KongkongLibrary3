@@ -9,7 +9,7 @@ namespace klib::Foundation
     struct MemoryAllocationException : public MemoryException {
         private:
 
-        static constexpr char16_t s_defaultMessage[] = u"メモリの確保に失敗しました。";
+        static constexpr String s_defaultMessage = u"メモリの確保に失敗しました。";
 
         public:
 

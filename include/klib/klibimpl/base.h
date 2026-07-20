@@ -373,6 +373,13 @@ namespace klib::Foundation
 namespace klib::AppleDevice
 {
     class ObjCHandle;
+
+    class NSObject;
+}
+
+namespace klib::AppleDevice::Foundation
+{
+    class NSString;
 }
 
 namespace klib::Bits

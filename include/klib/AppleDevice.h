@@ -7,6 +7,7 @@
 #warning このヘッダーはApple環境のみに対応しています。
 #else
 
+#include "klibimpl/AppleDevice.NSObject.h"
 #include "klibimpl/AppleDevice.ObjCHandle.h"
 
 #endif //!KLIB_OBJECTIVE_C_ENABLED

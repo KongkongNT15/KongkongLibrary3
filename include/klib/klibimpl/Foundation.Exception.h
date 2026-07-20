@@ -10,7 +10,7 @@ namespace klib::Foundation
 {
     struct Exception {
         private:
-        static constexpr char16_t s_defaultMessage[] = u"klib::Foundation::Exception";
+        static constexpr String s_defaultMessage = u"klib::Foundation::Exception";
 
         String m_message;
         klib::Foundation::ErrorCode m_errorCode;

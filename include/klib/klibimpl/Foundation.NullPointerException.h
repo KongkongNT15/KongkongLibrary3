@@ -9,7 +9,7 @@ namespace klib::Foundation
     struct NullPointerException : public Exception {
         private:
 
-        static constexpr char16_t s_defaultMessage[] = u"";
+        static constexpr String s_defaultMessage = u"";
 
         public:
 

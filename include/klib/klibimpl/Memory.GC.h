@@ -6,29 +6,11 @@
 #include "Memory.MemoryResource.h"
 #include "Threading.Thread.h"
 
-#include <list>
-#include <map>
-
 
 namespace klib::Memory
 {
     class GC final {
     private:
-
-        class s_gc {
-        public:
-
-            /// <summary>
-            /// 破棄する予定のオブジェクト
-            /// </summary>
-            ::std::list<GCObjectBase*> m_garbages;
-        
-            ssize_t m_memorySize;
-
-            MemoryResource m_resource;
-        };
-
-        static inline s_gc s_instance;
         static inline bool s_isInitialized;
 
     public:
