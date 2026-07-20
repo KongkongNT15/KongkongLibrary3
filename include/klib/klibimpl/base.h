@@ -344,8 +344,8 @@ namespace klib::Foundation
     struct InvalidOperationException;
     struct MemoryAllocationException;
     struct MemoryException;
+    struct NotImplementedException;
     struct NotSupportedException;
-
     struct NullPointerException;
     
     struct OutOfMemoryException;

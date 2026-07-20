@@ -9,7 +9,7 @@ namespace klib::Foundation
     struct MemoryException : public Exception {
         public:
 
-        
+        using Exception::Exception;
     };
 }
 

@@ -6,8 +6,14 @@
 namespace klib::Foundation
 {
     enum struct ErrorCode {
-        NoError,
-        Unknown,
+        NoError = 0,
+        ArgumentNull,
+        ArgumentOutOfRange,
+        MemoryAllocation,
+        NotImplemented,
+        NotSupported,
+        NullPointer,
+        Unknown = -1,
     };
 }
 

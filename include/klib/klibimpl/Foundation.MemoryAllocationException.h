@@ -7,6 +7,10 @@
 namespace klib::Foundation
 {
     struct MemoryAllocationException : public MemoryException {
+        private:
+
+        static constexpr char16_t s_defaultMessage[] = u"メモリの確保に失敗しました。";
+
         public:
 
         static void CheckNull(
@@ -31,6 +35,13 @@ namespace klib::Foundation
 
 namespace klib::Foundation
 {
+    void MemoryAllocationException::CheckNull(
+        const void* p
+    )
+    {
+        if (p == nullptr) [[unlikely]] throw MemoryAllocationException();
+    }
+
     template <class TFunc>
     void MemoryAllocationException::CheckNull(
         const void* p,

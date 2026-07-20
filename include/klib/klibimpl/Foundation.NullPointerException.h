@@ -7,6 +7,11 @@
 namespace klib::Foundation
 {
     struct NullPointerException : public Exception {
+        private:
+
+        static constexpr char16_t s_defaultMessage[] = u"";
+
+        public:
 
         static void CheckNull(
             const void* p
@@ -14,7 +19,7 @@ namespace klib::Foundation
 
         using Exception::Exception;
 
-        NullPointerException();
+        constexpr NullPointerException() noexcept;
     };
 }
 
@@ -25,6 +30,14 @@ namespace klib::Foundation
     )
     {
         if (p == nullptr) [[unlikely]] throw NullPointerException();
+    }
+
+    constexpr NullPointerException::NullPointerException()
+        : Exception(
+            ErrorCode::NullPointer,
+            s_defaultMessage
+        )
+    {
     }
 }
 

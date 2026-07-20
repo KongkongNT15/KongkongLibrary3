@@ -14,15 +14,8 @@ namespace klib::Foundation
 
         String m_message;
         klib::Foundation::ErrorCode m_errorCode;
-        bool m_shouldCopy;
 
         protected:
-
-        constexpr Exception(
-            klib::Foundation::ErrorCode errorCode,
-            const char16_t* message,
-            NonType
-        ) noexcept;
 
         public:
 
@@ -32,18 +25,15 @@ namespace klib::Foundation
             klib::Foundation::ErrorCode errorCode
         ) noexcept;
 
-        Exception(
+        constexpr Exception(
             klib::Foundation::ErrorCode errorCode,
-            const char16_t* message
+            String const& message
         );
 
-        Exception(
+        constexpr Exception(
             klib::Foundation::ErrorCode errorCode,
-            const char16_t* message,
-            bool shouldCopy
+            String&& message
         );
-
-        ~Exception();
 
         [[nodiscard]]
         constexpr klib::Foundation::ErrorCode ErrorCode() const noexcept;
@@ -67,16 +57,6 @@ namespace klib::Foundation
 
 namespace klib::Foundation
 {
-    constexpr Exception::Exception(
-        klib::Foundation::ErrorCode errorCode,
-        const char16_t* message,
-        NonType
-    ) noexcept
-        : m_message(message)
-        , m_errorCode(errorCode)
-        , m_shouldCopy(false)
-    {
-    }
 
     constexpr Exception::Exception() noexcept
         : Exception(ErrorCode::Unknown)
@@ -88,19 +68,24 @@ namespace klib::Foundation
     ) noexcept
         : m_message(s_defaultMessage)
         , m_errorCode(errorCode)
-        , m_shouldCopy(false)
     {
     }
 
-    inline Exception::Exception(
+    constexpr Exception::Exception(
         klib::Foundation::ErrorCode errorCode,
-        const char16_t* message
+        String const& message
     )
-        : Exception(
-            errorCode,
-            message,
-            true
-        )
+        : m_message(message)
+        , m_errorCode(errorCode)
+    {
+    }
+
+    constexpr Exception::Exception(
+        klib::Foundation::ErrorCode errorCode,
+        String&& message
+    )
+        : m_message(::std::move(message))
+        , m_errorCode(errorCode)
     {
     }
 

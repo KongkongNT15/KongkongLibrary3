@@ -37,6 +37,17 @@ namespace klib::Text
 
         public:
 
+        [[nodiscard]]
+        static constexpr GenericString FromStaticCharsUnsafe(
+            const ElementType* chars
+        );
+
+        [[nodiscard]]
+        static constexpr GenericString FromStaticCharsUnsafe(
+            ssize_t length,
+            const ElementType* chars
+        );
+
         consteval GenericString() noexcept;
 
         template <ssize_t N>
@@ -137,6 +148,33 @@ namespace klib::Text
         if (m_pRefCount->operator--() == 0) {
             ::free(m_pRefCount);
         }
+    }
+
+    template <CChar TChar>
+    constexpr GenericString<TChar>
+    GenericString<TChar>::FromStaticCharsUnsafe(
+        const ElementType* chars
+    )
+    {
+        FromStaticCharsUnsafe(
+            StringHelper::GetLengthUnsafe(chars),
+            chars
+        );
+    }
+
+    template <CChar TChar>
+    constexpr GenericString<TChar>
+    GenericString<TChar>::FromStaticCharsUnsafe(
+        ssize_t length,
+        const ElementType* chars
+    )
+    {
+        GenericString<TChar> str;
+
+        str.m_length = length;
+        str.m_p = chars;
+
+        return str;
     }
 
     template <CChar TChar>
