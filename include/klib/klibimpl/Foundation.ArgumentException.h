@@ -11,7 +11,7 @@ namespace klib::Foundation
 
         using Exception::Exception;
 
-        constexpr ArgumentException() noexcept;
+        consteval ArgumentException() noexcept;
 
         constexpr ArgumentException(
             String const& message
@@ -25,7 +25,7 @@ namespace klib::Foundation
 
 namespace klib::Foundation
 {
-    constexpr ArgumentException::ArgumentException(
+    consteval ArgumentException::ArgumentException(
     ) noexcept
         : Exception(ErrorCode::ArgumentError)
     {

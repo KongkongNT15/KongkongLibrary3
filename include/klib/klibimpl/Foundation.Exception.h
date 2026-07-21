@@ -19,7 +19,7 @@ namespace klib::Foundation
 
         public:
 
-        constexpr Exception() noexcept;
+        consteval Exception() noexcept;
 
         constexpr Exception(
             klib::Foundation::ErrorCode errorCode
@@ -58,7 +58,7 @@ namespace klib::Foundation
 namespace klib::Foundation
 {
 
-    constexpr Exception::Exception() noexcept
+    consteval Exception::Exception() noexcept
         : Exception(ErrorCode::Unknown)
     {
     }

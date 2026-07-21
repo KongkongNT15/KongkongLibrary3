@@ -32,7 +32,7 @@ namespace klib::Foundation
             TFunc&& f
         );
 
-        constexpr MemoryAllocationException() noexcept;
+        consteval MemoryAllocationException() noexcept;
     };
 }
 
@@ -56,6 +56,15 @@ namespace klib::Foundation
 
             throw MemoryAllocationException();
         }
+    }
+
+    consteval MemoryAllocationException::MemoryAllocationException(
+    ) noexcept
+        : MemoryException(
+            ErrorCode::MemoryAllocation,
+            s_defaultMessage
+        )
+    {
     }
 }
 
