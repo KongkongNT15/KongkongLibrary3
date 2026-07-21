@@ -10,7 +10,7 @@ namespace klib::Foundation
 {
     struct Exception {
         private:
-        static constexpr String s_defaultMessage = u"klib::Foundation::Exception";
+        static constexpr String s_defaultMessage = u"ふぁ！？っく";
 
         String m_message;
         klib::Foundation::ErrorCode m_errorCode;
@@ -28,18 +28,18 @@ namespace klib::Foundation
         constexpr Exception(
             klib::Foundation::ErrorCode errorCode,
             String const& message
-        );
+        ) noexcept;
 
         constexpr Exception(
             klib::Foundation::ErrorCode errorCode,
             String&& message
-        );
+        ) noexcept;
 
         [[nodiscard]]
         constexpr klib::Foundation::ErrorCode ErrorCode() const noexcept;
 
         [[nodiscard]]
-        constexpr const char16_t* Message() const noexcept;
+        constexpr String const& Message() const noexcept;
     };
 
     [[nodiscard]]
@@ -74,7 +74,7 @@ namespace klib::Foundation
     constexpr Exception::Exception(
         klib::Foundation::ErrorCode errorCode,
         String const& message
-    )
+    ) noexcept
         : m_message(message)
         , m_errorCode(errorCode)
     {
@@ -83,7 +83,7 @@ namespace klib::Foundation
     constexpr Exception::Exception(
         klib::Foundation::ErrorCode errorCode,
         String&& message
-    )
+    ) noexcept
         : m_message(::std::move(message))
         , m_errorCode(errorCode)
     {
@@ -95,10 +95,20 @@ namespace klib::Foundation
         return m_errorCode;
     }
 
-    constexpr const char16_t*
+    constexpr String const&
     Exception::Message() const noexcept
     {
-        return m_message.c_str();
+        return m_message;
+    }
+
+    constexpr bool operator==(
+        Exception const& left,
+        Exception const& right
+    ) noexcept
+    {
+        return
+            left.ErrorCode() == right.ErrorCode()
+            && left.Message() == right.Message();
     }
 
     constexpr bool operator!=(

@@ -5,6 +5,7 @@
 #include "klibimpl/IO.FileCreateMode.h"
 #include "klibimpl/IO.FileShareMode.h"
 #include "klibimpl/IO.HandleStream.h"
+#include "klibimpl/IO.IOException.h"
 #include "klibimpl/IO.InputStreamBuffer.h"
 #include "klibimpl/IO.MemoryStream.h"
 #include "klibimpl/IO.OutputStreamBuffer.h"

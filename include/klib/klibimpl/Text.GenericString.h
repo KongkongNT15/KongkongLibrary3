@@ -1,6 +1,8 @@
 ﻿#ifndef KLIB_TEXT_GENERICSTRING_H
 #define KLIB_TEXT_GENERICSTRING_H
 
+#define nameof(name) ::klib::Foundation::String(u ## #name)
+
 #include "base.h"
 #include "Containers.ArrayView.h"
 #include "Text.GenericStringView.h"
@@ -105,6 +107,13 @@ namespace klib::Text
         [[nodiscard]]
         constexpr SizeType Length() const noexcept;
     };
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr bool operator==(
+        GenericString<TChar> const& left,
+        GenericString<TChar> const& right
+    ) noexcept;
 }
 
 namespace klib::Text

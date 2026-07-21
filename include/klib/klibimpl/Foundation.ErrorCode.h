@@ -7,9 +7,12 @@ namespace klib::Foundation
 {
     enum struct ErrorCode {
         NoError = 0,
+        ArgumentError,
         ArgumentNull,
         ArgumentOutOfRange,
+        IOError,
         MemoryAllocation,
+        MemoryError,
         NotImplemented,
         NotSupported,
         NullPointer,
