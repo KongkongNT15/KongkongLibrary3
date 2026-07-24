@@ -2,7 +2,7 @@
 #define KLIB_MEMORY_MEMORYSTATUS_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 
 namespace klib::Memory
 {
