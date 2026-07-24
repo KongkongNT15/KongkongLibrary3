@@ -39,6 +39,55 @@ namespace klib::Text
             GenericString<TChar> const& str
         ) noexcept;
     };
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr bool operator==(
+        GenericStringView<TChar> const& left,
+        GenericStringView<TChar> const& right
+    ) noexcept;
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr bool operator!=(
+        GenericStringView<TChar> const& left,
+        GenericStringView<TChar> const& right
+    ) noexcept;
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr bool operator<(
+        GenericStringView<TChar> const& left,
+        GenericStringView<TChar> const& right
+    ) noexcept;
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr bool operator<=(
+        GenericStringView<TChar> const& left,
+        GenericStringView<TChar> const& right
+    ) noexcept;
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr bool operator>(
+        GenericStringView<TChar> const& left,
+        GenericStringView<TChar> const& right
+    ) noexcept;
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr bool operator>=(
+        GenericStringView<TChar> const& left,
+        GenericStringView<TChar> const& right
+    ) noexcept;
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr ::std::strong_ordering operator<=>(
+        GenericStringView<TChar> const& left,
+        GenericStringView<TChar> const& right
+    ) noexcept;
 }
 
 namespace klib::Text

@@ -621,6 +621,9 @@ namespace klib::Text
     class GenericString;
 
     template <CChar TChar>
+    class GenericStringBuffer;
+
+    template <CChar TChar>
     struct GenericStringView;
 
     class StringHelper;

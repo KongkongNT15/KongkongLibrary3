@@ -114,6 +114,41 @@ namespace klib::Text
         GenericString<TChar> const& left,
         GenericString<TChar> const& right
     ) noexcept;
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr bool operator==(
+        GenericString<TChar> const& left,
+        GenericStringView<TChar> const& right
+    ) noexcept;
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr bool operator==(
+        GenericStringView<TChar> const& left,
+        GenericString<TChar> const& right
+    ) noexcept;
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr bool operator!=(
+        GenericString<TChar> const& left,
+        GenericString<TChar> const& right
+    ) noexcept;
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr bool operator!=(
+        GenericString<TChar> const& left,
+        GenericStringView<TChar> const& right
+    ) noexcept;
+
+    template <CChar TChar>
+    [[nodiscard]]
+    constexpr bool operator!=(
+        GenericStringView<TChar> const& left,
+        GenericString<TChar> const& right
+    ) noexcept;
 }
 
 namespace klib::Text
