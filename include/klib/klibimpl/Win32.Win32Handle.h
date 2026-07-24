@@ -22,6 +22,8 @@ namespace klib::Win32
 
         Win32Handle() noexcept;
         constexpr Win32Handle(::HANDLE rawHandle) noexcept;
+
+        // マクロ INVALID_HANDLE_VALUE の展開先がconstexprな値でないのでconstevalにできない
         Win32Handle(::std::nullptr_t) noexcept;
         Win32Handle(Win32Handle const& other) noexcept;
         Win32Handle(Win32Handle&& other) noexcept;

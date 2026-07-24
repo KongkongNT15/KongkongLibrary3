@@ -10,6 +10,7 @@ namespace klib::Foundation
         ArgumentError,
         ArgumentNull,
         ArgumentOutOfRange,
+        InvalidOperation,
         IOError,
         MemoryAllocation,
         MemoryError,

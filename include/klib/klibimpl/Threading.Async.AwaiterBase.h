@@ -19,7 +19,7 @@ namespace klib::Threading::Async
         ::std::coroutine_handle<> m_hOther;
         TaskStatus m_status;
 
-        constexpr AwaiterBase() noexcept;
+        consteval AwaiterBase() noexcept;
 
         AwaiterBase(AwaiterBase const&) = default;
         AwaiterBase(AwaiterBase&&) = default;
@@ -28,13 +28,13 @@ namespace klib::Threading::Async
         AwaiterBase& operator=(AwaiterBase&&) = default;
 
         template <class TPromise>
-        static void do_destruct(
+        static constexpr void do_destruct(
             TaskStatus status,
             ::std::coroutine_handle<TPromise>& handle
         ) noexcept;
 
         template <class TPromise>
-        static void do_move(
+        static constexpr void do_move(
             TaskStatus status,
             ::std::coroutine_handle<TPromise>& hThis
         ) noexcept;
@@ -57,14 +57,14 @@ namespace klib::Threading::Async
 
 namespace klib::Threading::Async
 {
-    constexpr AwaiterBase::AwaiterBase() noexcept
+    consteval AwaiterBase::AwaiterBase() noexcept
         : m_hOther(nullptr)
         , m_status(TaskStatus::Running)
     {
     }
 
     template <class TPromise>
-    void AwaiterBase::do_destruct(
+    constexpr void AwaiterBase::do_destruct(
         TaskStatus status,
         ::std::coroutine_handle<TPromise>& handle
     ) noexcept
@@ -84,7 +84,7 @@ namespace klib::Threading::Async
     }
 
     template <class TPromise>
-    void AwaiterBase::do_move(
+    constexpr void AwaiterBase::do_move(
         TaskStatus status,
         ::std::coroutine_handle<TPromise>& hThis
     ) noexcept
@@ -107,7 +107,7 @@ namespace klib::Threading::Async
         return false;
     }
 
-    void AwaiterBase::await_suspend(
+    constexpr void AwaiterBase::await_suspend(
         ::std::coroutine_handle<> h
     )
     {

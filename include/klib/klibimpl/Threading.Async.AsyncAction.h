@@ -26,17 +26,17 @@ namespace klib::Threading::Async
 
         explicit AsyncOperation(
             promise_type& promise
-        );
+        ) noexcept;
 
         public:
 
-        constexpr AsyncOperation() noexcept;
+        consteval AsyncOperation() noexcept;
 
         AsyncOperation(
             AsyncOperation const&
         ) = delete;
 
-        AsyncOperation(
+        constexpr AsyncOperation(
             AsyncOperation&& other
         ) noexcept;
 
@@ -45,7 +45,7 @@ namespace klib::Threading::Async
             uint32_t milliSeconds
         ) noexcept;
 
-        ~AsyncOperation();
+        constexpr ~AsyncOperation();
 
         void await_resume() const;
     };
@@ -66,18 +66,18 @@ namespace klib::Threading::Async
 
     inline AsyncAction::AsyncOperation(
         promise_type& promise
-    )
+    ) noexcept
         : m_handle(CHType::from_promise(promise))
     {
         promise.m_action = this;
     }
 
-    constexpr AsyncAction::AsyncOperation() noexcept
+    consteval AsyncAction::AsyncOperation() noexcept
         : m_handle(nullptr)
     {
     }
 
-    inline AsyncAction::AsyncOperation(
+    constexpr AsyncAction::AsyncOperation(
         AsyncAction&& other
     ) noexcept
         : AwaiterBase(static_cast<AwaiterBase&&>(other))
@@ -89,7 +89,7 @@ namespace klib::Threading::Async
         );
     }
 
-    inline AsyncAction::~AsyncOperation()
+    constexpr AsyncAction::~AsyncOperation()
     {
         do_destruct(
             m_status,
