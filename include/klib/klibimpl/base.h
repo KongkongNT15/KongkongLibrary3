@@ -857,15 +857,14 @@ namespace klib::Foundation
 
 namespace std
 {
+    template <class T> requires ::std::derived_from<T, ::klib::KLibType>
     ostream& operator<<(
         ostream& out,
-        klib::Text::CharStringView view
-    );
-
-    ostream& operator<<(
-        ostream& out,
-        klib::Text::CharString const& view
-    );
+        T&& value
+    )
+    {
+        return value.WriteTo(out);
+    }
 }
 
 #endif //!KLIB_BASE_H

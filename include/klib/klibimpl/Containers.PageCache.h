@@ -25,6 +25,11 @@ namespace klib::Containers
             byte value
         ) noexcept;
 
+        template <class T>
+        ssize_t Append(
+            T&& value
+        ) noexcept;
+
         ssize_t AppendUnsafe(
             ssize_t,
             ::nullptr_t
@@ -86,6 +91,17 @@ namespace klib::Containers
         ++m_length;
 
         return true;
+    }
+
+    template <class T>
+    ssize_t PageCache::Append(
+        T&& value
+    ) noexcept
+    {
+        return AppendUnsafe(
+            sizeof(T),
+            &value
+        );
     }
 
     template <class TPredicate>

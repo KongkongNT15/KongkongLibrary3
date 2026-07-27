@@ -10,6 +10,10 @@ namespace klib::Foundation
 
         [[nodiscard]]
         constexpr Hash::ResultType GetHashCode() const noexcept;
+
+        constexpr ::std::ostream& WriteTo(
+            ::std::ostream& out
+        ) const noexcept;
     };
 
     [[nodiscard]]
@@ -31,6 +35,14 @@ namespace klib::Foundation
     StatelessType::GetHashCode() const noexcept
     {
         return 0;
+    }
+
+    constexpr ::std::ostream&
+    StatelessType::WriteTo(
+        ::std::ostream& out
+    ) const noexcept
+    {
+        return out;
     }
 
     constexpr bool operator==(
