@@ -635,6 +635,16 @@ namespace klib::Text
     struct TextEncodingArgs;
 }
 
+// CChar を使いたいんだお
+namespace klib::Std
+{
+    template <Text::CChar TChar>
+    class StringStream;
+
+    template <Text::CChar TChar>
+    class StringStreamBuffer;
+}
+
 namespace klib::Text::Unicode
 {
     struct SurrogatePair;
