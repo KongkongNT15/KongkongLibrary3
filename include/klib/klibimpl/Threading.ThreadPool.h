@@ -79,7 +79,7 @@ namespace klib::Threading
             ::PTP_WORK
         )
         {
-            fArgs fargs = static_cast<fArgs*>(args);
+            fArgs fargs = *static_cast<fArgs*>(args);
 
             while (fargs.begin != fargs.end) {
                 fargs.func(
@@ -114,7 +114,7 @@ namespace klib::Threading
             new (target) fArgs{
                 b,
                 e,
-                pred,
+                pred, // 繰り返しコピーするのでstd::forward()は使わない
                 ::CreateThreadpoolWork(func, target, nullptr)
             };
         };
@@ -230,6 +230,7 @@ namespace klib::Threading
                 ::CloseThreadpoolWork(itr1->work);
 
                 itr1->~fArgs();
+                ++itr1;
             }
 #elif KLIB_COMPILER_APPLE_CLANG
             ::dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
@@ -250,7 +251,7 @@ namespace klib::Threading
                 ParallelFor(
                     begin,
                     end,
-                    ::std::forward(pred)
+                    ::std::forward<TPredicate>(pred)
                 )
             }
         );

@@ -16,7 +16,7 @@ namespace klib::Text
         
 
         [[nodiscard]]
-        static ssize_t GetUtf16CharCountUnsafe(
+        static constexpr ssize_t GetUtf16CharCountUnsafe(
             ssize_t length,
             const char32_t* str
         ) noexcept;

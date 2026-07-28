@@ -6,6 +6,8 @@
 #define KLIB_VERSION_PATCH 0
 #define KLIB_VERSION_BUILD 0
 
+#define KLIB_NOT_IMPLEMENTED static_assert(false, "まだできてないお")
+
 #ifdef NDEBUG
     #define KLIB_DEBUG 0
     #define KLIB_NDEBUG 1

@@ -36,6 +36,10 @@ namespace klib::Text::Unicode
         constexpr Utf8Char(
             char32_t c
         );
+
+        ::std::ostream& WriteTo(
+            ::std::ostream& out
+        );
     };
 }
 

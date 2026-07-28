@@ -24,7 +24,7 @@
     ) noexcept
         : m_rawHandle(
             other.m_rawHandle == INVALID_HANDLE_VALUE ?
-            INVALID_HANDLE_VALUE : DuplicateRawHandleUnsafe(other.m_rawHandle)
+                INVALID_HANDLE_VALUE : DuplicateRawHandleUnsafe(other.m_rawHandle)
         )
     {
     }

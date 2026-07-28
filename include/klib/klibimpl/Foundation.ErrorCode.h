@@ -17,6 +17,7 @@ namespace klib::Foundation
         NotImplemented,
         NotSupported,
         NullPointer,
+        ThreadError,
         Unknown = -1,
     };
 }
