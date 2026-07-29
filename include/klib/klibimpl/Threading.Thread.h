@@ -43,8 +43,6 @@ namespace klib::Threading
         ::pthread_t m_thread;
 #endif
 
-        Functional::Function<void()> m_entryPoint;
-
         public:
 
         [[nodiscard]]
@@ -95,7 +93,7 @@ namespace klib::Threading
         void Join(
             uint32_t milliSeconds
         );
-        
+
     };
 
     [[nodiscard]]

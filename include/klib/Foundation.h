@@ -14,6 +14,7 @@
 #include "klibimpl/Foundation.NonType.h"
 #include "klibimpl/Foundation.NotSupportedException.h"
 #include "klibimpl/Foundation.NullPointerException.h"
+#include "klibimpl/Foundation.SharedCounter.h"
 #include "klibimpl/Foundation.UnsafeLazyObject.h"
 
 #endif //!KLIB_FOUNDATION_H

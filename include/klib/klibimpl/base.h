@@ -353,6 +353,8 @@ namespace klib::Foundation
     
     struct OutOfMemoryException;
 
+    class SharedCounter;
+
     struct TypeMetadata;
 
     struct Hash;
