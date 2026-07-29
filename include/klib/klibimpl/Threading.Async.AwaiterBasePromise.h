@@ -9,7 +9,10 @@
 namespace klib::Threading::Async
 {
     struct AwaiterBasePromise {
+        protected:
         consteval AwaiterBasePromise() noexcept;
+
+        public:
 
         constexpr ::std::suspend_never initial_suspend() noexcept;
         constexpr ::std::suspend_never final_suspend() noexcept;

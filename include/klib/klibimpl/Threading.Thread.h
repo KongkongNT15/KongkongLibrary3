@@ -14,6 +14,7 @@
 
 #include "Threading.ThreadExitCode.h"
 
+
 namespace klib::Threading
 {
     class Thread final : public Foundation::HandleType {
@@ -45,6 +46,8 @@ namespace klib::Threading
             uint32_t milliSeconds
         ) noexcept;
 
+
+
         [[nodiscard]]
         ThreadExitCode ExitCode() noexcept;
 
@@ -56,6 +59,9 @@ namespace klib::Threading
         [[nodiscard]]
         int GetExitCodeUnsafe() noexcept;
 
+        [[nodiscard]]
+        int Id() const noexcept;
+
         void Join();
 
         void Join(
@@ -64,6 +70,48 @@ namespace klib::Threading
 
         void Start();
     };
+
+    [[nodiscard]]
+    bool operator==(
+        Thread const& left,
+        Thread const& right
+    ) noexcept;
+
+    [[nodiscard]]
+    bool operator!=(
+        Thread const& left,
+        Thread const& right
+    ) noexcept;
+
+    [[nodiscard]]
+    bool operator<(
+        Thread const& left,
+        Thread const& right
+    ) noexcept;
+
+    [[nodiscard]]
+    bool operator<=(
+        Thread const& left,
+        Thread const& right
+    ) noexcept;
+
+    [[nodiscard]]
+    bool operator>(
+        Thread const& left,
+        Thread const& right
+    ) noexcept;
+
+    [[nodiscard]]
+    bool operator>=(
+        Thread const& left,
+        Thread const& right
+    ) noexcept;
+
+    [[nodiscard]]
+    ::std::strong_ordering operator<=>(
+        Thread const& left,
+        Thread const& right
+    ) noexcept;
 }
 
 namespace klib::Threading
@@ -121,6 +169,11 @@ namespace klib::Threading
         return static_cast<int>(exitCode);
     }
 
+    inline int Thread::Id() const noexcept
+    {
+        return ::GetThreadId(m_thread.RawHandle());
+    }
+
 #elif KLIB_OBJECTIVE_C_ENABLED
     constexpr Thread::Thread(
         AppleDevice::ObjCHandle&& thread
@@ -144,6 +197,62 @@ namespace klib::Threading
     inline void Thread::Join()
     {
         Join(static_cast<uint32_t>(-1));
+    }
+
+    inline bool operator==(
+        Thread const& left,
+        Thread const& right
+    ) noexcept
+    {
+        return left.Id() == right.Id();
+    }
+
+    inline bool operator!=(
+        Thread const& left,
+        Thread const& right
+    ) noexcept
+    {
+        return left.Id() != right.Id();
+    }
+
+    inline bool operator<(
+        Thread const& left,
+        Thread const& right
+    ) noexcept
+    {
+        return left.Id() < right.Id();
+    }
+
+    inline bool operator<=(
+        Thread const& left,
+        Thread const& right
+    ) noexcept
+    {
+        return left.Id() <= right.Id();
+    }
+
+    inline bool operator>(
+        Thread const& left,
+        Thread const& right
+    ) noexcept
+    {
+        return left.Id() > right.Id();
+    }
+
+    inline bool operator>=(
+        Thread const& left,
+        Thread const& right
+    ) noexcept
+    {
+        return left.Id() >= right.Id();
+    }
+
+    inline ::std::strong_ordering operator<=>(
+        Thread const& left,
+        Thread const& right
+    ) noexcept
+    {
+        return left.Id() <=> right.Id();
     }
 }
 
