@@ -11,8 +11,12 @@ namespace klib::Functional
 {
     template <class TResult, class... TArgs>
     class Function<TResult(TArgs...)> {
-        private:
+        public:
+
         using FuncType = FunctionBase<TResult, TArgs...>;
+
+        private:
+        
 
         static TResult DoNone(TArgs...) noexcept;
         

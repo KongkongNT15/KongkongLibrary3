@@ -12,6 +12,7 @@
 
 #endif
 
+#include "Functional.Function.h"
 #include "Threading.ThreadExitCode.h"
 #include "Threading.ThreadState.h"
 
@@ -22,6 +23,11 @@ namespace klib::Threading
         static uint32_t s_threadCount;
 
 #if KLIB_ENV_WINDOWS
+
+        static ::DWORD __stdcall EntryPoint(
+            void* args
+        );
+
         Win32::Win32Handle m_thread;
 
         constexpr Thread(
@@ -37,6 +43,9 @@ namespace klib::Threading
 #elif KLIB_ENV_UNIX
         ::pthread_t m_thread;
 #endif
+
+        Functional::Function<void()> m_entryPoint;
+
         public:
 
         [[nodiscard]]
@@ -46,7 +55,14 @@ namespace klib::Threading
             uint32_t milliSeconds
         ) noexcept;
 
+        Thread(
+            Functional::Function<void()>&& entryPoint
+        );
 
+        Thread(
+            Functional::Function<void()>&& entryPoint,
+            size_t stackSize
+        );
 
         [[nodiscard]]
         ThreadExitCode ExitCode() noexcept;
