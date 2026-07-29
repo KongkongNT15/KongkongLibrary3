@@ -12,10 +12,25 @@ namespace klib::Functional
     template <class TResult, class... TArgs>
     class Function<TResult(TArgs...)> {
         private:
+        using FuncType = FunctionBase<TResult, TArgs...>;
 
-        FunctionBase<TResult, TArgs...>* m_func;
+        static TResult DoNone(TArgs...) noexcept;
+        
+        static inline FunctionPointer<TResult, TArgs...> s_none = { DoNone };
+
+        FuncType* m_func;
+
+
+        [[nodiscard]]
+        constexpr bool ShouldDelete() const noexcept;
 
         public:
+
+        Function() noexcept;
+
+        Function(
+            ::std::nullptr_t
+        ) noexcept;
 
         template <class TFunc> requires ::std::is_invocable_v<TFunc, TArgs...>
         Function(
@@ -36,7 +51,7 @@ namespace klib::Functional
             Function&& other
         ) noexcept;
 
-        ~Function();
+        constexpr ~Function();
 
         Function& operator=(
             Function const& other
@@ -47,13 +62,27 @@ namespace klib::Functional
         ) noexcept;
 
         TResult operator()(
-            TArgs&&... args
+            TArgs... args
         ) const;
     };
 }
 
 namespace klib::Functional
 {
+    template <class TResult, class... TArgs>
+    Function<TResult(TArgs...)>::Function() noexcept
+        : Function<TResult(TArgs...)>(nullptr)
+    {
+    }
+
+    template <class TResult, class... TArgs>
+    Function<TResult(TArgs...)>::Function(
+        ::std::nullptr_t
+    ) noexcept
+        : m_func(&s_none)
+    {
+    }
+
     template <class TResult, class... TArgs>
     template <class TFunc> requires ::std::is_invocable_v<TFunc, TArgs...>
     Function<TResult(TArgs...)>::Function(
@@ -99,18 +128,9 @@ namespace klib::Functional
     }
 
     template <class TResult, class... TArgs>
-    constexpr Function<TResult(TArgs...)>::Function(
-        Function<TResult(TArgs...)>&& other
-    ) noexcept
-        : m_func(other.m_func)
+    constexpr Function<TResult(TArgs...)>::~Function()
     {
-        other.m_func = nullptr;
-    }
-
-    template <class TResult, class... TArgs>
-    Function<TResult(TArgs...)>::~Function()
-    {
-        if (m_func == nullptr) return;
+        if (!ShouldDelete()) return;
 
         delete m_func;
     }
@@ -121,7 +141,7 @@ namespace klib::Functional
     ) noexcept
     {
         if (&other != this) [[likely]] {
-            if (m_func != nullptr) {
+            if (ShouldDelete()) {
                 delete m_func;
             }
 
@@ -134,10 +154,31 @@ namespace klib::Functional
 
     template <class TResult, class... TArgs>
     TResult Function<TResult(TArgs...)>::operator()(
-        TArgs&&... args
+        TArgs... args
     ) const
     {
         return m_func->operator()(::std::forward<TArgs>(args)...);
+    }
+
+    template <class TResult, class... TArgs>
+    TResult
+    Function<TResult(TArgs...)>::DoNone(
+        TArgs... args
+    ) noexcept
+    {
+        if constexpr (::std::is_void_v<TResult>) {
+            return;
+        }
+        else {
+            return TResult{};
+        }
+    }
+
+    template <class TResult, class... TArgs>
+    constexpr bool
+    Function<TResult(TArgs...)>::ShouldDelete() const noexcept
+    {
+        return m_func != nullptr && m_func != &s_none;
     }
 }
 

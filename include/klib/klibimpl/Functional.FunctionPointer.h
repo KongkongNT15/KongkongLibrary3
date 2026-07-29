@@ -10,18 +10,22 @@ namespace klib::Functional
     struct FunctionPointer : FunctionBase<TResult, TArgs...> {
         public:
         using FuncType = TResult(*)(TArgs...);
+        
         private:
 
         FuncType m_funcPointer;
 
         public:
 
+        [[nodiscard]]
+        static FunctionPointer& None() noexcept;
+
         constexpr FunctionPointer(
             FuncType func
         ) noexcept;
 
         TResult operator()(
-            TArgs&&... args
+            TArgs... args
         ) override;
     };
 }
@@ -38,7 +42,7 @@ namespace klib::Functional
 
     template <class TResult, class... TArgs>
     TResult FunctionPointer<TResult, TArgs...>::operator()(
-        TArgs&&... args
+        TArgs... args
     )
     {
         return m_funcPointer(::std::forward<TArgs>(args)...);

@@ -25,7 +25,7 @@ namespace klib::Functional
         );
 
         TResult operator()(
-            TArgs&&... args
+            TArgs... args
         ) override;
     };
 }
@@ -50,7 +50,7 @@ namespace klib::Functional
 
     KLIB_CLASS_TEMPLATE_DEF
     TResult FunctionObject<KLIB_CLASS_TEMPLATE_PARAM>::operator()(
-        TArgs&&... args
+        TArgs... args
     )
     {
         return m_func(

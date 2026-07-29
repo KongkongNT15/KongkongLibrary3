@@ -12,7 +12,7 @@ namespace klib::Functional
         virtual ~FunctionBase() = default;
 
         virtual TResult operator()(
-            TArgs&&... args
+            TArgs... args
         ) = 0;
 
         [[nodiscard]]

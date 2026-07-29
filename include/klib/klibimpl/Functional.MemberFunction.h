@@ -46,7 +46,7 @@ namespace klib::Functional
         ) noexcept;
 
         TResult operator()(
-            TArgs&&... args
+            TArgs... args
         ) override;
     };
 }
@@ -76,7 +76,7 @@ namespace klib::Functional
     KLIB_CLASS_TEMPLATE_DEF
     MemberFunction<KLIB_CLASS_TEMPLATE_PARAM>::TResult
     MemberFunction<KLIB_CLASS_TEMPLATE_PARAM>::operator()(
-        TArgs&&... args
+        TArgs... args
     )
     {
         return (m_p->*m_f)(::std::forward<TArgs>(args)...);
