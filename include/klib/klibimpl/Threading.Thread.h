@@ -12,7 +12,6 @@
 
 #endif
 
-#include "Functional.Function.h"
 #include "Threading.ThreadExitCode.h"
 #include "Threading.ThreadState.h"
 
@@ -55,14 +54,27 @@ namespace klib::Threading
             uint32_t milliSeconds
         ) noexcept;
 
+        template <class TFunc>
         Thread(
-            Functional::Function<void()>&& entryPoint
+            TFunc&& f
+        );
+
+        template <class TFunc>
+        Thread(
+            TFunc&& f,
+            size_t stackSize
+        );
+
+#if KLIB_OBJECTIVE_C_ENABLED
+        Thread(
+            void(^f)()
         );
 
         Thread(
-            Functional::Function<void()>&& entryPoint,
+            void(^f)(),
             size_t stackSize
         );
+#endif
 
         [[nodiscard]]
         ThreadExitCode ExitCode() noexcept;
@@ -83,8 +95,7 @@ namespace klib::Threading
         void Join(
             uint32_t milliSeconds
         );
-
-        void Start();
+        
     };
 
     [[nodiscard]]
@@ -200,6 +211,26 @@ namespace klib::Threading
         AppleDevice::ObjCHandle&& thread
     ) noexcept
         : m_thread(::std::move(thread))
+    {
+    }
+
+    template <class TFunc>
+    Thread::Thread(
+        TFunc&& f
+    )
+        : Thread(^(){ f() })
+    {
+    }
+
+    template <class TFunc>
+    Thread::Thread(
+        TFunc&& f,
+        size_t stackSize
+    )
+        : Thread(
+            ^(){ f() },
+            stackSize
+        )
     {
     }
 

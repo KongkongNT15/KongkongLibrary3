@@ -11,10 +11,24 @@ namespace klib::Threading
         );
     }
 
-    void Thread::Start()
+    Thread::Thread(
+        void(^f)()
+    )
+        : m_thread([[::NSThread alloc] initWithBlock:f])
     {
         [KLIB_OBJC_RAPOINTER start];
     }
+
+    Thread::Thread(
+        void(^f)(),
+        size_t stackSize
+    )
+        : m_thread([[::NSThread alloc] initWithBlock:f])
+    {
+        KLIB_OBJC_RAPOINTER.stackSize = stackSize;
+        [KLIB_OBJC_RAPOINTER start];
+    }
+    
 }
 
 #undef KLIB_OBJC_RAPOINTER 
