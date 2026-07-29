@@ -23,6 +23,9 @@ namespace klib::Foundation
         static void ThrowMemoryAllocation(
             const char16_t* message
         );
+
+        [[noreturn]]
+        static void ThrowInvalidOperation();
     };
 }
 

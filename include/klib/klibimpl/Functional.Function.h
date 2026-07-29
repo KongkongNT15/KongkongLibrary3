@@ -2,6 +2,7 @@
 #define KLIB_FUNCTIONAL_FUNCTION_H
 
 #include "base.h"
+#include "Foundation.ExceptionThrower.h"
 #include "Functional.FunctionBase.h"
 #include "Functional.FunctionObject.h"
 #include "Functional.FunctionPointer.h"
@@ -17,8 +18,10 @@ namespace klib::Functional
 
         private:
         
+        static constexpr bool CanDefaultConstructible = ::std::is_nothrow_default_constructible_v<TResult>;
+        static constexpr bool IsVoid = ::std::is_void_v<TResult>;
 
-        static TResult DoNone(TArgs...) noexcept;
+        static TResult DoNone(TArgs...) noexcept(CanDefaultConstructible || IsVoid);
         
         static inline FunctionPointer<TResult, TArgs...> s_none = { DoNone };
 
@@ -168,13 +171,16 @@ namespace klib::Functional
     TResult
     Function<TResult(TArgs...)>::DoNone(
         TArgs... args
-    ) noexcept
+    ) noexcept(CanDefaultConstructible || IsVoid)
     {
-        if constexpr (::std::is_void_v<TResult>) {
+        if constexpr (IsVoid) {
             return;
         }
-        else {
+        else if constexpr (CanDefaultConstructible) {
             return TResult{};
+        }
+        else {
+            ExceptionThrower::ThrowInvalidOperation();
         }
     }
 

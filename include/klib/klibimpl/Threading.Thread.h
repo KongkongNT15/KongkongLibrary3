@@ -23,6 +23,7 @@ namespace klib::Threading
 
 #if KLIB_ENV_WINDOWS
 
+        template <class TFunc>
         static ::DWORD __stdcall EntryPoint(
             void* args
         );
@@ -142,6 +143,18 @@ namespace klib::Threading
 namespace klib::Threading
 {
 #if KLIB_ENV_WINDOWS
+
+    template <class TFunc>
+    ::DWORD __stdcall Thread::EntryPoint(
+        void* args
+    )
+    {
+        auto p = static_cast<Functional::Function<void()>*>(args);
+
+        p->operator()();
+
+        return 0;
+    }
     
     inline Thread Thread::Current() noexcept
     {
@@ -164,6 +177,16 @@ namespace klib::Threading
     ) noexcept
         : m_thread(rawHandle)
     {
+    }
+
+    template <class TFunc>
+    Thread::Thread(
+        TFunc&& f,
+        size_t stackSize
+    )
+    {
+        using TRemoved = ::std::remove_cvref_t<TFunc>;
+        
     }
 
     inline bool Thread::GetExitCode(
@@ -197,11 +220,6 @@ namespace klib::Threading
     inline int Thread::Id() const noexcept
     {
         return ::GetThreadId(m_thread.RawHandle());
-    }
-
-    inline void Thread::Start()
-    {
-        ::ResumeThread(m_thread.RawHandle());
     }
 
 #elif KLIB_OBJECTIVE_C_ENABLED

@@ -2,17 +2,6 @@
 {
 #if KLIB_ENV_WINDOWS
 
-    ::DWORD __stdcall Thread::EntryPoint(
-        void* args
-    )
-    {
-        auto p = static_cast<Functional::Function<void()>*>(args);
-
-        p->operator()();
-
-        return 0;
-    }
-
     Thread::Thread(
         Functional::Function<void()>&& entryPoint,
         size_t stackSize
