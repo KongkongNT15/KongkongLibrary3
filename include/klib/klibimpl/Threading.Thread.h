@@ -13,7 +13,7 @@
 #endif
 
 #include "Threading.ThreadExitCode.h"
-
+#include "Threading.ThreadState.h"
 
 namespace klib::Threading
 {
@@ -172,6 +172,11 @@ namespace klib::Threading
     inline int Thread::Id() const noexcept
     {
         return ::GetThreadId(m_thread.RawHandle());
+    }
+
+    inline void Thread::Start()
+    {
+        ::ResumeThread(m_thread.RawHandle());
     }
 
 #elif KLIB_OBJECTIVE_C_ENABLED

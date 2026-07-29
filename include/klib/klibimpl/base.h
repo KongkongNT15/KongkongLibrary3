@@ -662,6 +662,7 @@ namespace klib::Threading
     class ScopedLock;
     class Thread;
     class ThreadPool;
+    enum struct ThreadState;
     struct ThreadExitCode;
     struct ThreadStateException;
     
