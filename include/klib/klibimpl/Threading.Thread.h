@@ -3,6 +3,7 @@
 
 #include "base.h"
 #include "Foundation.HandleType.h"
+#include "Foundation.ExceptionThrower.h"
 
 #if KLIB_ENV_WINDOWS
     #include "Win32.Win32Handle.h"
@@ -23,7 +24,7 @@ namespace klib::Threading
 
 #if KLIB_ENV_WINDOWS
 
-        template <class TFunc>
+        template <class TFunc, bool ShouldDelete>
         static ::DWORD __stdcall EntryPoint(
             void* args
         );
@@ -33,6 +34,13 @@ namespace klib::Threading
         constexpr Thread(
             ::HANDLE rawHandle
         ) noexcept;
+
+        template <class TFunc, bool UseStackSize>
+        Thread(
+            TFunc&& entryPoint,
+            size_t stackSize,
+            ::std::bool_constant<UseStackSize>
+        );
 
 #elif KLIB_OBJECTIVE_C_ENABLED
         AppleDevice::ObjCHandle m_thread;
@@ -55,12 +63,12 @@ namespace klib::Threading
 
         template <class TFunc>
         Thread(
-            TFunc&& f
+            TFunc&& entryPoint
         );
 
         template <class TFunc>
         Thread(
-            TFunc&& f,
+            TFunc&& entryPoint,
             size_t stackSize
         );
 
@@ -144,14 +152,18 @@ namespace klib::Threading
 {
 #if KLIB_ENV_WINDOWS
 
-    template <class TFunc>
+    template <class TFunc, bool ShouldDelete>
     ::DWORD __stdcall Thread::EntryPoint(
         void* args
     )
     {
         auto p = static_cast<Functional::Function<void()>*>(args);
 
-        p->operator()();
+        (*p)();
+
+        if constexpr (ShouldDelete) {
+            delete p;
+        }
 
         return 0;
     }
@@ -179,14 +191,81 @@ namespace klib::Threading
     {
     }
 
-    template <class TFunc>
+    template <class TFunc, bool UseStackSize>
     Thread::Thread(
-        TFunc&& f,
-        size_t stackSize
+        TFunc&& entryPoint,
+        size_t stackSize,
+        ::std::bool_constant<UseStackSize>
     )
     {
-        using TRemoved = ::std::remove_cvref_t<TFunc>;
-        
+        using TRemoved = typename ::std::remove_cvref_t<TFunc>;
+        ::LPTHREAD_START_ROUTINE startAddress;
+        void* args;
+
+        constexpr bool isFunction = ::std::is_function_v<TRemoved>;
+        constexpr bool isFunctionPointer = !isFunction && ::std::is_function_v<typename ::std::remove_pointer_t<TRemoved>>;
+        constexpr bool isFunctionObject = !isFunction && !isFunctionPointer;
+
+        // 関数型
+        if constexpr (::std::is_function_v<TRemoved>) {
+            startAddress = EntryPoint<TRemoved*, false>;
+            args = &entryPoint;
+        }
+        // 関数ポインタ型
+        else if constexpr (::std::is_function_v<typename ::std::remove_pointer_t<TRemoved>>) {
+            startAddress = EntryPoint<TRemoved, false>;
+            args = entryPoint;
+        }
+        // 関数オブジェクト型
+        else {
+            startAddress = EntryPoint<TRemoved, true>;
+            args = new TRemoved(::std::forward(entryPoint));
+        }
+
+        ::HANDLE thread = ::CreateThread(
+            nullptr,
+            UseStackSize ? stackSize : 0,
+            startAddress,
+            args,
+            UseStackSize ? STACK_SIZE_PARAM_IS_A_RESERVATION : 0,
+            nullptr
+        );
+
+        if (thread == INVALID_HANDLE_VALUE) [[unlikely]] {
+
+            if constexpr (isFunctionObject) {
+                delete static_cast<TRemoved*>(args);
+            }
+
+            ExceptionThrower::ThrowMemoryAllocation();
+        }
+
+        m_thread.AttachUnsafe(thread);
+    }
+
+    template <class TFunc>
+    Thread::Thread(
+        TFunc&& entryPoint
+    )
+        : Thread(
+            ::std::forward(entryPoint),
+            0,
+            ::std::bool_constant<false>
+        )
+    {
+    }
+
+    template <class TFunc>
+    Thread::Thread(
+        TFunc&& entryPoint,
+        size_t stackSize
+    )
+        : Thread(
+            ::std::forward(entryPoint),
+            stackSize,
+            ::std::bool_constant<true>
+        )
+    {
     }
 
     inline bool Thread::GetExitCode(
@@ -232,19 +311,19 @@ namespace klib::Threading
 
     template <class TFunc>
     Thread::Thread(
-        TFunc&& f
+        TFunc&& entryPoint
     )
-        : Thread(^(){ f() })
+        : Thread(^(){ entryPoint(); })
     {
     }
 
     template <class TFunc>
     Thread::Thread(
-        TFunc&& f,
+        TFunc&& entryPoint,
         size_t stackSize
     )
         : Thread(
-            ^(){ f() },
+            ^(){ entryPoint(); },
             stackSize
         )
     {
