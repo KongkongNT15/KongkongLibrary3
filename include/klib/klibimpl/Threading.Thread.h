@@ -72,7 +72,20 @@ namespace klib::Threading
             size_t stackSize
         );
 
-#if KLIB_OBJECTIVE_C_ENABLED
+#if KLIB_ENV_WINDOWS
+
+        Thread(
+            ::LPTHREAD_START_ROUTINE entryPoint,
+            void* args
+        );
+
+        Thread(
+            ::LPTHREAD_START_ROUTINE entryPoint,
+            void* args,
+            size_t stackSize
+        );
+
+#elif KLIB_OBJECTIVE_C_ENABLED
         Thread(
             void(^f)()
         );
@@ -250,7 +263,7 @@ namespace klib::Threading
         : Thread(
             ::std::forward(entryPoint),
             0,
-            ::std::bool_constant<false>
+            ::std::false_type{}
         )
     {
     }
@@ -263,7 +276,7 @@ namespace klib::Threading
         : Thread(
             ::std::forward(entryPoint),
             stackSize,
-            ::std::bool_constant<true>
+            ::std::true_type{}
         )
     {
     }
