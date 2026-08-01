@@ -50,6 +50,19 @@ namespace klib::Numerics
         [[nodiscard]]
         constexpr bool IsNegative() const noexcept;
 
+        template <::std::floating_point TFloat>
+        [[nodiscard]]
+        constexpr TFloat ToFloatingPoint() const noexcept;
+
+        [[nodiscard]]
+        constexpr double ToDouble() const noexcept;
+
+        [[nodiscard]]
+        constexpr float ToFloat() const noexcept;
+
+        [[nodiscard]]
+        constexpr long double ToLDouble() const noexcept;
+
         [[nodiscard]]
         constexpr UnsignedInteger16Byte ToUnsigned() const noexcept;
     };
@@ -91,6 +104,19 @@ namespace klib::Numerics
         [[nodiscard]]
         constexpr UnsignedInteger16Byte operator~() const noexcept;
 
+        template <::std::floating_point TFloat>
+        [[nodiscard]]
+        constexpr TFloat ToFloatingPoint() const noexcept;
+
+        [[nodiscard]]
+        constexpr double ToDouble() const noexcept;
+
+        [[nodiscard]]
+        constexpr float ToFloat() const noexcept;
+
+        [[nodiscard]]
+        constexpr long double ToLDouble() const noexcept;
+
         [[nodiscard]]
         constexpr Integer16Byte ToSigned() const noexcept;
     };
@@ -121,6 +147,24 @@ namespace klib::Numerics
 
     [[nodiscard]]
     constexpr bool operator==(
+        Integer16Byte left,
+        float right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator==(
+        Integer16Byte left,
+        double right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator==(
+        Integer16Byte left,
+        long double right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator==(
         UnsignedInteger16Byte left,
         Integer16Byte right
     ) noexcept;
@@ -141,6 +185,24 @@ namespace klib::Numerics
     constexpr bool operator==(
         UnsignedInteger16Byte left,
         uint_least64_t right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator==(
+        UnsignedInteger16Byte left,
+        float right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator==(
+        UnsignedInteger16Byte left,
+        double right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator==(
+        UnsignedInteger16Byte left,
+        long double right
     ) noexcept;
 
     [[nodiscard]]
@@ -168,6 +230,42 @@ namespace klib::Numerics
     ) noexcept;
 
     [[nodiscard]]
+    constexpr bool operator==(
+        float left,
+        Integer16Byte right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator==(
+        float left,
+        UnsignedInteger16Byte right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator==(
+        double left,
+        Integer16Byte right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator==(
+        double left,
+        UnsignedInteger16Byte right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator==(
+        long double left,
+        Integer16Byte right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator==(
+        long double left,
+        UnsignedInteger16Byte right
+    ) noexcept;
+
+    [[nodiscard]]
     constexpr bool operator!=(
         Integer16Byte left,
         Integer16Byte right
@@ -189,6 +287,24 @@ namespace klib::Numerics
     constexpr bool operator!=(
         Integer16Byte left,
         uint_least64_t right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator!=(
+        Integer16Byte left,
+        float right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator!=(
+        Integer16Byte left,
+        double right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator!=(
+        Integer16Byte left,
+        long double right
     ) noexcept;
 
     [[nodiscard]]
@@ -261,6 +377,24 @@ namespace klib::Numerics
     constexpr bool operator<(
         Integer16Byte left,
         uint_least64_t right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator<(
+        Integer16Byte left,
+        float right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator<(
+        Integer16Byte left,
+        double right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator<(
+        Integer16Byte left,
+        long double right
     ) noexcept;
 
     [[nodiscard]]
@@ -333,6 +467,24 @@ namespace klib::Numerics
     constexpr bool operator<=(
         Integer16Byte left,
         uint_least64_t right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator<=(
+        Integer16Byte left,
+        float right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator<=(
+        Integer16Byte left,
+        double right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator<=(
+        Integer16Byte left,
+        long double right
     ) noexcept;
 
     [[nodiscard]]
@@ -405,6 +557,24 @@ namespace klib::Numerics
     constexpr bool operator>(
         Integer16Byte left,
         uint_least64_t right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator>(
+        Integer16Byte left,
+        float right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator>(
+        Integer16Byte left,
+        double right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator>(
+        Integer16Byte left,
+        long double right
     ) noexcept;
 
     [[nodiscard]]
@@ -477,6 +647,24 @@ namespace klib::Numerics
     constexpr bool operator>=(
         Integer16Byte left,
         uint_least64_t right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator>=(
+        Integer16Byte left,
+        float right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator>=(
+        Integer16Byte left,
+        double right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr bool operator>=(
+        Integer16Byte left,
+        long double right
     ) noexcept;
 
     [[nodiscard]]
@@ -549,6 +737,24 @@ namespace klib::Numerics
     constexpr ::std::strong_ordering operator<=>(
         Integer16Byte left,
         uint_least64_t right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr ::std::strong_ordering operator<=>(
+        Integer16Byte left,
+        float right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr ::std::strong_ordering operator<=>(
+        Integer16Byte left,
+        double right
+    ) noexcept;
+
+    [[nodiscard]]
+    constexpr ::std::strong_ordering operator<=>(
+        Integer16Byte left,
+        long double right
     ) noexcept;
 
     [[nodiscard]]
@@ -686,6 +892,41 @@ namespace klib::Numerics
         return static_cast<int_least64_t>(m_highPart) < 0;
     }
 
+    template <::std::floating_point TFloat>
+    constexpr TFloat
+    Integer16Byte::ToFloatingPoint() const noexcept
+    {
+        TFloat v1 = (m_highPart & 0x7FFFFFFFFFFFFFFF) * static_cast<TFloat>(0x1.0p64);
+        TFloat v2 = m_lowPart;
+
+        if (IsNegative()) {
+            return -(v1 + v2);
+        }
+        else {
+            return v1 + v2;
+        }
+
+        
+    }
+
+    constexpr double
+    Integer16Byte::ToDouble() const noexcept
+    {
+        return ToFloatingPoint<double>();
+    }
+
+    constexpr float
+    Integer16Byte::ToFloat() const noexcept
+    {
+        return ToFloatingPoint<float>();
+    }
+
+    constexpr long double
+    Integer16Byte::ToLDouble() const noexcept
+    {
+        return ToFloatingPoint<long double>();
+    }
+
     constexpr UnsignedInteger16Byte
     Integer16Byte::ToUnsigned() const noexcept
     {
@@ -770,6 +1011,34 @@ namespace klib::Numerics
         );
     }
 
+    template <::std::floating_point TFloat>
+    constexpr TFloat
+    UnsignedInteger16Byte::ToFloatingPoint() const noexcept
+    {
+        TFloat v1 = m_highPart * static_cast<TFloat>(0x1.0p64);
+        TFloat v2 = m_lowPart;
+
+        return v1 + v2;
+    }
+
+    constexpr double
+    UnsignedInteger16Byte::ToDouble() const noexcept
+    {
+        return ToFloatingPoint<double>();
+    }
+
+    constexpr float
+    UnsignedInteger16Byte::ToFloat() const noexcept
+    {
+        return ToFloatingPoint<float>();
+    }
+
+    constexpr long double
+    UnsignedInteger16Byte::ToLDouble() const noexcept
+    {
+        return ToFloatingPoint<long double>();
+    }
+
     constexpr Integer16Byte
     UnsignedInteger16Byte::ToSigned() const noexcept
     {
@@ -825,6 +1094,30 @@ namespace klib::Numerics
     }
 
     constexpr bool operator==(
+        Integer16Byte left,
+        float right
+    ) noexcept
+    {
+        return left.ToFloat() == right;
+    }
+    
+    constexpr bool operator==(
+        Integer16Byte left,
+        double right
+    ) noexcept
+    {
+        return left.ToDouble() == right;
+    }
+    
+    constexpr bool operator==(
+        Integer16Byte left,
+        long double right
+    ) noexcept
+    {
+        return left.ToLDouble() == right;
+    }
+
+    constexpr bool operator==(
         UnsignedInteger16Byte left,
         Integer16Byte right
     ) noexcept
@@ -863,6 +1156,30 @@ namespace klib::Numerics
     }
 
     constexpr bool operator==(
+        UnsignedInteger16Byte left,
+        float right
+    ) noexcept
+    {
+        return left.ToFloat() == right;
+    }
+    
+    constexpr bool operator==(
+        UnsignedInteger16Byte left,
+        double right
+    ) noexcept
+    {
+        return left.ToDouble() == right;
+    }
+    
+    constexpr bool operator==(
+        UnsignedInteger16Byte left,
+        long double right
+    ) noexcept
+    {
+        return left.ToLDouble() == right;
+    }
+
+    constexpr bool operator==(
         int_least64_t left,
         Integer16Byte right
     ) noexcept
@@ -892,6 +1209,54 @@ namespace klib::Numerics
     ) noexcept
     {
         return right == left;
+    }
+
+    constexpr bool operator==(
+        float left,
+        Integer16Byte right
+    ) noexcept
+    {
+        return left == right.ToFloat();
+    }
+
+    constexpr bool operator==(
+        float left,
+        UnsignedInteger16Byte right
+    ) noexcept
+    {
+        return left == right.ToFloat();
+    }
+
+    constexpr bool operator==(
+        double left,
+        Integer16Byte right
+    ) noexcept
+    {
+        return left == right.ToDouble();
+    }
+
+    constexpr bool operator==(
+        double left,
+        UnsignedInteger16Byte right
+    ) noexcept
+    {
+        return left == right.ToDouble();
+    }
+
+    constexpr bool operator==(
+        long double left,
+        Integer16Byte right
+    ) noexcept
+    {
+        return left == right.ToLDouble();
+    }
+    
+    constexpr bool operator==(
+        long double left,
+        UnsignedInteger16Byte right
+    ) noexcept
+    {
+        return left == right.ToLDouble();
     }
     
     constexpr bool operator!=(

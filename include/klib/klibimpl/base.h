@@ -604,6 +604,8 @@ namespace klib::Std
     template <class T>
     struct Allocator;
 
+    class StlThreadPool;
+
     template <class T, class TAllocator = Allocator<T>>
     struct StlVector;
 }
@@ -684,6 +686,11 @@ namespace klib::Threading::Async
 
     template <class TPromise>
     struct AsyncOperationBase;
+}
+
+namespace klib::Unix
+{
+    class UnixThreadPool;
 }
 
 namespace klib::Win32

@@ -12,7 +12,11 @@
         if (result == WAIT_FAILED) [[unlikely]] throw ThreadStateException(u"開始していないスレッドを待機しようとしました");
     }
 
+#elif KLIB_OBJECTIVE_C_ENALBED
+    // .mm にコードを記述
 #elif KLIB_ENV_UNIX
+
+#else
 
 #endif
 }

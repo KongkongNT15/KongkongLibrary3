@@ -11,6 +11,8 @@
     #include "AppleDevice.ObjCHandle.h"
 #elif KLIB_ENV_UNIX
 
+#else
+    #include <thread>
 #endif
 
 #include "Threading.ThreadExitCode.h"
@@ -50,6 +52,9 @@ namespace klib::Threading
         ) noexcept;
 #elif KLIB_ENV_UNIX
         ::pthread_t m_thread;
+
+#else
+        ::std::thread m_thread;
 #endif
 
         public:
@@ -60,6 +65,9 @@ namespace klib::Threading
         static void Sleep(
             uint32_t milliSeconds
         ) noexcept;
+
+        [[nodiscard]]
+        static uint32_t ThreadCount() noexcept;
 
         template <class TFunc>
         Thread(
@@ -94,6 +102,8 @@ namespace klib::Threading
             void(^f)(),
             size_t stackSize
         );
+#elif KLIB_ENV_UNIX
+        ~Thread();
 #endif
 
         [[nodiscard]]
@@ -163,6 +173,11 @@ namespace klib::Threading
 
 namespace klib::Threading
 {
+    inline uint32_t Thread::ThreadCount() noexcept
+    {
+        return s_threadCount;
+    }
+
 #if KLIB_ENV_WINDOWS
 
     template <class TFunc, bool ShouldDelete>
