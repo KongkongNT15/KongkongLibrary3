@@ -37,7 +37,7 @@ namespace klib::Text::Unicode
             char32_t c
         );
 
-        ::std::ostream& WriteTo(
+        void WriteTo(
             ::std::ostream& out
         );
     };

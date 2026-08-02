@@ -20,7 +20,7 @@ namespace klib::Numerics
         ElementType X;
         ElementType Y;
 
-        constexpr Vector2() noexcept;
+        consteval Vector2() noexcept;
 
         constexpr Vector2(
             ElementType x,
@@ -108,7 +108,7 @@ namespace klib::Numerics
     }
 
     KLIB_CLASS_TEMPLATE_DEF
-    constexpr Vector2<KLIB_CLASS_TEMPLATE_PARAM>::Vector2(
+    consteval Vector2<KLIB_CLASS_TEMPLATE_PARAM>::Vector2(
     ) noexcept
         : X(0)
         , Y(0)

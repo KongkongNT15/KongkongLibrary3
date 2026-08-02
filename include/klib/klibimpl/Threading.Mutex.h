@@ -2,6 +2,7 @@
 #define KLIB_THREADING_MUTEX_H
 
 #include "base.h"
+#include "Foundation.HandleType.h"
 
 #if KLIB_ENV_WINDOWS
     #include "Win32.Win32Handle.h"
@@ -11,7 +12,7 @@
 
 namespace klib::Threading
 {
-    class Mutex final {
+    class Mutex final : public HandleType {
         private:
 
 #if KLIB_ENV_WINDOWS

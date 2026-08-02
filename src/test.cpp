@@ -11,7 +11,7 @@ namespace Test1
 
 void f()
 {
-    using namespace klib::Kongkong::Numerics;
+    using namespace klib::Numerics;
 
     Vector2<> v1;
     Vector2<double> v2;

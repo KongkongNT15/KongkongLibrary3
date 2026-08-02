@@ -15,8 +15,11 @@ namespace klib::Ranges
 
         [[nodiscard]]
         constexpr Hash::ResultType GetHashCode() const noexcept;
-    };
 
+        void WriteTo(
+            ::std::ostream& out
+        ) const;
+    };
     
 }
 

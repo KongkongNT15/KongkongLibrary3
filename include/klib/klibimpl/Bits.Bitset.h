@@ -71,6 +71,7 @@ namespace klib::Bits
         constexpr bool GetAtUnsafe(
             ssize_t index
         ) const noexcept;
+        
     };
 }
 

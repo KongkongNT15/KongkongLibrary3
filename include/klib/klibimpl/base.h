@@ -885,7 +885,9 @@ namespace std
         T&& value
     )
     {
-        return value.WriteTo(out);
+        value.WriteTo(out);
+
+        return out;
     }
 }
 

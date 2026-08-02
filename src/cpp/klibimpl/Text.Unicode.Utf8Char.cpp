@@ -5,14 +5,14 @@
         throw ArgumentOutOfRangeException(u"不正なコードポイントです");
     }
 
-    ::std::ostream& Utf8Char::WriteTo(
+    void Utf8Char::WriteTo(
         ::std::ostream& out
     )
     {
 #if KLIB_ENV_WINDOWS
         KLIB_NOT_IMPLEMENTED;
 #elif KLIB_ENV_UNIX
-        return out.write(
+        out.write(
             reinterpret_cast<const char*>(m_char),
             m_length
         );
