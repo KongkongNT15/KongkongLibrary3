@@ -11,6 +11,7 @@
 #include "klibimpl/Memory.Primitives.GCHandleBase.cpp"
 #include "klibimpl/Memory.Primitives.GCHandleTable.cpp"
 #include "klibimpl/Ranges.IndexFromEnd.cpp"
+#include "klibimpl/Stl.StlThreadPool.cpp"
 #include "klibimpl/Text.Unicode.SurrogatePair.cpp"
 #include "klibimpl/Text.Unicode.Utf8Char.cpp"
 #include "klibimpl/Threading.Thread.cpp"

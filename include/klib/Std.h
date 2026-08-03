@@ -2,6 +2,7 @@
 #define KLIB_STD_H
 
 #include "klibimpl/Std.Allocator.h"
+#include "klibimpl/Stl.StlThreadPool.h"
 #include "klibimpl/Std.StlVector.h"
 #include "klibimpl/Std.StringStream.h"
 #include "klibimpl/Std.StringStreamBuffer.h"
