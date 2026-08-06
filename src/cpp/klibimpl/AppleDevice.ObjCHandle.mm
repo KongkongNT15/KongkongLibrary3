@@ -21,13 +21,9 @@ namespace klib::AppleDevice
         ObjCHandle const& right
     ) noexcept
     {
-        auto pLeft = static_cast<::NSObject*>(
-            left.GetRawPointer()
-        );
+        auto pLeft = left.As<::NSObject*>();
 
-        auto pRight = static_cast<::NSObject*>(
-            right.GetRawPointer()
-        );
+        auto pRight = right.As<::NSObject*>();
 
         if (pLeft == nullptr) return pRight == nullptr;
 
