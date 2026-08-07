@@ -557,6 +557,8 @@ namespace klib::Numerics
         && (::std::same_as<T, bool> == false)
     );
 
+    struct Decimal;
+
     struct Integer16Byte;
     
     template <class TNum = void>
@@ -827,6 +829,12 @@ namespace klib
 {
     inline namespace Literals
     {
+        [[nodiscard]]
+        consteval Numerics::Decimal
+        operator""_d(
+            const char* d
+        );
+
         [[nodiscard]]
         consteval Ranges::IndexFromEnd
         operator""_end(
