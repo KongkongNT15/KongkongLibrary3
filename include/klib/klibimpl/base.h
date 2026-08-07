@@ -384,6 +384,8 @@ namespace klib::AppleDevice
 
 namespace klib::AppleDevice::Foundation
 {
+    enum struct NSCalculationError;
+    struct NSDecimal;
     class NSString;
 }
 
@@ -466,6 +468,11 @@ namespace klib::Functional
 
     template <class TResult, class... TArgs>
     class Function<TResult(TArgs...)>;
+}
+
+namespace klib::Intrinsics
+{
+    class Simd;
 }
 
 namespace klib::IO

@@ -2,6 +2,7 @@
 #define KLIB_NUMERICS_DECIMAL_H
 
 #include "base.h"
+#include "Foundation.ValueType.h"
 
 #include <stdint.h>
 
@@ -9,38 +10,56 @@
 
 namespace klib::Numerics
 {
-    struct alignas(16) Decimal {
+    struct alignas(16) Decimal final : public ValueType {
         private:
 
-        uint64_t m_low;   // 仮数部の下位64ビットｳﾋｮｯ
-        uint64_t m_high;  // 仮数部の上位48ビット + 指数部15ビット + 符号1ビットｳﾋｮｯ
+        union {
+            // ① 演算器（ALU）や多倍長演算でまとめて処理するための生データ表現ｳﾋｮｯ。
+            struct {
+                uint64_t m_low;   // 仮数部の下位64ビットｳﾋｮｯ
+                uint64_t m_high;  // 仮数部の上位48ビット + 指数部15ビット + 符号1ビットｳﾋｮｯ
+            };
 
-        constexpr void m_setSign(
-            bool minus
-        ) noexcept;
+            // ② 人間が直感的に各要素へアクセスするためのビットフィールド表現ｳﾋｮｯ。
+            // ※Windows(AMD)やmacOS(Apple Silicon)などのリトルエンディアンを前提としていますｳﾋｮｯ。
+            struct {
+                uint64_t m_coeff_low;             // 仮数部の下位64ビット (m_lowと完全に一致)ｳﾋｮｯ
+                uint64_t m_coeff_high      : 48;  // 仮数部の上位48ビット (m_highの 0〜47ビット目)ｳﾋｮｯ
+                uint64_t m_exponent        : 15;  // 指数部 (m_highの 48〜62ビット目)ｳﾋｮｯ
+                uint64_t m_sign            : 1;   // 符号部 (m_highの 63ビット目)ｳﾋｮｯ
+            };
+        };
 
         public:
 
+        consteval Decimal() noexcept;
+
+        constexpr Decimal(
+            const char* numStr
+        );
+
+        [[nodiscard]]
+        constexpr uint16_t Exponent() const noexcept;
+
         [[nodiscard]]
         constexpr bool IsMinus() const noexcept;
+
+        [[nodiscard]]
+        constexpr bool IsZero() const noexcept;
     };
 }
 
 namespace klib::Numerics
 {
-    constexpr void Decimal::m_setSign(
-        bool minus
-    ) noexcept
+    constexpr uint16_t Decimal::Exponent() const noexcept
     {
-        uint64_t v = static_cast<uint64_t>(minus);
-
-        m_high = m_high & (~(v << 63));
+        return m_exponent;
     }
 
     constexpr bool Decimal::IsMinus() const noexcept
     {
         return static_cast<bool>(
-            m_high & (uint64_t(1) << 63)
+            m_sign
         );
     }
 }
@@ -52,7 +71,7 @@ namespace klib::Literals
         const char* d
     )
     {
-
+        return decimal(d);
     }
 }
 
