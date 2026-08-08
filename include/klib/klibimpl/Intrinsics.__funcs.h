@@ -23,4 +23,27 @@ namespace klib::Intrinsics
     }
 }
 
+#include <math.h>
+
+inline klib::Intrinsics::Float32x8 ceil(
+    klib::Intrinsics::Float32x8 const& value
+) noexcept
+{
+    return value.Ceiling();
+}
+
+inline klib::Intrinsics::Float32x8 floor(
+    klib::Intrinsics::Float32x8 const& value
+) noexcept
+{
+    return value.Floor();
+}
+
+inline klib::Intrinsics::Float32x8 sqrt(
+    klib::Intrinsics::Float32x8 const& value
+) noexcept
+{
+    return value.Sqrt();
+}
+
 #endif //!KLIB_INTRINSICS___FUNCS_H

@@ -186,6 +186,9 @@ namespace klib::Intrinsics
         operator Float64x4() const noexcept;
         operator IntBlock256() const noexcept;
 
+        [[nodiscard]]
+        Float32x8 Ceiling() const noexcept;
+
         void Broadcast(
             ::std::nullptr_t
         ) = delete;
@@ -197,6 +200,9 @@ namespace klib::Intrinsics
         void Broadcast(
             const Float32x4* p
         ) noexcept;
+
+        [[nodiscard]]
+        Float32x8 Floor() const noexcept;
 
         void Load(
             ::std::nullptr_t
@@ -234,6 +240,21 @@ namespace klib::Intrinsics
             const float* lowAddress
         ) noexcept;
 
+        [[nodiscard]]
+        Float32x8 Reciprocal() const noexcept;
+
+        [[nodiscard]]
+        Float32x8 ReciprocalSqrt() const noexcept;
+
+        [[nodiscard]]
+        Float32x8 Round(
+            int mask
+        ) const noexcept;
+
+        void Set(
+            float v
+        ) noexcept;
+
         void Set(
             float v1,
             float v2,
@@ -243,10 +264,6 @@ namespace klib::Intrinsics
             float v6,
             float v7,
             float v8
-        ) noexcept;
-
-        void Set1(
-            float v
         ) noexcept;
 
         void SetReverse(
@@ -295,6 +312,17 @@ namespace klib::Intrinsics
             float* highAddress,
             float* lowAddress
         ) const noexcept;
+
+        void Stream(
+            ::std::nullptr_t
+        ) const = delete;
+
+        void Stream(
+            float* dest
+        ) const noexcept;
+
+        [[nodiscard]]
+        Float32x8 Sqrt() const noexcept;
     };
 
     [[nodiscard]]
@@ -569,6 +597,16 @@ namespace klib::Intrinsics
         m_value = _mm256_broadcast_ss(p);
     }
 
+    inline Float32x8 Float32x8::Ceiling() const noexcept
+    {
+        return _mm256_ceil_ps(m_value);
+    }
+
+    inline Float32x8 Float32x8::Floor() const noexcept
+    {
+        return _mm256_sqrt_ps(m_value);
+    }
+
     inline void Float32x8::Load(
         const float* p
     ) noexcept
@@ -589,6 +627,30 @@ namespace klib::Intrinsics
     ) noexcept
     {
         m_value = _mm256_loadu2_m128(highAddress, lowAddress);
+    }
+
+    inline Float32x8 Float32x8::Reciprocal() const noexcept
+    {
+        return _mm256_rcp_ps(m_value);
+    }
+
+    inline Float32x8 Float32x8::ReciprocalSqrt() const noexcept
+    {
+        return _mm256_rsqrt_ps(m_value);
+    }
+
+    inline Float32x8 Float32x8::Round(
+        int mask
+    ) const noexcept
+    {
+        return _mm256_round_ps(m_value, mask);
+    }
+
+    inline void Float32x8::Set(
+        float v
+    ) noexcept
+    {
+        m_value = _mm256_set1_ps(v);
     }
 
     inline void Float32x8::Set(
@@ -614,13 +676,6 @@ namespace klib::Intrinsics
         );
     }
 
-    inline void Float32x8::Set1(
-        float v
-    ) noexcept
-    {
-        m_value = _mm256_set1_ps(v);
-    }
-
     inline void Float32x8::SetReverse(
         float v1,
         float v2,
@@ -644,26 +699,38 @@ namespace klib::Intrinsics
         );
     }
 
-    void Float32x8::Store(
+    inline void Float32x8::Store(
         float* dest
     ) const noexcept
     {
         _mm256_store_ps(dest, m_value);
     }
 
-    void Float32x8::StoreUnaligned(
+    inline void Float32x8::StoreUnaligned(
         float* dest
     ) const noexcept
     {
         _mm256_storeu_ps(dest, m_value);
     }
 
-    void Float32x8::StoreUnaligned(
+    inline void Float32x8::StoreUnaligned(
         float* highAddress,
         float* lowAddress
     ) const noexcept
     {
         _mm256_storeu2_m128(highAddress, lowAddress, m_value);
+    }
+
+    inline void Float32x8::Stream(
+        float* dest
+    ) const noexcept
+    {
+        _mm256_stream_ps(dest, m_value);
+    }
+
+    inline Float32x8 Float32x8::Sqrt() const noexcept
+    {
+        return _mm256_sqrt_ps(m_value);
     }
 
 #elif KLIB_ENV_ARM64
