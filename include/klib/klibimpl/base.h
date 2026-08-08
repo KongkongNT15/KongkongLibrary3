@@ -472,6 +472,7 @@ namespace klib::Functional
 
 namespace klib::Intrinsics
 {
+    struct Float32x8;
     class Simd;
 }
 

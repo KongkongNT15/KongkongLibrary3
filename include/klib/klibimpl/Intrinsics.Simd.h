@@ -3,12 +3,10 @@
 
 #include "base.h"
 
-#if KLIB_ENV_WINDOWS
-
-#elif KLIB_COMPILER_APPLE_CLANG
+#if KLIB_ENV_X64
+    #include <immintrin.h>
+#elif KLIB_ENV_ARM64
     #include <arm_neon.h>
-#else
-
 #endif
 
 namespace klib::Intrinsics
@@ -20,6 +18,8 @@ namespace klib::Intrinsics
 
 
     };
+    
+    __m256 r;
 }
 
 #endif //!KLIB_INTRINSICS_SIMD_H
