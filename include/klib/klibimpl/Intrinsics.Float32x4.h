@@ -21,7 +21,9 @@ namespace klib::Intrinsics
 #elif KLIB_ENV_ARM64
         static constexpr bool s_isSupported = true;
 
+        float32x4_t m_value;
 #else
+        static constexpr bool s_isSupported = false;
         float m_value[4];
 #endif
 
@@ -174,6 +176,9 @@ namespace klib::Intrinsics
 
 #elif KLIB_ENV_ARM64
         
+        constexpr Float32x4(
+            float32x4_t const& other
+        ) noexcept;
 
 #else
         // なんもないお
@@ -642,7 +647,335 @@ namespace klib::Intrinsics
     }
 
 #elif KLIB_ENV_ARM64
-        static constexpr bool s_isSupported = true;
+    inline Float32x4 Float32x4::Add(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        return vaddq_f32(left.m_value, right.m_value);
+    }
+
+    inline Float32x4 Float32x4::AddSub(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        return vsubq_f32(left.m_value, right.m_value);
+    }
+
+    inline Float32x4 Float32x4::And(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        uint32x4_t lInt = vreinterpretq_u32_f32(left.m_value);
+        uint32x4_t rInt = vreinterpretq_u32_f32(right.m_value);
+        
+        uint32x4_t resultInt = vandq_u32(lInt, rInt);
+        
+        return vreinterpretq_f32_u32(resultInt);
+    }
+
+    inline Float32x4 Float32x4::AndNot(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        return _mm_andnot_ps(left.m_value, right.m_value);
+    }
+
+    inline Float32x4 Float32x4::Blend(
+        Float32x4 const& left,
+        Float32x4 const& right,
+        int mask
+    ) noexcept
+    {
+        return _mm_blend_ps(
+            left.m_value,
+            right.m_value,
+            mask
+        );
+    }
+
+    inline Float32x4 Float32x4::Blend(
+        Float32x4 const& left,
+        Float32x4 const& right,
+        Float32x4 const& mask
+    ) noexcept
+    {
+        return _mm_blendv_ps(
+            left.m_value,
+            right.m_value,
+            mask.m_value
+        );
+    }
+
+    inline Float32x4 Float32x4::Compare(
+        Float32x4 const& left,
+        Float32x4 const& right,
+        int imm
+    ) noexcept
+    {
+        return _mm_cmp_ps(left.m_value, right.m_value, imm);
+    }
+
+    inline Float32x4 Float32x4::Div(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        return vdivq_f32(left.m_value, right.m_value);
+    }
+
+    inline Float32x4 Float32x4::DotProduct(
+        Float32x4 const& left,
+        Float32x4 const& right,
+        int mask
+    ) noexcept
+    {
+        return _mm_dp_ps(left.m_value, right.m_value, mask);
+    }
+
+    inline Float32x4 Float32x4::HorizontalAdd(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        return _mm_hadd_ps(left.m_value, right.m_value);
+    }
+
+    inline Float32x4 Float32x4::HorizontalSub(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        return _mm_hsub_ps(left.m_value, right.m_value);
+    }
+
+    inline Float32x4 Float32x4::Max(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        return vmaxq_f32(left.m_value, right.m_value);
+    }
+
+    inline Float32x4 Float32x4::Min(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        return vminq_f32(left.m_value, right.m_value);
+    }
+
+    inline Float32x4 Float32x4::Mul(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        return vmulq_f32(left.m_value, right.m_value);
+    }
+
+    inline Float32x4 Float32x4::Or(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        uint32x4_t lInt = vreinterpretq_u32_f32(left.m_value);
+        uint32x4_t rInt = vreinterpretq_u32_f32(right.m_value);
+        
+        uint32x4_t resultInt = vorrq_u32(lInt, rInt);
+        
+        return vreinterpretq_f32_u32(resultInt);
+    }
+
+    inline Float32x4 Float32x4::Sub(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        return vsubq_f32(left.m_value, right.m_value);
+    }
+
+    inline Float32x4 Float32x4::Shuffle(
+        Float32x4 const& left,
+        Float32x4 const& right,
+        int mask
+    ) noexcept
+    {
+        return _mm_shuffle_ps(
+            left.m_value,
+            right.m_value,
+            mask
+        );
+    }
+
+    inline Float32x4 Float32x4::Xor(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        uint32x4_t lInt = vreinterpretq_u32_f32(left.m_value);
+        uint32x4_t rInt = vreinterpretq_u32_f32(right.m_value);
+        
+        uint32x4_t resultInt = vxorq_u32(lInt, rInt);
+        
+        return vreinterpretq_f32_u32(resultInt);
+    }
+
+    inline Float32x4 Float32x4::Zero() noexcept
+    {
+        return _mm_setzero_ps();
+    }
+
+    inline Float32x4::Float32x4(
+        float v
+    ) noexcept
+        : m_value(_mm_set1_ps(v))
+    {
+    }
+
+    inline Float32x4::Float32x4(
+        float v1,
+        float v2,
+        float v3,
+        float v4
+    ) noexcept
+        : m_value(
+            _mm_set_ps(
+                v1,
+                v2,
+                v3,
+                v4
+            )
+        )
+    {
+    }
+
+    inline Float32x4::Float32x4(
+        const float* p
+    ) noexcept
+        : m_value(vld1q_f32(p))
+    {
+    }
+
+    constexpr Float32x4::Float32x4(
+        float32x4_t const& other
+    ) noexcept
+        : m_value(other)
+    {
+    }
+
+    inline void Float32x4::Broadcast(
+        const float* p
+    ) noexcept
+    {
+        m_value = _mm_broadcast_ss(p);
+    }
+
+    inline Float32x4 Float32x4::Ceiling() const noexcept
+    {
+        return _mm_ceil_ps(m_value);
+    }
+
+    inline Float32x4 Float32x4::Floor() const noexcept
+    {
+        return _mm_sqrt_ps(m_value);
+    }
+
+    inline void Float32x4::Load(
+        const float* p
+    ) noexcept
+    {
+        m_value = vld1q_f32(p);
+    }
+
+    inline void Float32x4::LoadUnaligned(
+        const float* p
+    ) noexcept
+    {
+        m_value = _mm_loadu_ps(p);
+    }
+
+    inline Float32x4 Float32x4::Reciprocal() const noexcept
+    {
+        return _mm_rcp_ps(m_value);
+    }
+
+    inline Float32x4 Float32x4::ReciprocalSqrt() const noexcept
+    {
+        return _mm_rsqrt_ps(m_value);
+    }
+
+    inline Float32x4 Float32x4::Round(
+        int mask
+    ) const noexcept
+    {
+        return _mm_round_ps(m_value, mask);
+    }
+
+    inline void Float32x4::Set(
+        float v
+    ) noexcept
+    {
+        m_value = _mm_set1_ps(v);
+    }
+
+    inline void Float32x4::Set(
+        float v1,
+        float v2,
+        float v3,
+        float v4
+    ) noexcept
+    {
+        m_value = _mm_set_ps(
+            v1,
+            v2,
+            v3,
+            v4
+        );
+    }
+
+    inline void Float32x4::SetReverse(
+        float v1,
+        float v2,
+        float v3,
+        float v4
+    ) noexcept
+    {
+        m_value = _mm_setr_ps(
+            v1,
+            v2,
+            v3,
+            v4
+        );
+    }
+
+    inline void Float32x4::Store(
+        float* dest
+    ) const noexcept
+    {
+        _mm_store_ps(dest, m_value);
+    }
+
+    inline void Float32x4::StoreUnaligned(
+        float* dest
+    ) const noexcept
+    {
+        _mm_storeu_ps(dest, m_value);
+    }
+
+    inline void Float32x4::Stream(
+        float* dest
+    ) const noexcept
+    {
+        _mm_stream_ps(dest, m_value);
+    }
+
+    inline Float32x4 Float32x4::Sqrt() const noexcept
+    {
+        return _mm_sqrt_ps(m_value);
+    }
 
 #else
         float m_value[8];
