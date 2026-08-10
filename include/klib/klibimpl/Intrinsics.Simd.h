@@ -19,7 +19,6 @@ namespace klib::Intrinsics
 
     };
     
-    __m256 r;
 }
 
 #endif //!KLIB_INTRINSICS_SIMD_H

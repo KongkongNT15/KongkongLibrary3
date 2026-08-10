@@ -604,7 +604,7 @@ namespace klib::Intrinsics
 
     inline Float32x8 Float32x8::Floor() const noexcept
     {
-        return _mm256_sqrt_ps(m_value);
+        return _mm256_floor_ps(m_value);
     }
 
     inline void Float32x8::Load(
