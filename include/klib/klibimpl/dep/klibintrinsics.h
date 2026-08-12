@@ -9,6 +9,8 @@
     #include <immintrin.h>
 #elif KLIB_ENV_ARM64
     #include <arm_neon.h>
+#else
+    #include <math.h>
 #endif
 
 #endif //!KLIBIMPL_DEP_KLIBINTRINSICS_H
