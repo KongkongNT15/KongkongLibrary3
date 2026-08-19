@@ -621,6 +621,8 @@ namespace klib::Std
     template <class T>
     struct Allocator;
 
+    class StlMemoryAllocator;
+
     class StlThreadPool;
 
     template <class T, class TAllocator = Allocator<T>>
