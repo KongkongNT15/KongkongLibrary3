@@ -33,6 +33,8 @@ namespace klib::Text::Unicode
             char32_t c
         ) noexcept;
 
+        consteval Utf8Char() noexcept;
+
         constexpr Utf8Char(
             char32_t c
         );
@@ -92,6 +94,12 @@ namespace klib::Text::Unicode
     ) noexcept
         : m_char{}
         , m_length(do_encode(c, *this))
+    {
+    }
+
+    consteval Utf8Char::Utf8Char() noexcept
+        : m_char{}
+        , m_length(0)
     {
     }
 

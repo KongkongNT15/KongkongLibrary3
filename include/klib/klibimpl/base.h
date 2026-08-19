@@ -651,6 +651,8 @@ namespace klib::Text
     template <CChar TChar>
     struct GenericStringView;
 
+    struct MultiByteChar;
+
     class StringHelper;
 
     class TextEncoder;

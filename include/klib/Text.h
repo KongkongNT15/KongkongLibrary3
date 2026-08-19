@@ -4,6 +4,7 @@
 #include "klibimpl/Text.GenericString.h"
 #include "klibimpl/Text.GenericStringBuffer.h"
 #include "klibimpl/Text.GenericStringView.h"
+#include "klibimpl/Text.MultiByteChar.h"
 #include "klibimpl/Text.TextEncoder.h"
 #include "klibimpl/Text.TextEncoding.h"
 

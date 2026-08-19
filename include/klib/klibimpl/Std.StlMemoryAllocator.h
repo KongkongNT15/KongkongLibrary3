@@ -3,9 +3,7 @@
 
 #include "base.h"
 
-#if !KLIB_COMPILER_MSVC
-    #include <cstdlib>
-#endif
+#include <stdlib.h>
 
 namespace klib::Std
 {
@@ -43,14 +41,14 @@ namespace klib::Std
 #if KLIB_COMPILER_MSVC
         return ::_aligned_malloc(size, alignment);
 #else
-        return ::std::aligned_alloc(alignment, size);
+        return ::aligned_alloc(alignment, size);
 #endif
     }
 
     template <class T>
     T* StlMemoryAllocator::Alloc() noexcept
     {
-        return AlignedAlloc(alignas(T), sizeof(T));
+        return AlignedAlloc(alignof(T), sizeof(T));
     }
 
     void* StlMemoryAllocator::Alloc(
