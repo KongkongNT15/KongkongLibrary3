@@ -478,6 +478,8 @@ namespace klib::Intrinsics
     struct Float64x4;
     struct Int32x4;
     struct Int32x8;
+    struct UInt32x4;
+    struct UInt32x8;
     struct IntBlock128;
     struct IntBlock256;
     class Simd;

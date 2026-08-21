@@ -13,6 +13,7 @@ namespace klib::Intrinsics
         friend Float32x8;
         friend Float64x2;
         friend Float64x4;
+        friend UInt32x4;
         friend IntBlock256;
         private:
 
@@ -77,10 +78,9 @@ namespace klib::Intrinsics
         ) noexcept;
 
         [[nodiscard]]
-        static Float32x4 Compare(
+        static UInt32x4 Compare(
             Float32x4 const& left,
-            Float32x4 const& right,
-            int imm
+            Float32x4 const& right
         ) noexcept;
 
         [[nodiscard]]
@@ -94,6 +94,13 @@ namespace klib::Intrinsics
             Float32x4 const& left,
             Float32x4 const& right,
             int mask
+        ) noexcept;
+
+        [[nodiscard]]
+        static Float32x4 FusedMultiplyAdd(
+            Float32x4 const& a,
+            Float32x4 const& b,
+            Float32x4 const& c
         ) noexcept;
 
         [[nodiscard]]
@@ -204,6 +211,10 @@ namespace klib::Intrinsics
 
         operator Float64x2() const noexcept;
         operator IntBlock128() const noexcept;
+        operator Int32x4() const noexcept;
+        operator UInt32x4() const noexcept;
+
+        Float32x4 operator-() const noexcept;
 
         Float32x4& operator+=(
             Float32x4 const& other
@@ -238,7 +249,7 @@ namespace klib::Intrinsics
         ) noexcept;
 
         [[nodiscard]]
-        Float32x4 Ceiling() const noexcept;
+        Float32x4 AbsoluteValue() const noexcept;
 
         void Broadcast(
             ::std::nullptr_t
@@ -247,6 +258,9 @@ namespace klib::Intrinsics
         void Broadcast(
             const float* p
         ) noexcept;
+
+        [[nodiscard]]
+        Float32x4 Ceiling() const noexcept;
 
         [[nodiscard]]
         Float32x4 Floor() const noexcept;
@@ -834,15 +848,6 @@ namespace klib::Intrinsics
         );
     }
 
-    inline Float32x4 Float32x4::Compare(
-        Float32x4 const& left,
-        Float32x4 const& right,
-        int imm
-    ) noexcept
-    {
-        return _mm_cmp_ps(left.m_value, right.m_value, imm);
-    }
-
     inline Float32x4 Float32x4::Div(
         Float32x4 const& left,
         Float32x4 const& right
@@ -858,6 +863,19 @@ namespace klib::Intrinsics
     ) noexcept
     {
         return _mm_dp_ps(left.m_value, right.m_value, mask);
+    }
+
+    inline Float32x4 Float32x4::FusedMultiplyAdd(
+        Float32x4 const& a,
+        Float32x4 const& b,
+        Float32x4 const& c
+    ) noexcept
+    {
+        return vfmaq_f32(
+            a.m_value,
+            b.m_value,
+            c.m_value
+        );
     }
 
     inline Float32x4 Float32x4::HorizontalAdd(
@@ -991,6 +1009,16 @@ namespace klib::Intrinsics
     {
     }
 
+    inline Float32x4 Float32x4::operator-() const noexcept
+    {
+        return vnegq_f32(m_value);
+    }
+
+    inline Float32x4 Float32x4::AbsoluteValue() const noexcept
+    {
+        return vabsq_f32(m_value);
+    }
+
     inline void Float32x4::Broadcast(
         const float* p
     ) noexcept
@@ -1024,12 +1052,12 @@ namespace klib::Intrinsics
 
     inline Float32x4 Float32x4::Reciprocal() const noexcept
     {
-        return _mm_rcp_ps(m_value);
+        return vrecpeq_f32(m_value);
     }
 
     inline Float32x4 Float32x4::ReciprocalSqrt() const noexcept
     {
-        return _mm_rsqrt_ps(m_value);
+        return vrsqrteq_f32(m_value);
     }
 
     inline Float32x4 Float32x4::Round() const noexcept

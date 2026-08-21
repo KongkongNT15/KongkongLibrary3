@@ -5,6 +5,7 @@
 #include "klibimpl/Intrinsics.Float32x8.h"
 #include "klibimpl/Intrinsics.Float64x2.h"
 #include "klibimpl/Intrinsics.Float64x4.h"
+#include "klibimpl/Intrinsics.UInt32x4.h"
 #include "klibimpl/Intrinsics.Simd.h"
 
 #include "klibimpl/Intrinsics.__funcs.h"
