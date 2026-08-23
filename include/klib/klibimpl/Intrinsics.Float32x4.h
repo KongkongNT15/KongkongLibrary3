@@ -520,15 +520,6 @@ namespace klib::Intrinsics
         );
     }
 
-    inline Float32x4 Float32x4::Compare(
-        Float32x4 const& left,
-        Float32x4 const& right,
-        int imm
-    ) noexcept
-    {
-        return _mm_cmp_ps(left.m_value, right.m_value, imm);
-    }
-
     inline Float32x4 Float32x4::Div(
         Float32x4 const& left,
         Float32x4 const& right

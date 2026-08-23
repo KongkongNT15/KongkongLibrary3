@@ -7,6 +7,22 @@
 
 namespace klib::Intrinsics
 {
+#if KLIB_ENV_X64
+
+    inline UInt32x4 Float32x4::Compare(
+        Float32x4 const& left,
+        Float32x4 const& right
+    ) noexcept
+    {
+        return vceqq_f32(left.m_value, right.m_value);
+    }
+
+    inline Float32x4::operator UInt32x4() const noexcept
+    {
+        
+    }
+
+#elif KLIB_ENV_ARM64
     inline Float32x4::operator UInt32x4() const noexcept
     {
         return vreinterpretq_u32_f32(m_value);
@@ -36,6 +52,10 @@ namespace klib::Intrinsics
     {
         
     }
+
+#else
+
+#endif
 }
 
 #include <math.h>
