@@ -2,12 +2,13 @@
 #define KLIB_APPLEDEVICE_OBJCHANDLE_H
 
 #include "base.h"
+#include "Foundation.HandleType.h"
 
 #if KLIB_OBJECTIVE_C_ENABLED
 
 namespace klib::AppleDevice
 {
-    class ObjCHandle final {
+    class ObjCHandle final : public HandleType {
         private:
 
         void* m_objectPtr;
@@ -58,11 +59,18 @@ namespace klib::AppleDevice
         constexpr T* As() const noexcept;
 
         [[nodiscard]]
+        constexpr Hash::ResultType GetHashCode() const noexcept;
+
+        [[nodiscard]]
         constexpr void* GetRawPointer() const noexcept;
 
         void SetRawPointer(
             void* rawPointer
         ) noexcept;
+
+        void WriteTo(
+            ::std::ostream& out
+        ) const;
     };
 
     [[nodiscard]]
@@ -199,6 +207,12 @@ namespace klib::AppleDevice
     constexpr void* ObjCHandle::GetRawPointer() const noexcept
     {
         return m_objectPtr;
+    }
+
+    constexpr Hash::ResultType
+    ObjCHandle::GetHashCode() const noexcept
+    {
+        return Hash::Get(m_objectPtr);
     }
 
     inline void ObjCHandle::SetRawPointer(

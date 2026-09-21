@@ -9,11 +9,18 @@ namespace klib::AppleDevice
         [KLIB_OBJC_NSOBJECT release];
     }
 
-    void do_retain() noexcept
+    void ObjCHandle::do_retain() noexcept
     {
         if (m_objectPtr != nullptr) {
             [KLIB_OBJC_NSOBJECT retain];
         }
+    }
+
+    void ObjCHandle::WriteTo(
+        ::std::ostream& out
+    ) const
+    {
+        out << m_objectPtr;
     }
 
     bool operator==(
