@@ -2,80 +2,56 @@
 #define KLIB_RANGES_RANGE_H
 
 #include "base.h"
-#include "Ranges.RangeIterator.h"
+#include "Ranges.RangeT.h"
 
 namespace klib::Ranges
 {
-    template <class TElement>
-    struct Range {
-        public:
+    template <class T>
+    constexpr RangeT<T> Range(
+        T end
+    ) noexcept;
 
-        using ElementType = typename ::std::remove_cvref_t<TElement>;
+    template <class T>
+    constexpr RangeT<T> Range(
+        T begin,
+        T end
+    ) noexcept;
 
-        private:
-
-        ElementType m_start;
-        ElementType m_end;
-
-        public:
-
-        constexpr Range(
-            ElementType start,
-            ElementType end
-        ) noexcept;
-
-        [[nodiscard]]
-        constexpr RangeIterator<TElement> begin() const noexcept;
-
-        [[nodiscard]]
-        constexpr RangeIterator<TElement> end() const noexcept;
-
-        [[nodiscard]]
-        constexpr ElementType End() const noexcept;
-        
-        [[nodiscard]]
-        constexpr ElementType Start() const noexcept;
-    };
+    template <class T>
+    constexpr RangeT2<T> Range(
+        T begin,
+        T end,
+        T interval
+    ) noexcept;
 }
 
 namespace klib::Ranges
 {
-    template <class TElement>
-    constexpr Range<TElement>::Range(
-        ElementType start,
-        ElementType end
+    template <class T>
+    constexpr RangeT<T> Range(
+        T end
     ) noexcept
-        : m_start(start)
-        , m_end(end)
     {
+        return RangeT<T>(0, end);
     }
 
-    template <class TElement>
-    constexpr RangeIterator<TElement>
-    Range<TElement>::begin() const noexcept
+    template <class T>
+    constexpr RangeT<T> Range(
+        T begin,
+        T end
+    ) noexcept
     {
-        return RangeIterator<TElement>(m_start);
+        return RangeT<T>(begin, end);
     }
 
-    template <class TElement>
-    constexpr RangeIterator<TElement>
-    Range<TElement>::end() const noexcept
+    template <class T>
+    constexpr RangeT2<T> Range(
+        T begin,
+        T end,
+        T interval
+    ) noexcept
     {
-        return RangeIterator<TElement>(m_end);
-    }
-
-    template <class TElement>
-    constexpr typename Range<TElement>::ElementType
-    Range<TElement>::End() const noexcept
-    {
-        return m_end;
-    }
-
-    template <class TElement>
-    constexpr typename Range<TElement>::ElementType
-    Range<TElement>::Start() const noexcept
-    {
-        return m_start;
+        return RangeT2<T>(begin, end, interval);
     }
 }
 

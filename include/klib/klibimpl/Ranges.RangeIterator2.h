@@ -1,78 +1,82 @@
-﻿#ifndef KLIB_RANGES_RANGEITERATOR_H
-#define KLIB_RANGES_RANGEITERATOR_H
+﻿#ifndef KLIB_RANGES_RANGEITERATOR2_H
+#define KLIB_RANGES_RANGEITERATOR2_H
 
 #include "base.h"
 
 namespace klib::Ranges
 {
     template <class TElement>
-    struct RangeIterator {
+    struct RangeIterator2 {
         public:
         using ElementType = typename ::std::remove_cvref_t<TElement>;
         private:
 
         ElementType m_value;
+        ElementType m_interval;
 
         public:
 
-        constexpr RangeIterator(
-            ElementType value
+        constexpr RangeIterator2(
+            ElementType value,
+            ElementType interval
         ) noexcept;
 
         [[nodiscard]]
         constexpr ElementType operator*() const noexcept;
 
         [[nodiscard]]
-        constexpr RangeIterator& operator++() noexcept;
+        constexpr RangeIterator2& operator++() noexcept;
 
         [[nodiscard]]
-        constexpr RangeIterator operator++(int) noexcept;
+        constexpr RangeIterator2 operator++(int) noexcept;
     };
 
     template <class TElement>
     [[nodiscard]]
     constexpr bool operator==(
-        RangeIterator<TElement> const& left,
-        RangeIterator<TElement> const& right
+        RangeIterator2<TElement> const& left,
+        RangeIterator2<TElement> const& right
     ) noexcept;
 
     template <class TElement>
     [[nodiscard]]
     constexpr bool operator!=(
-        RangeIterator<TElement> const& left,
-        RangeIterator<TElement> const& right
+        RangeIterator2<TElement> const& left,
+        RangeIterator2<TElement> const& right
     ) noexcept;
 }
 
 namespace klib::Ranges
 {
     template <class TElement>
-    constexpr RangeIterator<TElement>::RangeIterator(
-        ElementType value
+    constexpr RangeIterator2<TElement>::RangeIterator2(
+        ElementType value,
+        ElementType interval
     ) noexcept
         : m_value(value)
+        , m_interval(interval)
     {
     }
 
     template <class TElement>
-    constexpr typename RangeIterator<TElement>::ElementType
-    RangeIterator<TElement>::operator*() const noexcept
+    constexpr typename RangeIterator2<TElement>::ElementType
+    RangeIterator2<TElement>::operator*() const noexcept
     {
         return m_value;
     }
 
     template <class TElement>
-    constexpr RangeIterator<TElement>&
-    RangeIterator<TElement>::operator++() noexcept
+    constexpr RangeIterator2<TElement>&
+    RangeIterator2<TElement>::operator++() noexcept
     {
-        ++m_value;
+        m_value += m_interval;
 
         return *this;
     }
 
     template <class TElement>
-    constexpr RangeIterator<TElement>
-    RangeIterator<TElement>::operator++(int) noexcept
+    constexpr RangeIterator2<TElement>
+    RangeIterator2<TElement>::operator++(int) noexcept
     {
         auto result = *this;
 
@@ -83,8 +87,8 @@ namespace klib::Ranges
 
     template <class TElement>
     constexpr bool operator==(
-        RangeIterator<TElement> const& left,
-        RangeIterator<TElement> const& right
+        RangeIterator2<TElement> const& left,
+        RangeIterator2<TElement> const& right
     ) noexcept
     {
         return *left == *right;
@@ -92,8 +96,8 @@ namespace klib::Ranges
 
     template <class TElement>
     constexpr bool operator!=(
-        RangeIterator<TElement> const& left,
-        RangeIterator<TElement> const& right
+        RangeIterator2<TElement> const& left,
+        RangeIterator2<TElement> const& right
     ) noexcept
     {
         if constexpr (::std::is_floating_point_v<TElement>) {
@@ -106,4 +110,4 @@ namespace klib::Ranges
     }
 }
 
-#endif //!KLIB_RANGES_RANGEITERATOR_H
+#endif //!KLIB_RANGES_RANGEITERATOR2_H

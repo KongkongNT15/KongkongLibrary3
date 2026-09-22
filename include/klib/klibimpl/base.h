@@ -600,10 +600,16 @@ namespace klib::Ranges
     class IteratorHelper;
 
     template <class TElement = int>
-    struct Range;
+    struct RangeT;
+
+    template <class TElement = int>
+    struct RangeT2;
 
     template <class TElement = int>
     struct RangeIterator;
+
+    template <class TElement = int>
+    struct RangeIterator2;
 }
 
 namespace klib::Signals

@@ -39,7 +39,7 @@ namespace klib::Signals
         InvocationList() const noexcept;
 
         TResult Invoke(
-            TArgs&&... args
+            TArgs... args
         );
     };
 }
@@ -101,7 +101,7 @@ namespace klib::Signals
 
     template <class TResult, class... TArgs>
     TResult Delegate<TResult(TArgs...)>::Invoke(
-        TArgs&&... args
+        TArgs... args
     )
     {
         if constexpr (::std::same_as<TResult, void>) {
