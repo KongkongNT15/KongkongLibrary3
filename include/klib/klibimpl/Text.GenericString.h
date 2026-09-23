@@ -5,6 +5,7 @@
 
 #include "base.h"
 #include "Containers.ArrayView.h"
+#include "Std.StlMemoryAllocator.h"
 #include "Text.GenericStringView.h"
 #include "Text.StringHelper.h"
 #include "Foundation.ExceptionThrower.h"
@@ -38,6 +39,9 @@ namespace klib::Text
         constexpr void DoRemove() noexcept;
 
         public:
+
+        [[nodiscard]]
+        static consteval GenericString Empty() noexcept;
 
         [[nodiscard]]
         static constexpr GenericString FromStaticCharsUnsafe(
@@ -172,7 +176,10 @@ namespace klib::Text
         SizeType n
     )
     {
-        void* p = ::malloc(sizeof(*m_pRefCount) + (n + 1) * sizeof(ElementType));
+        void* p = Std::StlMemoryAllocator::AlignedAlloc(
+            alignof(decltype(*m_pRefCount)),
+            sizeof(*m_pRefCount) + (n + 1) * sizeof(ElementType)
+        );
 
         ExceptionThrower::CheckAllockedMemory(p);
 
@@ -190,8 +197,15 @@ namespace klib::Text
         if (m_pRefCount == nullptr) return;
 
         if (m_pRefCount->operator--() == 0) {
-            ::free(m_pRefCount);
+            Std::StlMemoryAllocator::AlignedFree(m_pRefCount);
         }
+    }
+
+    template <CChar TChar>
+    consteval GenericString<TChar>
+    GenericString<TChar>::Empty() noexcept
+    {
+        return {};
     }
 
     template <CChar TChar>
@@ -362,6 +376,13 @@ namespace klib::Text
     GenericString<TChar>::end() const noexcept
     {
         return m_p + m_length;
+    }
+
+    template <CChar TChar>
+    constexpr const typename GenericString<TChar>::ElementType*
+    GenericString<TChar>::Data() const noexcept
+    {
+        return m_p;
     }
 
     template <CChar TChar>

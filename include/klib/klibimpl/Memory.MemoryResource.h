@@ -7,7 +7,7 @@
 
 namespace klib::Memory
 {
-    class MemoryResource final : public Foundation::PointerType {
+    class MemoryResource final : public PointerType {
 
         private:
 

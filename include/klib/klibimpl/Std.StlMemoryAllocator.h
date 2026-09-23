@@ -3,7 +3,12 @@
 
 #include "base.h"
 
-#include <stdlib.h>
+#if KLIB_COMPILER_MSVC
+    #include <malloc.h>
+#else
+    #include <stdlib.h>
+#endif
+
 
 namespace klib::Std
 {
@@ -16,6 +21,10 @@ namespace klib::Std
         static void* AlignedAlloc(
             size_t alignment,
             size_t size
+        ) noexcept;
+
+        static void AlignedFree(
+            void* address
         ) noexcept;
 
         template <class T>
@@ -42,6 +51,17 @@ namespace klib::Std
         return ::_aligned_malloc(size, alignment);
 #else
         return ::aligned_alloc(alignment, size);
+#endif
+    }
+
+    void StlMemoryAllocator::AlignedFree(
+        void* address
+    ) noexcept
+    {
+#if KLIB_COMPILER_MSVC
+        ::_aligned_free(address);
+#else
+        ::free(address);
 #endif
     }
 
