@@ -2,15 +2,90 @@
 #define KLIB_TEXT_STRINGHELPER_H
 
 #include "base.h"
+#include "Containers.ContainerHelper.h"
+#include "Foundation.ExceptionThrower.h"
 
 namespace klib::Text
 {
     class StringHelper final {
         private:
 
+        template <class TC>
+        static constexpr bool _containsUnsafe(
+            ssize_t lengthSource,
+            const TC* source,
+            TC target
+        ) noexcept;
+
+        template <class TC>
+        static constexpr bool _containsUnsafe(
+            ssize_t lengthSource,
+            const TC* source,
+            ssize_t lengthTarget,
+            const TC* target
+        ) noexcept;
+
+        template <class TC>
+        static constexpr bool _endsWithUnsafe(
+            ssize_t lengthSource,
+            const TC* source,
+            TC suffix
+        ) noexcept;
+
+        template <class TC>
+        static constexpr bool _endsWithUnsafe(
+            ssize_t lengthSource,
+            const TC* source,
+            ssize_t lengthSuffix,
+            const TC* suffix
+        ) noexcept;
+
+        template <class TC>
+        static constexpr ssize_t _findUnsafe(
+            ssize_t lengthSource,
+            const TC* source,
+            TC target
+        ) noexcept;
+
+        template <class TC>
+        static constexpr ssize_t _findUnsafe(
+            ssize_t lengthSource,
+            const TC* source,
+            ssize_t lengthTarget,
+            const TC* target
+        ) noexcept;
+
+        template <class TChar>
+        static constexpr ssize_t _getLengthUnsafe(
+            const TChar* str
+        ) noexcept;
+
+        template <class TC>
+        static constexpr bool _isNullOrEmpty(
+            const TC* str
+        ) noexcept;
+
+        template <class TC>
+        static constexpr bool _startsWithUnsafe(
+            ssize_t lengthSource,
+            const TC* source,
+            TC prefix
+        ) noexcept;
+
+        template <class TC>
+        static constexpr bool _startsWithUnsafe(
+            ssize_t lengthSource,
+            const TC* source,
+            ssize_t lengthPrefix,
+            const TC* prefix
+        ) noexcept;
+
         public:
 
         KLIB_STATIC_CLASS(StringHelper);
+
+        [[nodiscard]]
+        static consteval ssize_t NotFound() noexcept;
 
         /// @brief 文字列が空ならエラー
         /// @param p 文字列
@@ -34,52 +109,127 @@ namespace klib::Text
         static void CheckEmptyUnsafe(const char16_t* p);
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, std::nullptr_t, char) = delete;
+        static bool Contains(
+            ssize_t,
+            ::std::nullptr_t,
+            char
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, std::nullptr_t, wchar_t) = delete;
+        static bool Contains(
+            ssize_t,
+            ::std::nullptr_t,
+            wchar_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, std::nullptr_t, char8_t) = delete;
+        static bool Contains(
+            ssize_t,
+            ::std::nullptr_t,
+            char8_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, std::nullptr_t, char16_t) = delete;
+        static bool Contains(
+            ssize_t,
+            ::std::nullptr_t,
+            char16_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, std::nullptr_t, char32_t) = delete;
+        static bool Contains(
+            ssize_t,
+            ::std::nullptr_t,
+            char32_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, std::nullptr_t, ssize_t, std::nullptr_t) = delete;
+        static bool Contains(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, const char*, ssize_t, std::nullptr_t) = delete;
+        static bool Contains(
+            ssize_t,
+            const char*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, std::nullptr_t, ssize_t, const char*) = delete;
+        static bool Contains(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, const wchar_t*, ssize_t, std::nullptr_t) = delete;
+        static bool Contains(
+            ssize_t,
+            const wchar_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, std::nullptr_t, ssize_t, const wchar_t*) = delete;
+        static bool Contains(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const wchar_t*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, const char8_t*, ssize_t, std::nullptr_t) = delete;
+        static bool Contains(
+            ssize_t,
+            const char8_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, std::nullptr_t, ssize_t, const char8_t*) = delete;
+        static bool Contains(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char8_t*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, const char16_t*, ssize_t, std::nullptr_t) = delete;
+        static bool Contains(
+            ssize_t,
+            const char16_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, std::nullptr_t, ssize_t, const char16_t*) = delete;
+        static bool Contains(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char16_t*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, const char32_t*, ssize_t, std::nullptr_t) = delete;
+        static bool Contains(
+            ssize_t,
+            const char32_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool Contains(ssize_t, std::nullptr_t, ssize_t, const char32_t*) = delete;
+        static bool Contains(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char32_t*
+        ) = delete;
 
         /// @brief 指定した文字がソースに含まれるかを確認
         /// @param lengthSource ソース文字列の長さ
@@ -109,121 +259,258 @@ namespace klib::Text
         [[nodiscard]] static bool Contains(ssize_t lengthSource, const char32_t* source, ssize_t lengthTarget, const char32_t* target);
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, std::nullptr_t, char) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            char
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, std::nullptr_t, wchar_t) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            wchar_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, std::nullptr_t, char8_t) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            char8_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, std::nullptr_t, char16_t) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            char16_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, std::nullptr_t, char32_t) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            char32_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, std::nullptr_t, ssize_t, std::nullptr_t) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, const char*, ssize_t, std::nullptr_t) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            const char*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, std::nullptr_t, ssize_t, const char*) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, const wchar_t*, ssize_t, std::nullptr_t) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            const wchar_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, std::nullptr_t, ssize_t, const wchar_t*) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const wchar_t*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, const char8_t*, ssize_t, std::nullptr_t) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            const char8_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, std::nullptr_t, ssize_t, const char8_t*) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t, const char8_t*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, const char16_t*, ssize_t, std::nullptr_t) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            const char16_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, std::nullptr_t, ssize_t, const char16_t*) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char16_t*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, const char32_t*, ssize_t, std::nullptr_t) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            const char32_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool ContainsUnsafe(ssize_t, std::nullptr_t, ssize_t, const char32_t*) = delete;
+        static bool ContainsUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char32_t*
+        ) = delete;
 
         /// @brief 指定した文字がソースに含まれるかを確認
         /// @param lengthSource ソース文字列の長さ
         /// @param source ソース文字列
         /// @param target 探す文字
-        [[nodiscard]] static constexpr ssize_t ContainsUnsafe(ssize_t lengthSource, const char* source, char target) noexcept { return _containsUnsafe(lengthSource, source, target); }
-        [[nodiscard]] static constexpr ssize_t ContainsUnsafe(ssize_t lengthSource, const wchar_t* source, wchar_t target) noexcept { return _containsUnsafe(lengthSource, source, target); }
-        [[nodiscard]] static constexpr ssize_t ContainsUnsafe(ssize_t lengthSource, const char8_t* source, char8_t target) noexcept { return _containsUnsafe(lengthSource, source, target); }
-        [[nodiscard]] static constexpr ssize_t ContainsUnsafe(ssize_t lengthSource, const char16_t* source, char16_t target) noexcept { return _containsUnsafe(lengthSource, source, target); }
-        [[nodiscard]] static constexpr ssize_t ContainsUnsafe(ssize_t lengthSource, const char32_t* source, char32_t target) noexcept { return _containsUnsafe(lengthSource, source, target); }
+        [[nodiscard]]
+        static constexpr ssize_t ContainsUnsafe(
+            ssize_t lengthSource,
+            const char* source,
+            char target
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr ssize_t ContainsUnsafe(
+            ssize_t lengthSource,
+            const wchar_t* source,
+            wchar_t target
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr ssize_t ContainsUnsafe(
+            ssize_t lengthSource,
+            const char8_t* source,
+            char8_t target
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr ssize_t ContainsUnsafe(
+            ssize_t lengthSource,
+            const char16_t* source,
+            char16_t target
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr ssize_t ContainsUnsafe(
+            ssize_t lengthSource,
+            const char32_t* source,
+            char32_t target
+        ) noexcept;
 
         /// @brief 指定した文字列がソースに含まれるかを確認
         /// @param lengthSource ソース文字列の長さ
         /// @param source ソース文字列
         /// @param lengthTarget 探す文字列の長さ
         /// @param target 探す文字列
-        [[nodiscard]] static constexpr ssize_t ContainsUnsafe(ssize_t lengthSource, const char* source, ssize_t lengthTarget, const char* target) noexcept { return _containsUnsafe(lengthSource, source, lengthTarget, target); }
-        [[nodiscard]] static constexpr ssize_t ContainsUnsafe(ssize_t lengthSource, const wchar_t* source, ssize_t lengthTarget, const wchar_t* target) noexcept { return _containsUnsafe(lengthSource, source, lengthTarget, target); }
-        [[nodiscard]] static constexpr ssize_t ContainsUnsafe(ssize_t lengthSource, const char8_t* source, ssize_t lengthTarget, const char8_t* target) noexcept { return _containsUnsafe(lengthSource, source, lengthTarget, target); }
-        [[nodiscard]] static constexpr ssize_t ContainsUnsafe(ssize_t lengthSource, const char16_t* source, ssize_t lengthTarget, const char16_t* target) noexcept { return _containsUnsafe(lengthSource, source, lengthTarget, target); }
-        [[nodiscard]] static constexpr ssize_t ContainsUnsafe(ssize_t lengthSource, const char32_t* source, ssize_t lengthTarget, const char32_t* target) noexcept { return _containsUnsafe(lengthSource, source, lengthTarget, target); }
+        [[nodiscard]]
+        static constexpr ssize_t ContainsUnsafe(
+            ssize_t lengthSource,
+            const char* source,
+            ssize_t lengthTarget,
+            const char* target
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr ssize_t ContainsUnsafe(
+            ssize_t lengthSource,
+            const wchar_t* source,
+            ssize_t lengthTarget,
+            const wchar_t* target
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr ssize_t ContainsUnsafe(
+            ssize_t lengthSource,
+            const char8_t* source,
+            ssize_t lengthTarget,
+            const char8_t* target
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr ssize_t ContainsUnsafe(
+            ssize_t lengthSource,
+            const char16_t* source,
+            ssize_t lengthTarget,
+            const char16_t* target
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr ssize_t ContainsUnsafe(
+            ssize_t lengthSource,
+            const char32_t* source,
+            ssize_t lengthTarget,
+            const char32_t* target
+        ) noexcept;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, std::nullptr_t, char) = delete;
+        static bool EndsWith(ssize_t, ::std::nullptr_t, char) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, std::nullptr_t, wchar_t) = delete;
+        static bool EndsWith(ssize_t, ::std::nullptr_t, wchar_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, std::nullptr_t, char8_t) = delete;
+        static bool EndsWith(ssize_t, ::std::nullptr_t, char8_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, std::nullptr_t, char16_t) = delete;
+        static bool EndsWith(ssize_t, ::std::nullptr_t, char16_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, std::nullptr_t, char32_t) = delete;
+        static bool EndsWith(ssize_t, ::std::nullptr_t, char32_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, std::nullptr_t, ssize_t, std::nullptr_t) = delete;
+        static bool EndsWith(ssize_t, ::std::nullptr_t, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, const char*, ssize_t, std::nullptr_t) = delete;
+        static bool EndsWith(ssize_t, const char*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, std::nullptr_t, ssize_t, const char*) = delete;
+        static bool EndsWith(ssize_t, ::std::nullptr_t, ssize_t, const char*) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, const wchar_t*, ssize_t, std::nullptr_t) = delete;
+        static bool EndsWith(ssize_t, const wchar_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, std::nullptr_t, ssize_t, const wchar_t*) = delete;
+        static bool EndsWith(ssize_t, ::std::nullptr_t, ssize_t, const wchar_t*) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, const char8_t*, ssize_t, std::nullptr_t) = delete;
+        static bool EndsWith(ssize_t, const char8_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, std::nullptr_t, ssize_t, const char8_t*) = delete;
+        static bool EndsWith(ssize_t, ::std::nullptr_t, ssize_t, const char8_t*) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, const char16_t*, ssize_t, std::nullptr_t) = delete;
+        static bool EndsWith(ssize_t, const char16_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, std::nullptr_t, ssize_t, const char16_t*) = delete;
+        static bool EndsWith(ssize_t, ::std::nullptr_t, ssize_t, const char16_t*) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, const char32_t*, ssize_t, std::nullptr_t) = delete;
+        static bool EndsWith(ssize_t, const char32_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWith(ssize_t, std::nullptr_t, ssize_t, const char32_t*) = delete;
+        static bool EndsWith(ssize_t, ::std::nullptr_t, ssize_t, const char32_t*) = delete;
 
         /// @brief ソース文字列が指定したサフィックスで終了するかを確認
         /// @param lengthSource ソース文字列の長さ
@@ -253,121 +540,258 @@ namespace klib::Text
         [[nodiscard]] static bool EndsWith(ssize_t lengthSource, const char32_t* source, ssize_t lengthSuffix, const char32_t* suffix);
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, std::nullptr_t, char) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            char
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, std::nullptr_t, wchar_t) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            wchar_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, std::nullptr_t, char8_t) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            char8_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, std::nullptr_t, char16_t) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            char16_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, std::nullptr_t, char32_t) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            char32_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, std::nullptr_t, ssize_t, std::nullptr_t) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, const char*, ssize_t, std::nullptr_t) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            const char*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, std::nullptr_t, ssize_t, const char*) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, const wchar_t*, ssize_t, std::nullptr_t) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            const wchar_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, std::nullptr_t, ssize_t, const wchar_t*) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const wchar_t*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, const char8_t*, ssize_t, std::nullptr_t) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            const char8_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, std::nullptr_t, ssize_t, const char8_t*) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char8_t*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, const char16_t*, ssize_t, std::nullptr_t) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            const char16_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, std::nullptr_t, ssize_t, const char16_t*) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char16_t*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, const char32_t*, ssize_t, std::nullptr_t) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            const char32_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static bool EndsWithUnsafe(ssize_t, std::nullptr_t, ssize_t, const char32_t*) = delete;
+        static bool EndsWithUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char32_t*
+        ) = delete;
 
         /// @brief ソース文字列が指定したサフィックスで終了するかを確認
         /// @param lengthSource ソース文字列の長さ
         /// @param source ソース文字列
         /// @param suffix サフィックス
-        [[nodiscard]] static constexpr bool EndsWithUnsafe(ssize_t lengthSource, const char* source, char suffix) noexcept { return _endsWithUnsafe(lengthSource, source, suffix); }
-        [[nodiscard]] static constexpr bool EndsWithUnsafe(ssize_t lengthSource, const wchar_t* source, wchar_t suffix) noexcept { return _endsWithUnsafe(lengthSource, source, suffix); }
-        [[nodiscard]] static constexpr bool EndsWithUnsafe(ssize_t lengthSource, const char8_t* source, char8_t suffix) noexcept { return _endsWithUnsafe(lengthSource, source, suffix); }
-        [[nodiscard]] static constexpr bool EndsWithUnsafe(ssize_t lengthSource, const char16_t* source, char16_t suffix) noexcept { return _endsWithUnsafe(lengthSource, source, suffix); }
-        [[nodiscard]] static constexpr bool EndsWithUnsafe(ssize_t lengthSource, const char32_t* source, char32_t suffix) noexcept { return _endsWithUnsafe(lengthSource, source, suffix); }
+        [[nodiscard]]
+        static constexpr bool EndsWithUnsafe(
+            ssize_t lengthSource,
+            const char* source,
+            char suffix
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr bool EndsWithUnsafe(
+            ssize_t lengthSource,
+            const wchar_t* source,
+            wchar_t suffix
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr bool EndsWithUnsafe(
+            ssize_t lengthSource,
+            const char8_t* source,
+            char8_t suffix
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr bool EndsWithUnsafe(
+            ssize_t lengthSource,
+            const char16_t* source,
+            char16_t suffix
+        ) noexcept;
+        [[nodiscard]]
+        static constexpr bool EndsWithUnsafe(
+            ssize_t lengthSource,
+            const char32_t* source,
+            char32_t suffix
+        ) noexcept;
 
         /// @brief ソース文字列が指定したサフィックスで終了するかを確認
         /// @param lengthSource ソース文字列の長さ
         /// @param source ソース文字列
         /// @param lengthSuffix サフィックスの長さ
         /// @param suffix サフィックス
-        [[nodiscard]] static constexpr bool EndsWithUnsafe(ssize_t lengthSource, const char* source, ssize_t lengthSuffix, const char* suffix) noexcept { return _endsWithUnsafe(lengthSource, source, lengthSuffix, suffix); }
-        [[nodiscard]] static constexpr bool EndsWithUnsafe(ssize_t lengthSource, const wchar_t* source, ssize_t lengthSuffix, const wchar_t* suffix) noexcept { return _endsWithUnsafe(lengthSource, source, lengthSuffix, suffix); }
-        [[nodiscard]] static constexpr bool EndsWithUnsafe(ssize_t lengthSource, const char8_t* source, ssize_t lengthSuffix, const char8_t* suffix) noexcept { return _endsWithUnsafe(lengthSource, source, lengthSuffix, suffix); }
-        [[nodiscard]] static constexpr bool EndsWithUnsafe(ssize_t lengthSource, const char16_t* source, ssize_t lengthSuffix, const char16_t* suffix) noexcept { return _endsWithUnsafe(lengthSource, source, lengthSuffix, suffix); }
-        [[nodiscard]] static constexpr bool EndsWithUnsafe(ssize_t lengthSource, const char32_t* source, ssize_t lengthSuffix, const char32_t* suffix) noexcept { return _endsWithUnsafe(lengthSource, source, lengthSuffix, suffix); }
+        [[nodiscard]]
+        static constexpr bool EndsWithUnsafe(
+            ssize_t lengthSource,
+            const char* source,
+            ssize_t lengthSuffix,
+            const char* suffix
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr bool EndsWithUnsafe(
+            ssize_t lengthSource,
+            const wchar_t* source,
+            ssize_t lengthSuffix,
+            const wchar_t* suffix
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr bool EndsWithUnsafe(
+            ssize_t lengthSource,
+            const char8_t* source,
+            ssize_t lengthSuffix,
+            const char8_t* suffix
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr bool EndsWithUnsafe(
+            ssize_t lengthSource,
+            const char16_t* source,
+            ssize_t lengthSuffix,
+            const char16_t* suffix
+        ) noexcept;
+
+        [[nodiscard]]
+        static constexpr bool EndsWithUnsafe(
+            ssize_t lengthSource,
+            const char32_t* source,
+            ssize_t lengthSuffix,
+            const char32_t* suffix
+        ) noexcept;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, std::nullptr_t, char) = delete;
+        static ssize_t IndexOf(ssize_t, ::std::nullptr_t, char) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, std::nullptr_t, wchar_t) = delete;
+        static ssize_t IndexOf(ssize_t, ::std::nullptr_t, wchar_t) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, std::nullptr_t, char8_t) = delete;
+        static ssize_t IndexOf(ssize_t, ::std::nullptr_t, char8_t) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, std::nullptr_t, char16_t) = delete;
+        static ssize_t IndexOf(ssize_t, ::std::nullptr_t, char16_t) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, std::nullptr_t, char32_t) = delete;
+        static ssize_t IndexOf(ssize_t, ::std::nullptr_t, char32_t) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, std::nullptr_t, ssize_t, std::nullptr_t) = delete;
+        static ssize_t IndexOf(ssize_t, ::std::nullptr_t, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, const char*, ssize_t, std::nullptr_t) = delete;
+        static ssize_t IndexOf(ssize_t, const char*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, std::nullptr_t, ssize_t, const char*) = delete;
+        static ssize_t IndexOf(ssize_t, ::std::nullptr_t, ssize_t, const char*) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, const wchar_t*, ssize_t, std::nullptr_t) = delete;
+        static ssize_t IndexOf(ssize_t, const wchar_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, std::nullptr_t, ssize_t, const wchar_t*) = delete;
+        static ssize_t IndexOf(ssize_t, ::std::nullptr_t, ssize_t, const wchar_t*) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, const char8_t*, ssize_t, std::nullptr_t) = delete;
+        static ssize_t IndexOf(ssize_t, const char8_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, std::nullptr_t, ssize_t, const char8_t*) = delete;
+        static ssize_t IndexOf(ssize_t, ::std::nullptr_t, ssize_t, const char8_t*) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, const char16_t*, ssize_t, std::nullptr_t) = delete;
+        static ssize_t IndexOf(ssize_t, const char16_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, std::nullptr_t, ssize_t, const char16_t*) = delete;
+        static ssize_t IndexOf(ssize_t, ::std::nullptr_t, ssize_t, const char16_t*) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, const char32_t*, ssize_t, std::nullptr_t) = delete;
+        static ssize_t IndexOf(ssize_t, const char32_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t Find(ssize_t, std::nullptr_t, ssize_t, const char32_t*) = delete;
+        static ssize_t IndexOf(ssize_t, ::std::nullptr_t, ssize_t, const char32_t*) = delete;
 
         /// @brief ソース文字列内の文字を検索
         /// @param lengthSource ソース文字列の長さ
@@ -377,11 +801,11 @@ namespace klib::Text
         /// @return 見つからない場合はKongkong::Collections::CollectionHelper::NotFound()
         /// @throws ArgumentNullException: sourceがnullptrのとき
         /// @throws InvalidArgumentException: lengthSourceが負の値の時
-        [[nodiscard]] static ssize_t Find(ssize_t lengthSource, const char* source, char target);
-        [[nodiscard]] static ssize_t Find(ssize_t lengthSource, const wchar_t* source, wchar_t target);
-        [[nodiscard]] static ssize_t Find(ssize_t lengthSource, const char8_t* source, char8_t target);
-        [[nodiscard]] static ssize_t Find(ssize_t lengthSource, const char16_t* source, char16_t target);
-        [[nodiscard]] static ssize_t Find(ssize_t lengthSource, const char32_t* source, char32_t target);
+        [[nodiscard]] static ssize_t IndexOf(ssize_t lengthSource, const char* source, char target);
+        [[nodiscard]] static ssize_t IndexOf(ssize_t lengthSource, const wchar_t* source, wchar_t target);
+        [[nodiscard]] static ssize_t IndexOf(ssize_t lengthSource, const char8_t* source, char8_t target);
+        [[nodiscard]] static ssize_t IndexOf(ssize_t lengthSource, const char16_t* source, char16_t target);
+        [[nodiscard]] static ssize_t IndexOf(ssize_t lengthSource, const char32_t* source, char32_t target);
 
         /// @brief ソース文字列内の文字列を検索
         /// @param lengthSource ソース文字列の長さ
@@ -394,59 +818,134 @@ namespace klib::Text
         /// @throws ArgumentNullException: targetがnullptrのとき
         /// @throws InvalidArgumentException: lengthSourceが負の値の時
         /// @throws InvalidArgumentException: lengthTargetが負の値の時
-        [[nodiscard]] static ssize_t Find(ssize_t lengthSource, const char* source, ssize_t lengthTarget, const char* target);
-        [[nodiscard]] static ssize_t Find(ssize_t lengthSource, const wchar_t* source, ssize_t lengthTarget, const wchar_t* target);
-        [[nodiscard]] static ssize_t Find(ssize_t lengthSource, const char8_t* source, ssize_t lengthTarget, const char8_t* target);
-        [[nodiscard]] static ssize_t Find(ssize_t lengthSource, const char16_t* source, ssize_t lengthTarget, const char16_t* target);
-        [[nodiscard]] static ssize_t Find(ssize_t lengthSource, const char32_t* source, ssize_t lengthTarget, const char32_t* target);
+        [[nodiscard]] static ssize_t IndexOf(ssize_t lengthSource, const char* source, ssize_t lengthTarget, const char* target);
+        [[nodiscard]] static ssize_t IndexOf(ssize_t lengthSource, const wchar_t* source, ssize_t lengthTarget, const wchar_t* target);
+        [[nodiscard]] static ssize_t IndexOf(ssize_t lengthSource, const char8_t* source, ssize_t lengthTarget, const char8_t* target);
+        [[nodiscard]] static ssize_t IndexOf(ssize_t lengthSource, const char16_t* source, ssize_t lengthTarget, const char16_t* target);
+        [[nodiscard]] static ssize_t IndexOf(ssize_t lengthSource, const char32_t* source, ssize_t lengthTarget, const char32_t* target);
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, std::nullptr_t, char) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            char
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, std::nullptr_t, wchar_t) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            wchar_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, std::nullptr_t, char8_t) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            char8_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, std::nullptr_t, char16_t) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            char16_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, std::nullptr_t, char32_t) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            char32_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, std::nullptr_t, ssize_t, std::nullptr_t) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, const char*, ssize_t, std::nullptr_t) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            const char*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, std::nullptr_t, ssize_t, const char*) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, const wchar_t*, ssize_t, std::nullptr_t) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            const wchar_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, std::nullptr_t, ssize_t, const wchar_t*) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const wchar_t*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, const char8_t*, ssize_t, std::nullptr_t) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            const char8_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, std::nullptr_t, ssize_t, const char8_t*) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char8_t*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, const char16_t*, ssize_t, std::nullptr_t) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            const char16_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, std::nullptr_t, ssize_t, const char16_t*) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char16_t*
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, const char32_t*, ssize_t, std::nullptr_t) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            const char32_t*,
+            ssize_t,
+            ::std::nullptr_t
+        ) = delete;
 
         /// @brief ふぁ！？っく
-        static ssize_t FindUnsafe(ssize_t, std::nullptr_t, ssize_t, const char32_t*) = delete;
+        static ssize_t IndexOfUnsafe(
+            ssize_t,
+            ::std::nullptr_t,
+            ssize_t,
+            const char32_t*
+        ) = delete;
 
         /// @brief ソース文字列内の文字を検索
         /// @param lengthSource ソース文字列の長さ
@@ -454,11 +953,17 @@ namespace klib::Text
         /// @param target 探す文字
         /// @return 指定した文字が最初に現れるインデックス
         /// @return 見つからない場合はKongkong::Collections::CollectionHelper::NotFound()
-        [[nodiscard]] static constexpr ssize_t FindUnsafe(ssize_t lengthSource, const char* source, char target) noexcept { return _findUnsafe(lengthSource, source, target); }
-        [[nodiscard]] static constexpr ssize_t FindUnsafe(ssize_t lengthSource, const wchar_t* source, wchar_t target) noexcept { return _findUnsafe(lengthSource, source, target); }
-        [[nodiscard]] static constexpr ssize_t FindUnsafe(ssize_t lengthSource, const char8_t* source, char8_t target) noexcept { return _findUnsafe(lengthSource, source, target); }
-        [[nodiscard]] static constexpr ssize_t FindUnsafe(ssize_t lengthSource, const char16_t* source, char16_t target) noexcept { return _findUnsafe(lengthSource, source, target); }
-        [[nodiscard]] static constexpr ssize_t FindUnsafe(ssize_t lengthSource, const char32_t* source, char32_t target) noexcept { return _findUnsafe(lengthSource, source, target); }
+        [[nodiscard]]
+        static constexpr ssize_t IndexOfUnsafe(
+            ssize_t lengthSource,
+            const char* source,
+            char target
+        ) noexcept { return _findUnsafe(lengthSource, source, target); }
+
+        [[nodiscard]] static constexpr ssize_t IndexOfUnsafe(ssize_t lengthSource, const wchar_t* source, wchar_t target) noexcept { return _findUnsafe(lengthSource, source, target); }
+        [[nodiscard]] static constexpr ssize_t IndexOfUnsafe(ssize_t lengthSource, const char8_t* source, char8_t target) noexcept { return _findUnsafe(lengthSource, source, target); }
+        [[nodiscard]] static constexpr ssize_t IndexOfUnsafe(ssize_t lengthSource, const char16_t* source, char16_t target) noexcept { return _findUnsafe(lengthSource, source, target); }
+        [[nodiscard]] static constexpr ssize_t IndexOfUnsafe(ssize_t lengthSource, const char32_t* source, char32_t target) noexcept { return _findUnsafe(lengthSource, source, target); }
 
         /// @brief ソース文字列内の文字列を検索
         /// @param lengthSource ソース文字列の長さ
@@ -467,11 +972,11 @@ namespace klib::Text
         /// @param target 探す文字列
         /// @return 指定した文字列が最初に現れるインデックス
         /// @return 見つからない場合はKongkong::Collections::CollectionHelper::NotFound()
-        [[nodiscard]] static constexpr ssize_t FindUnsafe(ssize_t lengthSource, const char* source, ssize_t lengthTarget, const char* target) noexcept { return _findUnsafe(lengthSource, source, lengthTarget, target); }
-        [[nodiscard]] static constexpr ssize_t FindUnsafe(ssize_t lengthSource, const wchar_t* source, ssize_t lengthTarget, const wchar_t* target) noexcept { return _findUnsafe(lengthSource, source, lengthTarget, target); }
-        [[nodiscard]] static constexpr ssize_t FindUnsafe(ssize_t lengthSource, const char8_t* source, ssize_t lengthTarget, const char8_t* target) noexcept { return _findUnsafe(lengthSource, source, lengthTarget, target); }
-        [[nodiscard]] static constexpr ssize_t FindUnsafe(ssize_t lengthSource, const char16_t* source, ssize_t lengthTarget, const char16_t* target) noexcept { return _findUnsafe(lengthSource, source, lengthTarget, target); }
-        [[nodiscard]] static constexpr ssize_t FindUnsafe(ssize_t lengthSource, const char32_t* source, ssize_t lengthTarget, const char32_t* target) noexcept { return _findUnsafe(lengthSource, source, lengthTarget, target); }
+        [[nodiscard]] static constexpr ssize_t IndexOfUnsafe(ssize_t lengthSource, const char* source, ssize_t lengthTarget, const char* target) noexcept { return _findUnsafe(lengthSource, source, lengthTarget, target); }
+        [[nodiscard]] static constexpr ssize_t IndexOfUnsafe(ssize_t lengthSource, const wchar_t* source, ssize_t lengthTarget, const wchar_t* target) noexcept { return _findUnsafe(lengthSource, source, lengthTarget, target); }
+        [[nodiscard]] static constexpr ssize_t IndexOfUnsafe(ssize_t lengthSource, const char8_t* source, ssize_t lengthTarget, const char8_t* target) noexcept { return _findUnsafe(lengthSource, source, lengthTarget, target); }
+        [[nodiscard]] static constexpr ssize_t IndexOfUnsafe(ssize_t lengthSource, const char16_t* source, ssize_t lengthTarget, const char16_t* target) noexcept { return _findUnsafe(lengthSource, source, lengthTarget, target); }
+        [[nodiscard]] static constexpr ssize_t IndexOfUnsafe(ssize_t lengthSource, const char32_t* source, ssize_t lengthTarget, const char32_t* target) noexcept { return _findUnsafe(lengthSource, source, lengthTarget, target); }
 
         /// @brief ふぁ！？っく
         static ssize_t GetLength(std::nullptr_t) = delete;
@@ -519,52 +1024,52 @@ namespace klib::Text
         [[nodiscard]] static constexpr bool IsNullOrEmpty(const char32_t* str) noexcept { return _isNullOrEmpty(str); }
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, std::nullptr_t, char) = delete;
+        static bool StartsWith(ssize_t, ::std::nullptr_t, char) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, std::nullptr_t, wchar_t) = delete;
+        static bool StartsWith(ssize_t, ::std::nullptr_t, wchar_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, std::nullptr_t, char8_t) = delete;
+        static bool StartsWith(ssize_t, ::std::nullptr_t, char8_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, std::nullptr_t, char16_t) = delete;
+        static bool StartsWith(ssize_t, ::std::nullptr_t, char16_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, std::nullptr_t, char32_t) = delete;
+        static bool StartsWith(ssize_t, ::std::nullptr_t, char32_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, std::nullptr_t, ssize_t, std::nullptr_t) = delete;
+        static bool StartsWith(ssize_t, ::std::nullptr_t, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, const char*, ssize_t, std::nullptr_t) = delete;
+        static bool StartsWith(ssize_t, const char*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, std::nullptr_t, ssize_t, const char*) = delete;
+        static bool StartsWith(ssize_t, ::std::nullptr_t, ssize_t, const char*) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, const wchar_t*, ssize_t, std::nullptr_t) = delete;
+        static bool StartsWith(ssize_t, const wchar_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, std::nullptr_t, ssize_t, const wchar_t*) = delete;
+        static bool StartsWith(ssize_t, ::std::nullptr_t, ssize_t, const wchar_t*) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, const char8_t*, ssize_t, std::nullptr_t) = delete;
+        static bool StartsWith(ssize_t, const char8_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, std::nullptr_t, ssize_t, const char8_t*) = delete;
+        static bool StartsWith(ssize_t, ::std::nullptr_t, ssize_t, const char8_t*) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, const char16_t*, ssize_t, std::nullptr_t) = delete;
+        static bool StartsWith(ssize_t, const char16_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, std::nullptr_t, ssize_t, const char16_t*) = delete;
+        static bool StartsWith(ssize_t, ::std::nullptr_t, ssize_t, const char16_t*) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, const char32_t*, ssize_t, std::nullptr_t) = delete;
+        static bool StartsWith(ssize_t, const char32_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWith(ssize_t, std::nullptr_t, ssize_t, const char32_t*) = delete;
+        static bool StartsWith(ssize_t, ::std::nullptr_t, ssize_t, const char32_t*) = delete;
 
         /// @brief ソース文字列が指定したプレフィックスで始まるかを確認
         /// @param lengthSource ソース文字列の長さ
@@ -594,52 +1099,52 @@ namespace klib::Text
         [[nodiscard]] static bool StartsWith(ssize_t lengthSource, const char32_t* source, ssize_t prefixLength, const char32_t* prefix);
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, std::nullptr_t, char) = delete;
+        static bool StartsWithUnsafe(ssize_t, ::std::nullptr_t, char) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, std::nullptr_t, wchar_t) = delete;
+        static bool StartsWithUnsafe(ssize_t, ::std::nullptr_t, wchar_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, std::nullptr_t, char8_t) = delete;
+        static bool StartsWithUnsafe(ssize_t, ::std::nullptr_t, char8_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, std::nullptr_t, char16_t) = delete;
+        static bool StartsWithUnsafe(ssize_t, ::std::nullptr_t, char16_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, std::nullptr_t, char32_t) = delete;
+        static bool StartsWithUnsafe(ssize_t, ::std::nullptr_t, char32_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, std::nullptr_t, ssize_t, std::nullptr_t) = delete;
+        static bool StartsWithUnsafe(ssize_t, ::std::nullptr_t, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, const char*, ssize_t, std::nullptr_t) = delete;
+        static bool StartsWithUnsafe(ssize_t, const char*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, std::nullptr_t, ssize_t, const char*) = delete;
+        static bool StartsWithUnsafe(ssize_t, ::std::nullptr_t, ssize_t, const char*) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, const wchar_t*, ssize_t, std::nullptr_t) = delete;
+        static bool StartsWithUnsafe(ssize_t, const wchar_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, std::nullptr_t, ssize_t, const wchar_t*) = delete;
+        static bool StartsWithUnsafe(ssize_t, ::std::nullptr_t, ssize_t, const wchar_t*) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, const char8_t*, ssize_t, std::nullptr_t) = delete;
+        static bool StartsWithUnsafe(ssize_t, const char8_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, std::nullptr_t, ssize_t, const char8_t*) = delete;
+        static bool StartsWithUnsafe(ssize_t, ::std::nullptr_t, ssize_t, const char8_t*) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, const char16_t*, ssize_t, std::nullptr_t) = delete;
+        static bool StartsWithUnsafe(ssize_t, const char16_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, std::nullptr_t, ssize_t, const char16_t*) = delete;
+        static bool StartsWithUnsafe(ssize_t, ::std::nullptr_t, ssize_t, const char16_t*) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, const char32_t*, ssize_t, std::nullptr_t) = delete;
+        static bool StartsWithUnsafe(ssize_t, const char32_t*, ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief ふぁ！？っく
-        static bool StartsWithUnsafe(ssize_t, std::nullptr_t, ssize_t, const char32_t*) = delete;
+        static bool StartsWithUnsafe(ssize_t, ::std::nullptr_t, ssize_t, const char32_t*) = delete;
 
         /// @brief ソース文字列が指定したプレフィックスで始まるかを確認
         /// @param lengthSource ソース文字列の長さ
@@ -663,7 +1168,7 @@ namespace klib::Text
         [[nodiscard]] static constexpr bool StartsWithUnsafe(ssize_t lengthSource, const char32_t* source, ssize_t prefixLength, const char32_t* prefix) noexcept { return _startsWithUnsafe(lengthSource, source, prefixLength, prefix); }
 
         /// @brief ふぁ！？っく
-        static CharString ToCharStringUnsafe(ssize_t, std::nullptr_t) = delete;
+        static CharString ToCharStringUnsafe(ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief char文字列をCharStringに変換
         /// @param length 文字列の長さ
@@ -701,7 +1206,7 @@ namespace klib::Text
         static CharString ToCharStringUnsafe(ssize_t length, const char32_t* str);
 
         /// @brief ふぁ！？っく
-        static String ToStringUnsafe(ssize_t, std::nullptr_t) = delete;
+        static String ToStringUnsafe(ssize_t, ::std::nullptr_t) = delete;
 
         /// @brief char文字列をStringに変換
         /// @param length 文字列の長さ
@@ -737,109 +1242,349 @@ namespace klib::Text
         /// @throws MemoryAllocationException: インスタンスの作成に失敗したとき
         [[nodiscard]]
         static String ToStringUnsafe(ssize_t length, const char32_t* str);
-
-        private:
-
-        template <class TC>
-        static constexpr bool _containsUnsafe(ssize_t lengthSource, const TC* source, TC target) noexcept
-        {
-            return _findUnsafe(lengthSource, source, target) != Collections::CollectionHelper::NotFound();
-        }
-
-        template <class TC>
-        static constexpr bool _containsUnsafe(ssize_t lengthSource, const TC* source, ssize_t lengthTarget, const TC* target) noexcept
-        {
-            return _findUnsafe(lengthSource, source, lengthTarget, target) != Collections::CollectionHelper::NotFound();
-        }
-
-        template <class TC>
-        static constexpr bool _endsWithUnsafe(ssize_t lengthSource, const TC* source, TC suffix) noexcept
-        {
-            return source[lengthSource - 1] == suffix;
-        }
-
-        template <class TC>
-        static constexpr bool _endsWithUnsafe(ssize_t lengthSource, const TC* source, ssize_t lengthSuffix, const TC* suffix) noexcept
-        {
-            if (lengthSource < lengthSuffix) return false;
-
-            const TC* p = source + (lengthSource - lengthSuffix);
-
-            for (ssize_t i = 0; i < lengthSuffix; i++) {
-                if (p[i] != suffix[i]) return false;
-            }
-
-            return true;
-        }
-
-        template <class TC>
-        static constexpr ssize_t _findUnsafe(ssize_t lengthSource, const TC* source, TC target) noexcept
-        {
-            const TC* p = source;
-            const TC* end = p + lengthSource;
-
-            while (p != end) {
-                if (*p == target) return p - source;
-                p++;
-            }
-
-            return Collections::CollectionHelper::NotFound();
-        }
-
-        template <class TC>
-        static constexpr ssize_t _findUnsafe(ssize_t lengthSource, const TC* source, ssize_t lengthTarget, const TC* target) noexcept
-        {
-            const TC* p = source;
-            ssize_t i;
-            
-            while (lengthSource >= lengthTarget) {
-
-                for (ssize_t i = 0; i < lengthTarget; i++) {
-                    if (p[i] != target[i]) break;
-                }
-
-                if (i == lengthTarget) return p - source;
-
-                lengthSource--;
-                p++;
-            }
-
-            return Collections::CollectionHelper::NotFound();
-        }
-
-        template <class TChar>
-        static constexpr ssize_t _getLengthUnsafe(const TChar* str) noexcept
-        {
-            const TChar* p = str;
-
-            while (*p) ++p;
-
-            return p - str;
-        }
-
-        template <class TC>
-        static constexpr bool _isNullOrEmpty(const TC* str) noexcept { return str == nullptr || *str == (TC)0; }
-
-        template <class TC>
-        static constexpr bool _startsWithUnsafe(ssize_t lengthSource, const TC* source, TC prefix) noexcept
-        {
-            if (lengthSource == 0) return false;
-
-            return *source == prefix;
-        }
-
-        template <class TC>
-        static constexpr bool _startsWithUnsafe(ssize_t lengthSource, const TC* source, ssize_t lengthPrefix, const TC* prefix) noexcept
-        {
-            if (lengthSource < lengthPrefix) return false;
-
-            for (ssize_t i = 0; i < lengthPrefix; ++i) {
-                if (source[i] != prefix[i]) return false;
-            }
-    
-            return true;
-        }
+        
     };
+}
+
+namespace klib::Text
+{
+    consteval ssize_t StringHelper::NotFound() noexcept
+    {
+        return Containers::ContainerHelper::NotFound();
+    }
+
+    template <class TC>
+    constexpr bool StringHelper::_containsUnsafe(
+        ssize_t lengthSource,
+        const TC* source,
+        TC target
+    ) noexcept
+    {
+        return _findUnsafe(lengthSource, source, target) != NotFound();
+    }
+
+    template <class TC>
+    constexpr bool StringHelper::_containsUnsafe(
+        ssize_t lengthSource,
+        const TC* source,
+        ssize_t lengthTarget,
+        const TC* target
+    ) noexcept
+    {
+        return _findUnsafe(lengthSource, source, lengthTarget, target) != NotFound();
+    }
+
+    template <class TC>
+    constexpr bool StringHelper::_endsWithUnsafe(
+        ssize_t lengthSource,
+        const TC* source,
+        TC suffix
+    ) noexcept
+    {
+        return source[lengthSource - 1] == suffix;
+    }
+
+    template <class TC>
+    constexpr bool StringHelper::_endsWithUnsafe(
+        ssize_t lengthSource,
+        const TC* source,
+        ssize_t lengthSuffix,
+        const TC* suffix
+    ) noexcept
+    {
+        if (lengthSource < lengthSuffix) return false;
+
+        const TC* p = source + (lengthSource - lengthSuffix);
+
+        for (ssize_t i = 0; i < lengthSuffix; i++) {
+            if (p[i] != suffix[i]) return false;
+        }
+
+        return true;
+    }
+
+    template <class TC>
+    constexpr ssize_t StringHelper::_findUnsafe(
+        ssize_t lengthSource,
+        const TC* source,
+        TC target
+    ) noexcept
+    {
+        const TC* p = source;
+        const TC* end = p + lengthSource;
+
+        while (p != end) {
+            if (*p == target) return p - source;
+            p++;
+        }
+
+        return NotFound();
+    }
+
+    template <class TC>
+    constexpr ssize_t StringHelper::_findUnsafe(
+        ssize_t lengthSource,
+        const TC* source,
+        ssize_t lengthTarget,
+        const TC* target
+    ) noexcept
+    {
+        const TC* p = source;
+        ssize_t i;
+        
+        while (lengthSource >= lengthTarget) {
+
+            for (ssize_t i = 0; i < lengthTarget; i++) {
+                if (p[i] != target[i]) break;
+            }
+
+            if (i == lengthTarget) return p - source;
+
+            lengthSource--;
+            p++;
+        }
+
+        return NotFound();
+    }
+
+    template <class TChar>
+    constexpr ssize_t StringHelper::_getLengthUnsafe(
+        const TChar* str
+    ) noexcept
+    {
+        const TChar* p = str;
+
+        while (*p) ++p;
+
+        return p - str;
+    }
+
+    template <class TC>
+    constexpr bool StringHelper::_isNullOrEmpty(
+        const TC* str
+    ) noexcept
+    {
+        return str == nullptr || *str == static_cast<TC>(0);
+    }
+
+    template <class TC>
+    constexpr bool StringHelper::_startsWithUnsafe(
+        ssize_t lengthSource,
+        const TC* source,
+        TC prefix
+    ) noexcept
+    {
+        if (lengthSource == 0) return false;
+
+        return *source == prefix;
+    }
+
+    template <class TC>
+    constexpr bool StringHelper::_startsWithUnsafe(
+        ssize_t lengthSource,
+        const TC* source,
+        ssize_t lengthPrefix,
+        const TC* prefix
+    ) noexcept
+    {
+        if (lengthSource < lengthPrefix) return false;
+
+        for (ssize_t i = 0; i < lengthPrefix; ++i) {
+            if (source[i] != prefix[i]) return false;
+        }
+
+        return true;
+    }
+
+    constexpr ssize_t StringHelper::ContainsUnsafe(
+        ssize_t lengthSource,
+        const char* source,
+        char target
+    ) noexcept
+    {
+        _containsUnsafe(lengthSource, source, target);
+    }
+
+    constexpr ssize_t StringHelper::ContainsUnsafe(
+        ssize_t lengthSource,
+        const wchar_t* source,
+        wchar_t target
+    ) noexcept
+    {
+        _containsUnsafe(lengthSource, source, target);
+    }
+
+    constexpr ssize_t StringHelper::ContainsUnsafe(
+        ssize_t lengthSource,
+        const char8_t* source,
+        char8_t target
+    ) noexcept
+    {
+        _containsUnsafe(lengthSource, source, target);
+    }
+
+    constexpr ssize_t StringHelper::ContainsUnsafe(
+        ssize_t lengthSource,
+        const char16_t* source,
+        char16_t target
+    ) noexcept
+    {
+        _containsUnsafe(lengthSource, source, target);
+    }
+
+    constexpr ssize_t StringHelper::ContainsUnsafe(
+        ssize_t lengthSource,
+        const char32_t* source,
+        char32_t target
+    ) noexcept
+    {
+        _containsUnsafe(lengthSource, source, target);
+    }
+
+    constexpr ssize_t StringHelper::ContainsUnsafe(
+        ssize_t lengthSource,
+        const char* source,
+        ssize_t lengthTarget,
+        const char* target
+    ) noexcept
+    {
+        _containsUnsafe(lengthSource, source, lengthTarget, target);
+    }
+
+    constexpr ssize_t StringHelper::ContainsUnsafe(
+        ssize_t lengthSource,
+        const wchar_t* source,
+        ssize_t lengthTarget,
+        const wchar_t* target
+    ) noexcept
+    {
+        _containsUnsafe(lengthSource, source, lengthTarget, target);
+    }
+
+    constexpr ssize_t StringHelper::ContainsUnsafe(
+        ssize_t lengthSource,
+        const char8_t* source,
+        ssize_t lengthTarget,
+        const char8_t* target
+    ) noexcept
+    {
+        _containsUnsafe(lengthSource, source, lengthTarget, target);
+    }
+
+    constexpr ssize_t StringHelper::ContainsUnsafe(
+        ssize_t lengthSource,
+        const char16_t* source,
+        ssize_t lengthTarget,
+        const char16_t* target
+    ) noexcept
+    {
+        _containsUnsafe(lengthSource, source, lengthTarget, target);
+    }
+
+    constexpr ssize_t StringHelper::ContainsUnsafe(
+        ssize_t lengthSource,
+        const char32_t* source,
+        ssize_t lengthTarget,
+        const char32_t* target
+    ) noexcept
+    {
+        _containsUnsafe(lengthSource, source, lengthTarget, target);
+    }
+
+    constexpr bool StringHelper::EndsWithUnsafe(
+        ssize_t lengthSource,
+        const char* source,
+        char suffix
+    ) noexcept
+    {
+        _endsWithUnsafe(lengthSource, source, suffix);
+    }
+
+    constexpr bool StringHelper::EndsWithUnsafe(
+        ssize_t lengthSource,
+        const wchar_t* source,
+        wchar_t suffix
+    ) noexcept
+    {
+        _endsWithUnsafe(lengthSource, source, suffix);
+    }
+
+    constexpr bool StringHelper::EndsWithUnsafe(
+        ssize_t lengthSource,
+        const char8_t* source,
+        char8_t suffix
+    ) noexcept
+    {
+        _endsWithUnsafe(lengthSource, source, suffix);
+    }
+
+    constexpr bool StringHelper::EndsWithUnsafe(
+        ssize_t lengthSource,
+        const char16_t* source,
+        char16_t suffix
+    ) noexcept
+    {
+        _endsWithUnsafe(lengthSource, source, suffix);
+    }
+
+    constexpr bool StringHelper::EndsWithUnsafe(
+        ssize_t lengthSource,
+        const char32_t* source,
+        char32_t suffix
+    ) noexcept
+    {
+        _endsWithUnsafe(lengthSource, source, suffix);
+    }
+
+    constexpr bool StringHelper::EndsWithUnsafe(
+        ssize_t lengthSource,
+        const char* source,
+        ssize_t lengthSuffix,
+        const char* suffix
+    ) noexcept
+    {
+        return _endsWithUnsafe(lengthSource, source, lengthSuffix, suffix);
+    }
+
+    constexpr bool StringHelper::EndsWithUnsafe(
+        ssize_t lengthSource,
+        const wchar_t* source,
+        ssize_t lengthSuffix,
+        const wchar_t* suffix
+    ) noexcept
+    {
+        return _endsWithUnsafe(lengthSource, source, lengthSuffix, suffix);
+    }
+
+    constexpr bool StringHelper::EndsWithUnsafe(
+        ssize_t lengthSource,
+        const char8_t* source,
+        ssize_t lengthSuffix,
+        const char8_t* suffix
+    ) noexcept
+    {
+        return _endsWithUnsafe(lengthSource, source, lengthSuffix, suffix);
+    }
+
+    constexpr bool StringHelper::EndsWithUnsafe(
+        ssize_t lengthSource,
+        const char16_t* source,
+        ssize_t lengthSuffix,
+        const char16_t* suffix
+    ) noexcept
+    {
+        return _endsWithUnsafe(lengthSource, source, lengthSuffix, suffix);
+    }
+
+    constexpr bool StringHelper::EndsWithUnsafe(
+        ssize_t lengthSource,
+        const char32_t* source,
+        ssize_t lengthSuffix,
+        const char32_t* suffix
+    ) noexcept
+    {
+        return _endsWithUnsafe(lengthSource, source, lengthSuffix, suffix);
+    }
 }
 
 #endif //!KLIB_TEXT_STRINGHELPER_H

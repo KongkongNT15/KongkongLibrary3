@@ -75,6 +75,8 @@ namespace klib::Containers
         void ReserveUnsafe(
             ssize_t minCount
         );
+
+        void ShrinkToFit() noexcept;
     };
 }
 
@@ -119,7 +121,9 @@ namespace klib::Containers
         ElementType const& value
     ) requires IsCopyConstructible
     {
-        return Emplace(value);
+        Emplace(value);
+
+        return *this;
     }
 
     template <class T>
@@ -127,7 +131,9 @@ namespace klib::Containers
         ElementType&& value
     ) requires IsMoveConstructible
     {
-        return Emplace(::std::move(value));
+        Emplace(::std::move(value));
+
+        return *this;
     }
 
     template <class T>
@@ -135,7 +141,7 @@ namespace klib::Containers
         ElementType const& value
     ) requires IsCopyConstructible
     {
-        return Emplace(value);
+        Emplace(value);
     }
 
     template <class T>
@@ -143,7 +149,7 @@ namespace klib::Containers
         ElementType&& value
     ) requires IsMoveConstructible
     {
-        return Emplace(::std::move(value));
+        Emplace(::std::move(value));
     }
 
     template <class T>
@@ -276,8 +282,7 @@ namespace klib::Containers
             this->begin(),
             this->end()
         );
-
-        m_region.Clear();
+        
         this->m_length = 0;
     }
 
@@ -314,6 +319,19 @@ namespace klib::Containers
 
         this->m_p = static_cast<ElementType*>(m_region.Data());
         this->m_length = 0;
+    }
+
+    template <class T>
+    void PagedList<T>::ShrinkToFit() noexcept
+    {
+        if (this->IsEmpty()) {
+            m_region.Clear();
+        }
+        else {
+            m_region.ResizeUnsafe(s_elementSize * this->m_length);
+        }
+
+        
     }
 }
 

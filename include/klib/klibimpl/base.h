@@ -214,6 +214,7 @@
 #endif
 
 #define KLIB_ENV_64BIT (KLIB_ENV_X64 || KLIB_ENV_ARM64)
+#define KLIB_ENV_X86_64 (KLIB_ENV_X64)
 
 // インスタンス化できないようにする
 #define KLIB_STATIC_CLASS(className) \
@@ -468,6 +469,24 @@ namespace klib::Functional
 
     template <class TResult, class... TArgs>
     class Function<TResult(TArgs...)>;
+
+    class EqualTo;
+    class Greater;
+    class GreaterEqual;
+    class Less;
+    class LessEqual;
+    class NotEqualTo;
+
+    class LogicalAnd;
+    class LogicalNot;
+    class LogicalOr;
+
+    class BitAnd;
+    class BitNot;
+    class BitOr;
+    class BitXor;
+
+    class Identity;
 }
 
 namespace klib::Intrinsics
@@ -483,6 +502,12 @@ namespace klib::Intrinsics
     struct IntBlock128;
     struct IntBlock256;
     class Simd;
+}
+
+namespace klib::Intrinsics::X86
+{
+    struct M128;
+    struct M256;
 }
 
 namespace klib::IO

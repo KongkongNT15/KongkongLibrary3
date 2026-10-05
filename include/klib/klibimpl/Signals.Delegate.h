@@ -14,8 +14,6 @@ namespace klib::Signals
         using Base = typename Event<TResult, TArgs...>;
         using FunctionType = typename Base::FunctionType;
 
-        public:
-
         Delegate& operator+=(
             FunctionType const& f
         );

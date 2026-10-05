@@ -2,7 +2,7 @@
 #define KLIB_CONTAINERS_CHAINEDLISTITERATOR_H
 
 #include "base.h"
-#include "ValueType.h"
+#include "Foundation.ValueType.h"
 #include "Containers.Primitives.ChainLink.h"
 
 namespace klib::Containers

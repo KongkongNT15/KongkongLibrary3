@@ -95,7 +95,7 @@ namespace klib::Containers::Primitives
 
         template <class TPredicate>
         constexpr void ForEach(
-            TPredicate pred
+            TPredicate&& pred
         );
 
         [[nodiscard]]
@@ -328,11 +328,11 @@ namespace klib::Containers::Primitives
     template <class T>
     template <class TPredicate>
     constexpr void ArrayBase<T>::ForEach(
-        TPredicate pred
+        TPredicate&& pred
     )
     {
         auto itr = begin();
-        auto end = end();
+        auto end = this->end();
 
         while (itr != end) {
             pred(*itr);
