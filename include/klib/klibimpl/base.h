@@ -215,6 +215,7 @@
 
 #define KLIB_ENV_64BIT (KLIB_ENV_X64 || KLIB_ENV_ARM64)
 #define KLIB_ENV_X86_64 (KLIB_ENV_X64)
+#define KLIB_ENV_ARM (KLIB_ENV_ARM64)
 
 // インスタンス化できないようにする
 #define KLIB_STATIC_CLASS(className) \
@@ -502,6 +503,11 @@ namespace klib::Intrinsics
     struct IntBlock128;
     struct IntBlock256;
     class Simd;
+}
+
+namespace klib::Intrinsics::Arm
+{
+    struct Float32x4;
 }
 
 namespace klib::Intrinsics::X86
