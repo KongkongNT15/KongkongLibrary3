@@ -514,6 +514,8 @@ namespace klib::Intrinsics::X86
 {
     struct M128;
     struct M256;
+
+    enum struct SimdRoundingMode : int;
 }
 
 namespace klib::IO

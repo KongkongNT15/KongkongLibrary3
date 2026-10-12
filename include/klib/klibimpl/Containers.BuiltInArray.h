@@ -24,10 +24,10 @@ namespace klib::Containers
         public:
 
         [[nodiscard]]
-        consteval bool IsEmpty() noexcept;
+        static consteval bool IsEmpty() noexcept;
 
         [[nodiscard]]
-        consteval ssize_t Length() noexcept;
+        static consteval ssize_t Length() noexcept;
 
         ElementType Arr[N];
 

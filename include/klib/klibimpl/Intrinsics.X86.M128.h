@@ -3,6 +3,7 @@
 
 #include "base.h"
 #include "dep/klibintrinsics.h"
+#include "Containers.BuiltInArray.h"
 
 namespace klib::Intrinsics::X86
 {
@@ -204,7 +205,16 @@ namespace klib::Intrinsics::X86
         ) noexcept;
 
         [[nodiscard]]
-        M128 AbsoluteValue() const noexcept;
+        float operator[](
+            int index
+        ) const noexcept;
+
+        [[nodiscard]]
+        float Front() const noexcept;
+
+        void Front(
+            float value
+        ) noexcept;
 
         void Broadcast(
             ::std::nullptr_t
@@ -237,6 +247,12 @@ namespace klib::Intrinsics::X86
         ) noexcept;
 
         [[nodiscard]]
+        M128 NearByInt() const noexcept;
+
+        [[nodiscard]]
+        M128 NearestInteger() const noexcept;
+
+        [[nodiscard]]
         M128 Reciprocal() const noexcept;
 
         [[nodiscard]]
@@ -244,6 +260,9 @@ namespace klib::Intrinsics::X86
 
         [[nodiscard]]
         M128 Round() const noexcept;
+
+        [[nodiscard]]
+        M128 RoundToInt() const noexcept;
 
         void Set(
             float v
@@ -289,6 +308,13 @@ namespace klib::Intrinsics::X86
 
         [[nodiscard]]
         M128 Sqrt() const noexcept;
+
+        [[nodiscard]]
+        Containers::BuiltInArray<float, 4>
+        ToBuiltInArray() const noexcept;
+
+        [[nodiscard]]
+        M128 Trunc() const noexcept;
     };
 
     [[nodiscard]]
@@ -612,6 +638,17 @@ namespace klib::Intrinsics::X86
     {
     }
 
+    inline float M128::operator[](
+        int index
+    ) const noexcept
+    {
+        alignas(__m128) float arr[4];
+
+        _mm_store_ps(arr, Value);
+
+        return arr[index];
+    }
+
     inline void M128::Broadcast(
         const float* p
     ) noexcept
@@ -629,6 +666,22 @@ namespace klib::Intrinsics::X86
         return _mm_floor_ps(Value);
     }
 
+    inline float M128::Front() const noexcept
+    {
+        alignas(16) float result;
+
+        _mm_store_ss(&result, Value);
+
+        return result;
+    }
+
+    inline void M128::Front(
+        float value
+    ) noexcept
+    {
+        Value = _mm_loadu_ps(&value);
+    }
+
     inline void M128::Load(
         const float* p
     ) noexcept
@@ -641,6 +694,16 @@ namespace klib::Intrinsics::X86
     ) noexcept
     {
         Value = _mm_loadu_ps(p);
+    }
+
+    inline M128 M128::NearByInt() const noexcept
+    {
+        return _mm_round_ps(Value, _MM_FROUND_NEARBYINT);
+    }
+
+    inline M128 M128::NearestInteger() const noexcept
+    {
+        return _mm_round_ps(Value, _MM_FROUND_NINT);
     }
 
     inline M128 M128::Reciprocal() const noexcept
@@ -657,6 +720,12 @@ namespace klib::Intrinsics::X86
     ) const noexcept
     {
         return _mm_round_ps(Value, _MM_FROUND_CUR_DIRECTION);
+    }
+
+    inline M128 M128::RoundToInt(
+    ) const noexcept
+    {
+        return _mm_round_ps(Value, _MM_FROUND_RINT);
     }
 
     inline void M128::Set(
@@ -720,6 +789,21 @@ namespace klib::Intrinsics::X86
     inline M128 M128::Sqrt() const noexcept
     {
         return _mm_sqrt_ps(Value);
+    }
+
+    inline M128 M128::Trunc() const noexcept
+    {
+        return _mm_round_ps(Value, _MM_FROUND_TRUNC);
+    }
+
+    inline Containers::BuiltInArray<float, 4>
+    M128::ToBuiltInArray() const noexcept
+    {
+        alignas(16) Containers::BuiltInArray<float, 4> arr;
+
+        _mm_store_ps(arr.Arr, Value);
+
+        return arr;
     }
 
     inline M128 operator+(
