@@ -96,17 +96,18 @@ namespace klib::Functional
         TFunc&& f
     )
     {
+        using fType = ::std::remove_cvref_t<TFunc>;
         // 関数型
-        if constexpr (::std::is_function_v<TFunc>) {
+        if constexpr (::std::is_function_v<fType>) {
             m_func = new FunctionPointer<TResult, TArgs...>(f);
         }
         // 関数ポインタ
-        else if constexpr (::std::same_as<TFunc, TResult(*)(TArgs...)>) {
+        else if constexpr (::std::same_as<fType, TResult(*)(TArgs...)>) {
             m_func = new FunctionPointer<TResult, TArgs...>(f);
         }
         // 関数オブジェクト？？？
         else {
-            m_func = new FunctionObject<TFunc, TResult, TArgs...>(::std::forward<TFunc>(f));
+            m_func = new FunctionObject<fType, TResult, TArgs...>(::std::forward<fType>(f));
         }
     }
 
