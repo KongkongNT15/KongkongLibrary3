@@ -53,9 +53,17 @@ namespace klib::Functional
         TArgs... args
     )
     {
-        return m_func(
-            ::std::forward<TArgs>(args)...
-        );
+        if constexpr (::std::same_as<TResult, void>) {
+            m_func(
+                ::std::forward<TArgs>(args)...
+            );
+        }
+        else {
+            return m_func(
+                ::std::forward<TArgs>(args)...
+            );
+        }
+        
     }
 }
 
